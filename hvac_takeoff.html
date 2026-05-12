@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>HVAC Field Takeoff — 3D Viewer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; font-family: system-ui, Segoe UI, sans-serif; background: #0f1419; color: #e8eef5; }
+    .app { display: flex; height: 100%; min-height: 480px; }
+    .left { width: 260px; flex-shrink: 0; background: #141c24; border-right: 1px solid #243040; overflow: auto; padding: 10px; }
+    .right { flex: 1; position: relative; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+    #viewport { flex: 1; position: relative; background: #1c2b3a; touch-action: none; min-height: 280px; min-width: 200px; overflow: hidden; }
+    #viewport canvas { position: absolute; left: 0; top: 0; display: block; width: 100% !important; height: 100% !important; z-index: 1; }
+    .overlay { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 3; }
+    .callout { position: absolute; transform: translate(-50%, -50%); pointer-events: none; white-space: nowrap; }
+    .callout .pill { background: #fff; border: 1px solid #cc2200; color: #cc2200; font: bold 10px/1.2 system-ui, sans-serif; padding: 2px 6px; border-radius: 10px; display: inline-block; }
+    .callout .line { position: absolute; height: 1px; background: #e55353; transform-origin: 0 50%; }
+    h1 { font-size: 14px; margin: 0 0 8px; font-weight: 600; color: #9fb3c8; }
+    .hint { font-size: 11px; color: #7a8fa3; margin-bottom: 8px; }
+    .pallet { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+    .tile { aspect-ratio: 1; border: 1px solid #2a3a4d; border-radius: 6px; background: #1a2430; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; }
+    .tile:hover { border-color: #12b4c6; }
+    .tile.active { outline: 2px solid #12b4c6; border-color: #12b4c6; }
+    .tile svg { width: 42px; height: 42px; }
+    .pills { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
+    .pill-tab { font-size: 10px; padding: 4px 8px; border-radius: 12px; border: 1px solid #3a4d63; background: #1a2430; color: #c8d6e5; cursor: pointer; }
+    .pill-tab.on { border-color: #12b4c6; color: #12b4c6; background: #152028; }
+    label { display: block; font-size: 10px; color: #8fa6bc; margin: 6px 0 2px; }
+    input, select, textarea { width: 100%; font-size: 13px; padding: 6px 8px; border-radius: 4px; border: 1px solid #2a3a4d; background: #0f1419; color: #e8eef5; }
+    textarea { min-height: 48px; resize: vertical; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    button.primary { width: 100%; margin-top: 10px; padding: 10px; border: none; border-radius: 6px; background: #12b4c6; color: #0a1218; font-weight: 700; cursor: pointer; }
+    button.primary:hover { filter: brightness(1.08); }
+    button.sec { margin-top: 6px; width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #3a4d63; background: #1a2430; color: #c8d6e5; cursor: pointer; font-size: 12px; }
+    .job { margin-top: 12px; padding-top: 10px; border-top: 1px solid #243040; }
+    .list { margin-top: 10px; max-height: 200px; overflow: auto; font-size: 11px; border: 1px solid #243040; border-radius: 6px; }
+    .list-item { padding: 8px; border-bottom: 1px solid #243040; }
+    .list-item:last-child { border-bottom: none; }
+    .dim-panel { display: none; }
+    .dim-panel.show { display: block; }
+    .title-3d { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); color: #c8d6e5; font-size: 13px; pointer-events: none; text-shadow: 0 1px 2px #000a; z-index: 2; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="left">
+    <h1>Fittings</h1>
+    <div class="pallet" id="pallet"></div>
+    <div class="pills" id="elbow-variants" style="display:none"></div>
+    <div id="dims-elbow" class="dim-panel"></div>
+    <div id="dims-offset" class="dim-panel"></div>
+    <div id="dims-straight" class="dim-panel"></div>
+    <div id="dims-transition" class="dim-panel"></div>
+    <div id="dims-tee" class="dim-panel"></div>
+    <label>Qty</label><input type="number" id="qty" value="1" min="1" />
+    <label>Notes</label><textarea id="notes" placeholder="Optional"></textarea>
+    <button class="primary" id="addBtn">+ Add to List</button>
+    <button class="sec" id="copyBtn">Copy list as text</button>
+    <button class="sec" id="pdfBtn">Export PDF</button>
+    <div class="job">
+      <label>Job name</label><input id="jobName" />
+      <div class="row2">
+        <div><label>Tech</label><input id="jobTech" /></div>
+        <div><label>Zone</label><input id="jobZone" /></div>
+      </div>
+      <label>Date</label><input id="jobDate" type="date" />
+      <label>Attach photo (for last line item)</label><input type="file" id="photo" accept="image/*" />
+    </div>
+    <h1 style="margin-top:12px">Takeoff list</h1>
+    <div class="list" id="list"></div>
+  </div>
+  <div class="right">
+    <div id="viewport">
+      <div id="viewer-error" style="display:none;position:absolute;z-index:20;left:12px;right:12px;top:12px;padding:12px 14px;background:#401820;border:1px solid #c44;color:#fec;font-size:12px;white-space:pre-wrap;pointer-events:auto"></div>
+      <div class="title-3d" id="fitTitle">Radius Elbow 90°</div>
+      <div class="hint" style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);z-index:2">Drag to rotate · Scroll to zoom</div>
+      <div class="overlay" id="calloutLayer"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  'use strict';
+  const S = 1 / 12;
+  const BG = 0x1c2b3a;
+  const CY = 0x12b4c6;
+  const YL = 0xd2af0a;
+  const EDGE = 0x00232f;
+
+  const state = {
+    fitting: 'elbow90',
+    elbowVariant: 'lr',
+    list: [],
+    callouts: [],
+    fitGroup: null,
+    jobPhotoData: null
+  };
+
+  const cyanMat = new THREE.MeshStandardMaterial({ color: CY, roughness: 0.55, metalness: 0.2, side: THREE.FrontSide });
+  const yellowMat = new THREE.MeshStandardMaterial({ color: YL, roughness: 0.6, metalness: 0.1, side: THREE.FrontSide });
+
+  let renderer, scene, camera, root, dirLight, amb, fill;
+  let orbit;
+
+  function inch(x) { return Number(x) * S; }
+
+  function addEdges(mesh, geom) {
+    const e = new THREE.EdgesGeometry(geom, 15);
+    const l = new THREE.LineSegments(e, new THREE.LineBasicMaterial({ color: EDGE, transparent: true, opacity: 0.9 }));
+    mesh.add(l);
+  }
+
+  function pushCallout(text, v) {
+    state.callouts.push({ text, v: v.clone() });
+  }
+
+  function buildStraight(A, B, C) {
+    const g = new THREE.Group();
+    const a = inch(A), b = inch(B), c = inch(C);
+    const geom = new THREE.BoxGeometry(a, b, c);
+    const mats = [cyanMat, cyanMat, cyanMat, cyanMat, yellowMat, yellowMat];
+    const m = new THREE.Mesh(geom, mats);
+    g.add(m);
+    addEdges(m, geom);
+    pushCallout('A=' + A + '"', new THREE.Vector3(a / 2 + 0.08, 0, 0));
+    pushCallout('B=' + B + '"', new THREE.Vector3(0, b / 2 + 0.08, 0));
+    pushCallout('C=' + C + '"', new THREE.Vector3(0, 0, c / 2 + 0.08));
+    pushCallout('C1=SS+D ' + A + '×' + B, new THREE.Vector3(0, 0, -c / 2 - 0.06));
+    pushCallout('C2=SS+D ' + A + '×' + B, new THREE.Vector3(0, 0, c / 2 + 0.06));
+    return g;
+  }
+
+  function buildTransition(A, B, C, D, E) {
+    const g = new THREE.Group();
+    const a = inch(A), b = inch(B), c = inch(C), d = inch(D), e = inch(E);
+    const y0 = 0, y1 = e;
+    const cornersB = [
+      new THREE.Vector3(-a / 2, y0, -b / 2), new THREE.Vector3(a / 2, y0, -b / 2),
+      new THREE.Vector3(a / 2, y0, b / 2), new THREE.Vector3(-a / 2, y0, b / 2)
+    ];
+    const cornersT = [
+      new THREE.Vector3(-c / 2, y1, -d / 2), new THREE.Vector3(c / 2, y1, -d / 2),
+      new THREE.Vector3(c / 2, y1, d / 2), new THREE.Vector3(-c / 2, y1, d / 2)
+    ];
+    const positions = [], normals = [];
+    const pushTri = (p0, p1, p2, n) => {
+      [p0, p1, p2].forEach(p => {
+        positions.push(p.x, p.y, p.z);
+        normals.push(n.x, n.y, n.z);
+      });
+    };
+    const quad = (a0, a1, b1, b0) => {
+      const e1 = new THREE.Vector3().subVectors(b0, a0);
+      const e2 = new THREE.Vector3().subVectors(a1, a0);
+      const n = new THREE.Vector3().crossVectors(e2, e1).normalize();
+      pushTri(a0, a1, b1, n);
+      pushTri(a0, b1, b0, n);
+    };
+    for (let i = 0; i < 4; i++) {
+      const j = (i + 1) % 4;
+      quad(cornersB[i], cornersB[j], cornersT[j], cornersT[i]);
+    }
+    const geomSide = new THREE.BufferGeometry();
+    geomSide.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geomSide.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+    const sideMesh = new THREE.Mesh(geomSide, cyanMat);
+    g.add(sideMesh);
+    addEdges(sideMesh, geomSide);
+    const capPos = [], capNor = [];
+    const pushTri2 = (arrP, arrN, p0, p1, p2, n) => {
+      [p0, p1, p2].forEach(p => {
+        arrP.push(p.x, p.y, p.z);
+        arrN.push(n.x, n.y, n.z);
+      });
+    };
+    const nUp = new THREE.Vector3(0, 1, 0);
+    pushTri2(capPos, capNor, cornersT[0], cornersT[1], cornersT[2], nUp);
+    pushTri2(capPos, capNor, cornersT[0], cornersT[2], cornersT[3], nUp);
+    const nDn = new THREE.Vector3(0, -1, 0);
+    pushTri2(capPos, capNor, cornersB[0], cornersB[2], cornersB[1], nDn);
+    pushTri2(capPos, capNor, cornersB[0], cornersB[3], cornersB[2], nDn);
+    const capGeom = new THREE.BufferGeometry();
+    capGeom.setAttribute('position', new THREE.Float32BufferAttribute(capPos, 3));
+    capGeom.setAttribute('normal', new THREE.Float32BufferAttribute(capNor, 3));
+    const capMesh = new THREE.Mesh(capGeom, yellowMat);
+    g.add(capMesh);
+    addEdges(capMesh, capGeom);
+    pushCallout('A=' + A + '"', new THREE.Vector3(0, y0 - 0.06, b / 2 + 0.06));
+    pushCallout('B=' + B + '"', new THREE.Vector3(a / 2 + 0.06, y0, 0));
+    pushCallout('C=' + C + '"', new THREE.Vector3(0, y1 + 0.06, d / 2 + 0.06));
+    pushCallout('D=' + D + '"', new THREE.Vector3(c / 2 + 0.06, y1, 0));
+    pushCallout('E=' + E + '"', new THREE.Vector3(-a / 2 - 0.06, y1 * 0.5, 0));
+    pushCallout('C1=SS+D ' + A + '×' + B, new THREE.Vector3(0, y0, -b / 2 - 0.06));
+    pushCallout('C2=SS+D ' + C + '×' + D, new THREE.Vector3(0, y1, -d / 2 - 0.06));
+    return g;
+  }
+
+  function buildTee(A, B, C, D, E) {
+    const g = new THREE.Group();
+    const a = inch(A), b = inch(B), c = inch(C), d = inch(D), e = inch(E);
+    const main = new THREE.Mesh(new THREE.BoxGeometry(a, b, c), [
+      cyanMat, cyanMat, cyanMat, cyanMat, yellowMat, yellowMat
+    ]);
+    const br = new THREE.Mesh(new THREE.BoxGeometry(e, d, a), [
+      yellowMat, cyanMat, cyanMat, cyanMat, cyanMat, cyanMat
+    ]);
+    br.position.set(a / 2 + e / 2, 0, 0);
+    g.add(main);
+    g.add(br);
+    addEdges(main, main.geometry);
+    addEdges(br, br.geometry);
+    pushCallout('A=' + A + '"', new THREE.Vector3(0, 0, c / 2 + 0.06));
+    pushCallout('C=' + C + '"', new THREE.Vector3(0, 0, -c / 2 - 0.06));
+    pushCallout('D=' + D + '"', new THREE.Vector3(a / 2 + e + 0.06, 0, 0));
+    pushCallout('B=' + B + '"', new THREE.Vector3(0, b / 2 + 0.06, 0));
+    pushCallout('E=' + E + '"', new THREE.Vector3(a / 2 + e / 2, -d / 2 - 0.06, 0));
+    return g;
+  }
+
+  function buildElbow(A, B, C, D, E, F, G) {
+    const g = new THREE.Group();
+    const Ri = inch(G);
+    const b2 = inch(B);
+    const dRad = D * Math.PI / 180;
+    const steps = Math.max(32, Math.round(D * 2));
+    const pos = [], nor = [], col = [];
+    const cy = [0.07, 0.71, 0.78];
+    const yl = [0.82, 0.69, 0.04];
+    function pushTri(va, vb, vc, rgb) {
+      const e1 = new THREE.Vector3().subVectors(vb, va);
+      const e2 = new THREE.Vector3().subVectors(vc, va);
+      const n = new THREE.Vector3().crossVectors(e1, e2).normalize();
+      [va, vb, vc].forEach(p => {
+        pos.push(p.x, p.y, p.z);
+        nor.push(n.x, n.y, n.z);
+        col.push(rgb[0], rgb[1], rgb[2]);
+      });
+    }
+    function qd(a, b, c, d, rgb) {
+      pushTri(a, b, c, rgb);
+      pushTri(a, c, d, rgb);
+    }
+    for (let i = 0; i < steps; i++) {
+      const t0 = i / steps, t1 = (i + 1) / steps;
+      const ang0 = Math.PI + dRad * t0;
+      const ang1 = Math.PI + dRad * t1;
+      const W0 = inch(A + (C - A) * t0);
+      const W1 = inch(A + (C - A) * t1);
+      const u0 = new THREE.Vector3(Math.cos(ang0), 0, Math.sin(ang0));
+      const u1 = new THREE.Vector3(Math.cos(ang1), 0, Math.sin(ang1));
+      const ylo = -b2 / 2, yhi = b2 / 2;
+      const i00 = new THREE.Vector3(Ri * u0.x, ylo, Ri * u0.z);
+      const i01 = new THREE.Vector3(Ri * u0.x, yhi, Ri * u0.z);
+      const o00 = new THREE.Vector3((Ri + W0) * u0.x, ylo, (Ri + W0) * u0.z);
+      const o01 = new THREE.Vector3((Ri + W0) * u0.x, yhi, (Ri + W0) * u0.z);
+      const i10 = new THREE.Vector3(Ri * u1.x, ylo, Ri * u1.z);
+      const i11 = new THREE.Vector3(Ri * u1.x, yhi, Ri * u1.z);
+      const o10 = new THREE.Vector3((Ri + W1) * u1.x, ylo, (Ri + W1) * u1.z);
+      const o11 = new THREE.Vector3((Ri + W1) * u1.x, yhi, (Ri + W1) * u1.z);
+      qd(i00, i01, i11, i10, yl);
+      qd(o00, o10, o11, o01, cy);
+      qd(i01, o01, o11, i11, cy);
+      qd(i00, i10, o10, o00, cy);
+    }
+    const Wst = inch(A);
+    const legE = inch(E);
+    const ylo = -b2 / 2, yhi = b2 / 2;
+    const pIlo = new THREE.Vector3(-Ri, ylo, 0);
+    const pIhi = new THREE.Vector3(-Ri, yhi, 0);
+    const pOlo = new THREE.Vector3(-(Ri + Wst), ylo, 0);
+    const pOhi = new THREE.Vector3(-(Ri + Wst), yhi, 0);
+    const dx = new THREE.Vector3(-legE, 0, 0);
+    const qIlo = pIlo.clone().add(dx);
+    const qIhi = pIhi.clone().add(dx);
+    const qOlo = pOlo.clone().add(dx);
+    const qOhi = pOhi.clone().add(dx);
+    qd(qIlo, qIhi, pIhi, pIlo, cy);
+    qd(qOlo, pOlo, pOhi, qOhi, cy);
+    qd(qIlo, qOlo, pOlo, pIlo, cy);
+    qd(qIhi, pIhi, pOhi, qOhi, cy);
+    qd(qIlo, qOlo, qOhi, qIhi, yl);
+    const angEnd = Math.PI + dRad;
+    const uE = new THREE.Vector3(Math.cos(angEnd), 0, Math.sin(angEnd));
+    const Wend = inch(C);
+    const legFv = inch(F);
+    const aIlo = new THREE.Vector3(Ri * uE.x, ylo, Ri * uE.z);
+    const aIhi = new THREE.Vector3(Ri * uE.x, yhi, Ri * uE.z);
+    const aOlo = new THREE.Vector3((Ri + Wend) * uE.x, ylo, (Ri + Wend) * uE.z);
+    const aOhi = new THREE.Vector3((Ri + Wend) * uE.x, yhi, (Ri + Wend) * uE.z);
+    const off = uE.clone().multiplyScalar(legFv);
+    const bIlo = aIlo.clone().add(off);
+    const bIhi = aIhi.clone().add(off);
+    const bOlo = aOlo.clone().add(off);
+    const bOhi = aOhi.clone().add(off);
+    qd(bIlo, bOlo, bOhi, bIhi, yl);
+    qd(aIlo, bIlo, bOlo, aOlo, cy);
+    qd(aIhi, aOhi, bOhi, bIhi, cy);
+    qd(aIlo, aOlo, bOlo, bIlo, cy);
+    qd(aIhi, bIhi, bOhi, aOhi, cy);
+    const geom = new THREE.BufferGeometry();
+    geom.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    geom.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3));
+    geom.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+    const mat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.55, metalness: 0.2, side: THREE.FrontSide });
+    const mesh = new THREE.Mesh(geom, mat);
+    g.add(mesh);
+    addEdges(mesh, geom);
+    pushCallout('A=' + A + '"', new THREE.Vector3(-(Ri + Wst / 2), 0, 0.08));
+    pushCallout('B=' + B + '"', new THREE.Vector3(-(Ri + Wst) - 0.02, yhi + 0.06, 0));
+    pushCallout('C=' + C + '"', new THREE.Vector3((Ri + Wend / 2) * uE.x + 0.06, 0, (Ri + Wend / 2) * uE.z + 0.06));
+    pushCallout('E=' + E + '"', new THREE.Vector3(-(Ri + Wst) - legE / 2, yhi + 0.08, 0));
+    pushCallout('F=' + F + '"', new THREE.Vector3((Ri + Wend) * uE.x + uE.x * legFv * 0.5 + 0.08, yhi + 0.06, (Ri + Wend) * uE.z + uE.z * legFv * 0.5 + 0.08));
+    const midA = Math.PI + dRad * 0.5;
+    const uM = new THREE.Vector3(Math.cos(midA), 0, Math.sin(midA));
+    const rMid = Ri + inch(A + (C - A) * 0.5);
+    pushCallout('G=R' + G + '"', new THREE.Vector3(uM.x * rMid + uM.x * 0.08, ylo - 0.06, uM.z * rMid + uM.z * 0.08));
+    pushCallout('S1=SP', new THREE.Vector3(uM.x * (Ri + inch(A) * 0.35), yhi + 0.06, uM.z * (Ri + inch(A) * 0.35)));
+    pushCallout('C1=SS+D ' + A + '×' + B, new THREE.Vector3(qIlo.x - 0.05, 0, 0));
+    pushCallout('C2=SS+D ' + C + '×' + B, new THREE.Vector3(bOlo.x + 0.05, bOlo.y, bOlo.z));
+    return g;
+  }
+
+  function lerpNum(a, b, t) { return a + (b - a) * t; }
+
+  /**
+   * Radius offset — matches Autodesk Fabrication-style inputs:
+   * E = overall length, H = perpendicular offset between parallel runs (Left In),
+   * F/G = bottom/top straight at inlet/outlet of the S.
+   * Symmetric 90° arcs: centerline radius R = H/2 (world units), middle straight SL = E - F - G - 2*R.
+   */
+  function buildOffset(A, B, Ctop, Dtop, offLen, Fbtm, GtopStr, Hoff) {
+    const g = new THREE.Group();
+    const Rin = Math.max(inch(Hoff) / 2, inch(Math.max(A, Ctop)) / 2 + 1e-4);
+    const rmid = Rin;
+    const SLin = Math.max(0, offLen - Fbtm - GtopStr - Hoff);
+    const SLw = inch(SLin);
+    const li = inch(Fbtm);
+    const lo = inch(GtopStr);
+    const Larc = (Math.PI / 2) * rmid;
+    const Ltot = li + Larc + SLw + Larc + lo;
+
+    const O1 = new THREE.Vector3(0, 0, 0);
+    const O2 = new THREE.Vector3(SLw, 0, 0);
+
+    function sampleDist(s) {
+      const uLin = Ltot > 1e-6 ? s / Ltot : 0;
+      let d = s;
+      if (d <= li) {
+        const x = -rmid - li + d;
+        return {
+          P: new THREE.Vector3(x, 0, 0),
+          kind: 'line',
+          lineKind: 'legIn',
+          uLin: uLin
+        };
+      }
+      d -= li;
+      if (d <= Larc) {
+        const phi = Larc > 1e-6 ? d / Larc : 0;
+        const theta = Math.PI + (Math.PI / 2) * phi;
+        const cx = Math.cos(theta);
+        const cz = Math.sin(theta);
+        return {
+          P: new THREE.Vector3(rmid * cx, 0, rmid * cz),
+          kind: 'arc',
+          O: O1,
+          theta: theta,
+          uLin: uLin
+        };
+      }
+      d -= Larc;
+      if (d <= SLw) {
+        const x = d;
+        return {
+          P: new THREE.Vector3(x, 0, -rmid),
+          kind: 'line',
+          lineKind: 'straight',
+          uLin: uLin
+        };
+      }
+      d -= SLw;
+      if (d <= Larc) {
+        const phi = Larc > 1e-6 ? d / Larc : 0;
+        const theta = 1.5 * Math.PI + (Math.PI / 2) * phi;
+        const cx = Math.cos(theta);
+        const cz = Math.sin(theta);
+        return {
+          P: new THREE.Vector3(O2.x + rmid * cx, 0, O2.z + rmid * cz),
+          kind: 'arc',
+          O: O2,
+          theta: theta,
+          uLin: uLin
+        };
+      }
+      d -= Larc;
+      const x = SLw + rmid + d;
+      return {
+        P: new THREE.Vector3(x, 0, 0),
+        kind: 'line',
+        lineKind: 'legOut',
+        uLin: uLin
+      };
+    }
+
+    function crossSection(P, samp, auW, buW) {
+      let i00, i01, o00, o01;
+      if (samp.kind === 'arc') {
+        const rhat = new THREE.Vector3(
+          Math.cos(samp.theta),
+          0,
+          Math.sin(samp.theta)
+        );
+        const riR = rmid - auW / 2;
+        const roR = rmid + auW / 2;
+        const ylo = -buW / 2;
+        const yhi = buW / 2;
+        i00 = samp.O.clone().addScaledVector(rhat, riR).add(new THREE.Vector3(0, ylo, 0));
+        i01 = samp.O.clone().addScaledVector(rhat, riR).add(new THREE.Vector3(0, yhi, 0));
+        o00 = samp.O.clone().addScaledVector(rhat, roR).add(new THREE.Vector3(0, ylo, 0));
+        o01 = samp.O.clone().addScaledVector(rhat, roR).add(new THREE.Vector3(0, yhi, 0));
+      } else if (samp.lineKind === 'straight') {
+        const zIn = P.z + auW / 2;
+        const zOut = P.z - auW / 2;
+        i00 = new THREE.Vector3(P.x, -buW / 2, zIn);
+        i01 = new THREE.Vector3(P.x, buW / 2, zIn);
+        o00 = new THREE.Vector3(P.x, -buW / 2, zOut);
+        o01 = new THREE.Vector3(P.x, buW / 2, zOut);
+      } else if (samp.lineKind === 'legIn') {
+        const xIn = P.x + auW / 2;
+        const xOut = P.x - auW / 2;
+        i00 = new THREE.Vector3(xIn, -buW / 2, 0);
+        i01 = new THREE.Vector3(xIn, buW / 2, 0);
+        o00 = new THREE.Vector3(xOut, -buW / 2, 0);
+        o01 = new THREE.Vector3(xOut, buW / 2, 0);
+      } else {
+        const xIn = P.x - auW / 2;
+        const xOut = P.x + auW / 2;
+        i00 = new THREE.Vector3(xIn, -buW / 2, 0);
+        i01 = new THREE.Vector3(xIn, buW / 2, 0);
+        o00 = new THREE.Vector3(xOut, -buW / 2, 0);
+        o01 = new THREE.Vector3(xOut, buW / 2, 0);
+      }
+      return { i00, i01, o00, o01 };
+    }
+
+    const steps = Math.max(48, Math.min(220, Math.ceil(Math.max(Ltot, 0.01) / (S * 6))));
+    const pos = [], col = [];
+    const cy = [0.07, 0.71, 0.78];
+    const yl = [0.82, 0.69, 0.04];
+    function pushTri(va, vb, vc, rgb) {
+      [va, vb, vc].forEach(p => {
+        pos.push(p.x, p.y, p.z);
+        col.push(rgb[0], rgb[1], rgb[2]);
+      });
+    }
+    function qd(a, b, c, d, rgb) {
+      pushTri(a, b, c, rgb);
+      pushTri(a, c, d, rgb);
+    }
+
+    for (let i = 0; i < steps; i++) {
+      const s0 = (i / steps) * Ltot;
+      const s1 = ((i + 1) / steps) * Ltot;
+      const samp0 = sampleDist(s0);
+      const samp1 = sampleDist(s1);
+      const au0 = inch(lerpNum(A, Ctop, samp0.uLin));
+      const bu0 = inch(lerpNum(B, Dtop, samp0.uLin));
+      const au1 = inch(lerpNum(A, Ctop, samp1.uLin));
+      const bu1 = inch(lerpNum(B, Dtop, samp1.uLin));
+      const c0 = crossSection(samp0.P, samp0, au0, bu0);
+      const c1 = crossSection(samp1.P, samp1, au1, bu1);
+      qd(c0.i00, c0.i01, c1.i01, c1.i00, yl);
+      qd(c0.o00, c1.o00, c1.o01, c0.o01, cy);
+      qd(c0.i01, c0.o01, c1.o01, c1.i01, cy);
+      qd(c0.i00, c1.i00, c1.o00, c0.o00, cy);
+    }
+
+    const geom = new THREE.BufferGeometry();
+    geom.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    geom.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+    geom.computeVertexNormals();
+    const mat = new THREE.MeshStandardMaterial({
+      vertexColors: true,
+      roughness: 0.55,
+      metalness: 0.15,
+      side: THREE.DoubleSide,
+      flatShading: false
+    });
+    const mesh = new THREE.Mesh(geom, mat);
+    g.add(mesh);
+    addEdges(mesh, geom);
+
+    const bh0w = inch(B);
+    const bh1w = inch(Dtop);
+    pushCallout('A=' + A + '"', new THREE.Vector3(-rmid - li / 2, bh0w / 2 + 0.06, 0));
+    pushCallout('B=' + B + '"', new THREE.Vector3(-rmid - li, 0, 0.08));
+    pushCallout('C=' + Ctop + '"', new THREE.Vector3(SLw + rmid + lo / 2, bh1w / 2 + 0.06, 0));
+    pushCallout('D=' + Dtop + '"', new THREE.Vector3(SLw + rmid + lo, 0, 0.08));
+    pushCallout('H=' + Hoff + '"', new THREE.Vector3(SLw / 2, bh1w / 2 + 0.08, -rmid - 0.06));
+    pushCallout('E=' + offLen + '"', new THREE.Vector3(SLw / 2 + rmid, bh0w / 2 + 0.1, 0));
+    pushCallout('C1=S+D ' + A + '×' + B, new THREE.Vector3(-rmid - li - 0.06, 0, 0));
+    pushCallout('C2=S+D ' + Ctop + '×' + Dtop, new THREE.Vector3(SLw + rmid + lo + 0.06, 0, 0));
+    pushCallout('S1=SP', new THREE.Vector3(0, bh0w / 2 + 0.06, -rmid * 0.5));
+    return g;
+  }
+
+  function fitCenterObject3D(obj) {
+    const box = new THREE.Box3().setFromObject(obj);
+    const c = new THREE.Vector3();
+    box.getCenter(c);
+    obj.position.sub(c);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+    const r = Math.max(size.x, size.y, size.z) * 0.65 || 1;
+    orbit.target.set(0, 0, 0);
+    camera.position.set(r * 1.4, r * 0.9, r * 1.4);
+    camera.lookAt(0, 0, 0);
+    orbit.spherical.radius = camera.position.length();
+    orbit.spherical.theta = Math.atan2(camera.position.x, camera.position.z);
+    orbit.spherical.phi = Math.acos(THREE.MathUtils.clamp(camera.position.y / orbit.spherical.radius, -1, 1));
+  }
+
+  function SimpleOrbit(cam, dom) {
+    this.cam = cam;
+    this.dom = dom;
+    this.target = new THREE.Vector3();
+    this.spherical = new THREE.Spherical();
+    this.rotateSpeed = 1;
+    this.zoomSpeed = 1;
+    let dragging = false, lx = 0, ly = 0, pinchDist = 0;
+    const onDown = (x, y) => { dragging = true; lx = x; ly = y; };
+    const onMove = (x, y) => {
+      if (!dragging) return;
+      const dx = x - lx, dy = y - ly;
+      lx = x; ly = y;
+      this.spherical.theta -= dx * 0.005 * this.rotateSpeed;
+      this.spherical.phi -= dy * 0.005 * this.rotateSpeed;
+      this.spherical.phi = THREE.MathUtils.clamp(this.spherical.phi, 0.12, Math.PI - 0.12);
+      this.update();
+    };
+    const onUp = () => { dragging = false; };
+    const onWheel = (e) => {
+      e.preventDefault();
+      const d = e.deltaY * 0.001 * this.zoomSpeed;
+      this.spherical.radius *= 1 + d;
+      this.spherical.radius = THREE.MathUtils.clamp(this.spherical.radius, 0.4, 200);
+      this.update();
+    };
+    dom.addEventListener('mousedown', e => onDown(e.clientX, e.clientY));
+    window.addEventListener('mousemove', e => { if (e.buttons) onMove(e.clientX, e.clientY); });
+    window.addEventListener('mouseup', onUp);
+    dom.addEventListener('touchstart', e => {
+      if (e.touches.length === 1) onDown(e.touches[0].clientX, e.touches[0].clientY);
+      else if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        pinchDist = Math.hypot(dx, dy);
+      }
+    }, { passive: true });
+    dom.addEventListener('touchmove', e => {
+      if (e.touches.length === 1 && dragging) onMove(e.touches[0].clientX, e.touches[0].clientY);
+      else if (e.touches.length === 2 && pinchDist) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const d = Math.hypot(dx, dy);
+        const s = pinchDist / d;
+        pinchDist = d;
+        this.spherical.radius *= s;
+        this.spherical.radius = THREE.MathUtils.clamp(this.spherical.radius, 0.4, 200);
+        this.update();
+      }
+    }, { passive: true });
+    dom.addEventListener('touchend', () => { dragging = false; pinchDist = 0; });
+    dom.addEventListener('wheel', onWheel, { passive: false });
+    this.update = () => {
+      const p = new THREE.Vector3().setFromSpherical(this.spherical).add(this.target);
+      this.cam.position.copy(p);
+      this.cam.lookAt(this.target);
+    };
+  }
+
+  function initThree() {
+    const vp = document.getElementById('viewport');
+    const vw = Math.max(vp.clientWidth || 0, 320);
+    const vh = Math.max(vp.clientHeight || 0, Math.floor(window.innerHeight * 0.45));
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(BG);
+    camera = new THREE.PerspectiveCamera(45, vw / vh, 0.05, 500);
+    camera.rotation.order = 'YXZ';
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
+    } catch (err) {
+      vp.insertAdjacentHTML('afterbegin', '<div style="padding:20px;color:#f88;font-size:13px;">WebGL could not start. Try updating GPU drivers or use Chrome/Edge.</div>');
+      throw err;
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(vw, vh);
+    vp.insertBefore(renderer.domElement, vp.firstChild);
+    requestAnimationFrame(function () {
+      const w = Math.max(vp.clientWidth, 200);
+      const h = Math.max(vp.clientHeight, 200);
+      if (h < 100 || w < 100) return;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    });
+    amb = new THREE.AmbientLight(0xffffff, 0.5);
+    dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    dirLight.position.set(4, 8, 5);
+    fill = new THREE.DirectionalLight(0x8899ff, 0.3);
+    fill.position.set(-4, -2, -5);
+    scene.add(amb, dirLight, fill);
+    root = new THREE.Group();
+    scene.add(root);
+    orbit = new SimpleOrbit(camera, renderer.domElement);
+    orbit.spherical.radius = 3.2;
+    orbit.spherical.theta = 0.65;
+    orbit.spherical.phi = Math.PI / 2 - 0.3;
+    orbit.update();
+    window.addEventListener('resize', () => {
+      const w = Math.max(vp.clientWidth, 200);
+      const h = Math.max(vp.clientHeight, 200);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    });
+  }
+
+  function updateCallouts() {
+    const layer = document.getElementById('calloutLayer');
+    layer.innerHTML = '';
+    const rect = renderer.domElement.getBoundingClientRect();
+    const w = rect.width, h = rect.height;
+    state.callouts.forEach((co, idx) => {
+      const wp = co.v.clone();
+      if (state.fitGroup) state.fitGroup.localToWorld(wp);
+      wp.project(camera);
+      if (wp.z > 1) return;
+      const sx = (wp.x * 0.5 + 0.5) * w;
+      const sy = (-wp.y * 0.5 + 0.5) * h;
+      const ox = (idx % 3) * 70 - 70;
+      const oy = Math.floor(idx / 3) * 22 - 30;
+      const el = document.createElement('div');
+      el.className = 'callout';
+      el.style.left = (sx + ox) + 'px';
+      el.style.top = (sy + oy) + 'px';
+      const pill = document.createElement('div');
+      pill.className = 'pill';
+      pill.textContent = co.text;
+      el.appendChild(pill);
+      layer.appendChild(el);
+    });
+  }
+
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      const s = document.createElement('script');
+      s.src = src;
+      s.async = true;
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error('Failed to load ' + src)); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function rebuild() {
+    try {
+    state.callouts = [];
+    while (root.children.length) root.remove(root.children[0]);
+    const g = new THREE.Group();
+    let title = '';
+    if (state.fitting === 'straight') {
+      const A = +document.getElementById('sA').value || 24;
+      const B = +document.getElementById('sB').value || 12;
+      const C = +document.getElementById('sC').value || 48;
+      g.add(buildStraight(A, B, C));
+      title = 'Straight Duct';
+    } else if (state.fitting === 'transition') {
+      const A = +document.getElementById('tA').value || 24;
+      const B = +document.getElementById('tB').value || 12;
+      const C = +document.getElementById('tC').value || 18;
+      const D = +document.getElementById('tD').value || 10;
+      const E = +document.getElementById('tE').value || 18;
+      g.add(buildTransition(A, B, C, D, E));
+      title = 'Transition';
+    } else if (state.fitting === 'tee') {
+      const A = +document.getElementById('teeA').value || 24;
+      const B = +document.getElementById('teeB').value || 12;
+      const C = +document.getElementById('teeC').value || 48;
+      const D = +document.getElementById('teeD').value || 12;
+      const E = +document.getElementById('teeE').value || 12;
+      g.add(buildTee(A, B, C, D, E));
+      title = 'Tee Branch';
+    } else if (state.fitting === 'offset') {
+      const A = +document.getElementById('oA').value || 10;
+      const B = +document.getElementById('oB').value || 10;
+      const C = +document.getElementById('oC').value || 10;
+      const Dtp = +document.getElementById('oDtp').value || 10;
+      const EL = +document.getElementById('oEL').value || 32;
+      const Fb = +document.getElementById('oFb').value || 0;
+      const Gt = +document.getElementById('oGt').value || 0;
+      const Hoff = +document.getElementById('oH').value || 16;
+      g.add(buildOffset(A, B, C, Dtp, EL, Fb, Gt, Hoff));
+      title = 'Radius Offset';
+    } else {
+      const d = dimElbow();
+      g.add(buildElbow(d.A, d.B, d.C, d.D, d.E, d.F, d.G));
+      title = state.fitting === 'elbow45' ? 'Radius Elbow 45°' : 'Radius Elbow 90°';
+    }
+    root.add(g);
+    state.fitGroup = g;
+    document.getElementById('fitTitle').textContent = title;
+    fitCenterObject3D(g);
+    hideViewerError();
+    } catch (err) {
+      showViewerError('Could not build 3D model.', err && err.message ? err.message : String(err));
+      console.error(err);
+    }
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+    orbit.update();
+    renderer.render(scene, camera);
+    updateCallouts();
+  }
+
+  function dimElbow() {
+    const v = state.elbowVariant;
+    let G = +document.getElementById('eG').value || 36;
+    const A = +document.getElementById('eA').value || 24;
+    if (v === 'lr') G = A * 1.5;
+    if (v === 'sr') G = A * 0.5;
+    document.getElementById('eG').value = G;
+    let D = +document.getElementById('eD').value || 90;
+    if (state.fitting === 'elbow90' && v !== 'vdeg') {
+      D = 90;
+      document.getElementById('eD').value = D;
+    }
+    if (state.fitting === 'elbow45' && v !== 'vdeg') {
+      D = 45;
+      document.getElementById('eD').value = D;
+    }
+    const cEq = document.getElementById('eCeq').value === 'equal';
+    document.getElementById('eC').disabled = cEq;
+    if (cEq) document.getElementById('eC').value = A;
+    const B = +document.getElementById('eB').value || 12;
+    const C = +document.getElementById('eC').value || A;
+    const E = +document.getElementById('eE').value || 1;
+    const F = +document.getElementById('eF').value || 1;
+    return { A, B, C, D, E, F, G };
+  }
+
+  let leftInputsBound = false;
+
+  function wireUI() {
+    document.getElementById('dims-elbow').innerHTML =
+      '<label>A) Top Width</label><input type="number" id="eA" value="24" step="0.125" />' +
+      '<label>B) Depth</label><input type="number" id="eB" value="12" step="0.125" />' +
+      '<label>C) Btm Width</label><select id="eCeq"><option value="equal" selected>Equal (A)</option><option value="custom">Custom</option></select>' +
+      '<input type="number" id="eC" value="24" step="0.125" disabled />' +
+      '<label>D) Angle (°)</label><input type="number" id="eD" value="90" step="1" />' +
+      '<label>E) Top Extension</label><input type="number" id="eE" value="1" step="0.125" />' +
+      '<label>F) Bottom Extension</label><input type="number" id="eF" value="1" step="0.125" />' +
+      '<label>G) Inner Radius</label><input type="number" id="eG" value="36" step="0.125" />';
+    document.getElementById('dims-offset').innerHTML =
+      '<label>A) Btm Width</label><input type="number" id="oA" value="10" step="0.125" />' +
+      '<label>B) Btm Depth</label><input type="number" id="oB" value="10" step="0.125" />' +
+      '<label>C) Top Width</label><input type="number" id="oC" value="10" step="0.125" />' +
+      '<label>D) Top Depth</label><input type="number" id="oDtp" value="10" step="0.125" />' +
+      '<label>E) Length</label><input type="number" id="oEL" value="32" step="0.125" />' +
+      '<label>F) Btm Straight</label><input type="number" id="oFb" value="0" step="0.125" />' +
+      '<label>G) Top Straight</label><input type="number" id="oGt" value="0" step="0.125" />' +
+      '<label>H) Left In (offset)</label><input type="number" id="oH" value="16" step="0.125" />' +
+      '<p style="font-size:10px;color:#6a8299;margin:8px 0 0">R = H÷2, middle straight = E−F−G−H (Fabrication-style).</p>';
+    document.getElementById('dims-straight').innerHTML =
+      '<label>A) Width</label><input type="number" id="sA" value="24" step="0.125" />' +
+      '<label>B) Depth</label><input type="number" id="sB" value="12" step="0.125" />' +
+      '<label>C) Length</label><input type="number" id="sC" value="48" step="0.125" />';
+    document.getElementById('dims-transition').innerHTML =
+      '<label>A) Btm Width</label><input type="number" id="tA" value="24" step="0.125" />' +
+      '<label>B) Btm Depth</label><input type="number" id="tB" value="12" step="0.125" />' +
+      '<label>C) Top Width</label><input type="number" id="tC" value="18" step="0.125" />' +
+      '<label>D) Top Depth</label><input type="number" id="tD" value="10" step="0.125" />' +
+      '<label>E) Length</label><input type="number" id="tE" value="18" step="0.125" />';
+    document.getElementById('dims-tee').innerHTML =
+      '<label>A) Btm Width</label><input type="number" id="teeA" value="24" step="0.125" />' +
+      '<label>B) Depth</label><input type="number" id="teeB" value="12" step="0.125" />' +
+      '<label>C) Length</label><input type="number" id="teeC" value="48" step="0.125" />' +
+      '<label>D) Branch Width</label><input type="number" id="teeD" value="12" step="0.125" />' +
+      '<label>E) Branch Depth</label><input type="number" id="teeE" value="12" step="0.125" />';
+
+    const pallet = document.getElementById('pallet');
+    const tiles = [
+      { id: 'elbow90', label: 'Elbow 90°', svg: '<svg viewBox="0 0 24 24"><path fill="#12b4c6" d="M4 18V8h6q3 0 5-2t2-5h3v7q0 4-3 7t-7 3H4z"/><rect fill="#d2af0a" x="2" y="6" width="4" height="6"/></svg>' },
+      { id: 'elbow45', label: 'Elbow 45°', svg: '<svg viewBox="0 0 24 24"><path fill="#12b4c6" d="M5 19V9h5l8-8v5l-6 6v7H5z"/><rect fill="#d2af0a" x="3" y="7" width="4" height="5"/></svg>' },
+      { id: 'offset', label: 'Radius Offset', svg: '<svg viewBox="0 0 24 24"><path fill="none" stroke="#12b4c6" stroke-width="2" d="M3 12h6q4 0 4 4v4M9 12v-4q0-4 4-4h8"/></svg>' },
+      { id: 'straight', label: 'Straight', svg: '<svg viewBox="0 0 24 24"><rect fill="#12b4c6" x="4" y="8" width="16" height="8"/><rect fill="#d2af0a" x="3" y="9" width="2" height="6"/><rect fill="#d2af0a" x="19" y="9" width="2" height="6"/></svg>' },
+      { id: 'transition', label: 'Transition', svg: '<svg viewBox="0 0 24 24"><path fill="#12b4c6" d="M7 20V6l10-2v16L7 20z"/><rect fill="#d2af0a" x="6" y="4" width="4" height="3"/><rect fill="#d2af0a" x="6" y="17" width="4" height="3"/></svg>' },
+      { id: 'tee', label: 'Tee', svg: '<svg viewBox="0 0 24 24"><rect fill="#12b4c6" x="3" y="9" width="14" height="6"/><rect fill="#12b4c6" x="17" y="5" width="4" height="8"/><rect fill="#d2af0a" x="1" y="10" width="2" height="4"/><rect fill="#d2af0a" x="15" y="10" width="2" height="4"/><rect fill="#d2af0a" x="19" y="3" width="2" height="2"/></svg>' }
+    ];
+    tiles.forEach(t => {
+      const d = document.createElement('div');
+      d.className = 'tile' + (state.fitting === t.id ? ' active' : '');
+      d.dataset.fitId = t.id;
+      d.title = t.label;
+      d.innerHTML = t.svg;
+      d.onclick = () => {
+        state.fitting = t.id;
+        pallet.querySelectorAll('.tile').forEach(x => x.classList.toggle('active', x.dataset.fitId === state.fitting));
+        showPanels();
+        if (state.fitting === 'elbow90' || state.fitting === 'elbow45') dimElbow();
+        rebuild();
+      };
+      pallet.appendChild(d);
+    });
+
+    const ev = document.getElementById('elbow-variants');
+    const vars = [
+      { id: 'lr', t: 'LR 1.5× RAD' }, { id: 'sr', t: 'SR ½ Width' },
+      { id: 'vth', t: 'Var. Throat' }, { id: 'vdeg', t: 'Var. Degree' }
+    ];
+    ev.innerHTML = '';
+    vars.forEach(x => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pill-tab' + (state.elbowVariant === x.id ? ' on' : '');
+      b.textContent = x.t;
+      b.onclick = () => { state.elbowVariant = x.id; refreshVariants(); dimElbow(); rebuild(); };
+      ev.appendChild(b);
+    });
+
+    if (!leftInputsBound) {
+      leftInputsBound = true;
+      document.querySelector('.left').addEventListener('input', e => {
+        const t = e.target;
+        if (!t.matches('input,select,textarea')) return;
+        if (t.id && t.id.startsWith('e') && (state.fitting === 'elbow90' || state.fitting === 'elbow45')) dimElbow();
+        rebuild();
+      });
+      document.querySelector('.left').addEventListener('change', e => {
+        const t = e.target;
+        if (!t.matches('input,select,textarea')) return;
+        if (t.id && t.id.startsWith('e') && (state.fitting === 'elbow90' || state.fitting === 'elbow45')) dimElbow();
+        rebuild();
+      });
+      document.getElementById('addBtn').onclick = addToList;
+      document.getElementById('copyBtn').onclick = copyList;
+      document.getElementById('pdfBtn').onclick = exportPdf;
+      document.getElementById('photo').onchange = onPhoto;
+    }
+  }
+
+  function refreshVariants() {
+    const ev = document.getElementById('elbow-variants');
+    [...ev.children].forEach((c, i) => {
+      const ids = ['lr', 'sr', 'vth', 'vdeg'];
+      c.classList.toggle('on', ids[i] === state.elbowVariant);
+    });
+  }
+
+  function showPanels() {
+    const elbowish = state.fitting === 'elbow90' || state.fitting === 'elbow45';
+    document.getElementById('elbow-variants').style.display = elbowish ? 'flex' : 'none';
+    document.querySelectorAll('.dim-panel').forEach(p => p.classList.remove('show'));
+    if (elbowish) document.getElementById('dims-elbow').classList.add('show');
+    else if (state.fitting === 'offset') document.getElementById('dims-offset').classList.add('show');
+    else if (state.fitting === 'straight') document.getElementById('dims-straight').classList.add('show');
+    else if (state.fitting === 'transition') document.getElementById('dims-transition').classList.add('show');
+    else if (state.fitting === 'tee') document.getElementById('dims-tee').classList.add('show');
+  }
+
+  function snapDims() {
+    if (state.fitting === 'elbow90' || state.fitting === 'elbow45') {
+      const d = dimElbow();
+      return { fitting: state.fitting, variant: state.elbowVariant, ...d };
+    }
+    if (state.fitting === 'offset') {
+      return {
+        fitting: 'offset',
+        A: +document.getElementById('oA').value,
+        B: +document.getElementById('oB').value,
+        C: +document.getElementById('oC').value,
+        D: +document.getElementById('oDtp').value,
+        E: +document.getElementById('oEL').value,
+        F: +document.getElementById('oFb').value,
+        G: +document.getElementById('oGt').value,
+        H: +document.getElementById('oH').value
+      };
+    }
+    if (state.fitting === 'straight') {
+      return { fitting: 'straight', A: +document.getElementById('sA').value, B: +document.getElementById('sB').value, C: +document.getElementById('sC').value };
+    }
+    if (state.fitting === 'transition') {
+      return {
+        fitting: 'transition',
+        A: +document.getElementById('tA').value, B: +document.getElementById('tB').value,
+        C: +document.getElementById('tC').value, D: +document.getElementById('tD').value,
+        E: +document.getElementById('tE').value
+      };
+    }
+    return {
+      fitting: 'tee',
+      A: +document.getElementById('teeA').value, B: +document.getElementById('teeB').value,
+      C: +document.getElementById('teeC').value, D: +document.getElementById('teeD').value,
+      E: +document.getElementById('teeE').value
+    };
+  }
+
+  function addToList() {
+    const item = {
+      name: document.getElementById('fitTitle').textContent,
+      dims: snapDims(),
+      qty: +document.getElementById('qty').value || 1,
+      notes: document.getElementById('notes').value.trim(),
+      photo: state.jobPhotoData
+    };
+    state.list.push(item);
+    state.jobPhotoData = null;
+    document.getElementById('photo').value = '';
+    renderList();
+  }
+
+  function renderList() {
+    const el = document.getElementById('list');
+    el.innerHTML = state.list.map((it, i) =>
+      '<div class="list-item"><strong>' + (i + 1) + '.</strong> ' + it.name + ' ×' + it.qty +
+      '<br/><span style="color:#8fa6bc">' + JSON.stringify(it.dims) + '</span>' +
+      (it.notes ? '<br/>' + it.notes : '') +
+      (it.photo ? '<br/><img src="' + it.photo + '" style="max-width:100%;margin-top:4px"/>' : '') +
+      '</div>'
+    ).join('');
+  }
+
+  function copyList() {
+    const t = state.list.map((it, i) => (i + 1) + '. ' + it.name + ' qty ' + it.qty + ' ' + JSON.stringify(it.dims) + (it.notes ? ' — ' + it.notes : '')).join('\n');
+    navigator.clipboard.writeText(t);
+  }
+
+  function onPhoto(e) {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => { state.jobPhotoData = r.result; };
+    r.readAsDataURL(f);
+  }
+
+  function exportPdf() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+    let y = 48;
+    doc.setFontSize(14);
+    doc.text('HVAC Takeoff — Zinger Systems', 48, y); y += 22;
+    doc.setFontSize(10);
+    doc.text('Job: ' + (document.getElementById('jobName').value || '—'), 48, y); y += 14;
+    doc.text('Tech: ' + (document.getElementById('jobTech').value || '—') + '   Zone: ' + (document.getElementById('jobZone').value || '—'), 48, y); y += 14;
+    doc.text('Date: ' + (document.getElementById('jobDate').value || '—'), 48, y); y += 20;
+    state.list.forEach((it, i) => {
+      doc.text((i + 1) + '. ' + it.name + '  ×' + it.qty, 48, y); y += 12;
+      doc.text(JSON.stringify(it.dims), 56, y); y += 12;
+      if (it.notes) { doc.text(it.notes, 56, y); y += 12; }
+      if (it.photo) {
+        try {
+          const fmt = it.photo.indexOf('image/png') >= 0 ? 'PNG' : 'JPEG';
+          doc.addImage(it.photo, fmt, 56, y, 220, 132);
+          y += 140;
+        } catch (err) { doc.text('(photo attached)', 56, y); y += 14; }
+      }
+      y += 6;
+      if (y > 720) { doc.addPage(); y = 48; }
+    });
+    doc.save('hvac_takeoff.pdf');
+  }
+
+  function showViewerError(msg, detail) {
+    const el = document.getElementById('viewer-error');
+    if (!el) return;
+    el.style.display = 'block';
+    el.textContent = msg + (detail ? '\n\n' + detail : '');
+  }
+
+  function hideViewerError() {
+    const el = document.getElementById('viewer-error');
+    if (el) el.style.display = 'none';
+  }
+
+  async function boot() {
+    hideViewerError();
+    try {
+      if (typeof THREE === 'undefined') {
+        try {
+          await loadScript('https://unpkg.com/three@0.128.0/build/three.min.js');
+        } catch (e1) {
+          try {
+            await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js');
+          } catch (e2) {}
+        }
+      }
+      if (typeof THREE === 'undefined') {
+        showViewerError('3D library (Three.js) did not load.', 'You need an internet connection for the first run, or allow scripts from cdnjs / unpkg / jsdelivr. Opening via file:// sometimes blocks scripts — try “Live Server” in VS Code or drag the file into Chrome.');
+        return;
+      }
+      initThree();
+      wireUI();
+      showPanels();
+      const jd = document.getElementById('jobDate');
+      if (jd && !jd.value) {
+        try { jd.valueAsDate = new Date(); } catch (ignore) {}
+      }
+      dimElbow();
+      rebuild();
+      animate();
+    } catch (err) {
+      showViewerError('Viewer failed to start: ' + (err && err.message ? err.message : String(err)), err && err.stack ? err.stack : '');
+      console.error(err);
+    }
+  }
+
+  function bootWhenReady() {
+    window.addEventListener('load', function () {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          boot();
+        });
+      });
+    });
+  }
+
+  bootWhenReady();
+})();
+</script>
+</body>
+</html>

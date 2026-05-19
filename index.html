@@ -94,6 +94,27 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .sheet-btm{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #eee;flex-shrink:0}
 .sheet-btm button{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:#fff}
 .sheet-btm .bp{background:var(--teal);color:#fff;border-color:var(--teal)}
+/* ── SEND MODAL ── */
+#sendModal{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:60;display:none;align-items:flex-end}
+#sendModal.open{display:flex}
+#sendSheet{background:#fff;border-top-left-radius:20px;border-top-right-radius:20px;width:100%;max-height:90vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+.send-body{overflow-y:auto;flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:12px}
+.send-field{display:flex;flex-direction:column;gap:4px}
+.send-field label{font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.04em}
+.send-field input{padding:9px 10px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;outline:none}
+.send-field input:focus{border-color:var(--teal)}
+.photo-attach-area{border:2px dashed var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;color:var(--sub);font-size:13px;position:relative;transition:border-color .15s}
+.photo-attach-area.has-photo{border-color:var(--teal);background:rgba(43,168,126,.05)}
+.photo-attach-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.photo-thumb-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.photo-thumb{width:72px;height:72px;object-fit:cover;border-radius:8px;border:1.5px solid var(--border)}
+.photo-rm{position:relative;display:inline-block}
+.photo-rm-btn{position:absolute;top:-5px;right:-5px;background:#c22;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.send-actions{display:flex;gap:8px;padding:10px 14px;border-top:1px solid #eee;flex-shrink:0}
+.send-actions button{flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:#fff}
+.send-actions .send-btn{background:var(--teal);color:#fff;border-color:var(--teal)}
+.send-actions .send-btn:active{background:var(--teal-dk)}
+.attach-list-btn{background:var(--teal);color:#fff;border:none;border-radius:9px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -102,6 +123,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 <div class="screen" id="palletScreen">
   <div class="hdr">
     <h1>Brookstone Industries</h1>
+    <button class="attach-list-btn" onclick="openSend()">📤 Send</button>
     <button class="list-btn" onclick="openList()">📋 List <span class="list-count" id="lCount">0</span></button>
   </div>
   <div class="job-bar">
@@ -153,7 +175,45 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     <div class="list-scroll" id="listArea"></div>
     <div class="sheet-btm">
       <button onclick="copyList()">📋 Copy</button>
-      <button class="bp" onclick="exportPDF()">⬇ Export PDF</button>
+      <button onclick="exportPDF()">⬇ PDF</button>
+      <button class="bp" onclick="openSend()">📤 Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SEND MODAL ══ -->
+<div id="sendModal" onclick="closeSendIfBg(event)">
+  <div id="sendSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr">
+      <h2>📤 Send to Brookstone</h2>
+      <button class="close-btn" onclick="closeSend()">×</button>
+    </div>
+    <div class="send-body">
+      <div class="send-field">
+        <label>To</label>
+        <input value="sales@brookstoneind.com" readonly style="color:#888;background:#f8f8f8">
+      </div>
+      <div class="send-field">
+        <label>CC (optional)</label>
+        <input id="sendCC" type="email" placeholder="your@email.com">
+      </div>
+      <div class="send-field">
+        <label>Message (optional)</label>
+        <input id="sendMsg" placeholder="Any special instructions…">
+      </div>
+      <div class="send-field">
+        <label>Attach handwritten list (optional)</label>
+        <div class="photo-attach-area" id="photoArea">
+          <input type="file" accept="image/*" multiple onchange="handlePhotos(this)">
+          <div id="photoPrompt">📷 Tap to attach photo(s) of handwritten list</div>
+          <div class="photo-thumb-row" id="photoThumbs"></div>
+        </div>
+      </div>
+    </div>
+    <div class="send-actions">
+      <button onclick="closeSend()">Cancel</button>
+      <button class="send-btn" onclick="doSend()">Send ✉</button>
     </div>
   </div>
 </div>
@@ -1011,8 +1071,7 @@ function goToDetail(id){
 function goBack(){
   editingIndex = -1;
   if(btnResetTimer){ clearTimeout(btnResetTimer); btnResetTimer = null; }
-  const btn = document.getElementById('btnAdd');
-  btn.textContent = '+ Add to List'; btn.style.background = 'var(--teal)';
+  syncBtn();
   document.getElementById('palletScreen').classList.remove('slide-out');
   document.getElementById('detailScreen').classList.remove('slide-in');
 }
@@ -1082,6 +1141,19 @@ function selFit(id){
   });
 
   autoG(); redraw();
+  syncBtn();
+}
+
+function syncBtn(){
+  const btn = document.getElementById('btnAdd');
+  if(!btn) return;
+  if(editingIndex >= 0){
+    btn.textContent = '💾 Save Changes';
+    btn.style.background = '#e07b00';
+  } else {
+    btn.textContent = '+ Add to List';
+    btn.style.background = 'var(--teal)';
+  }
 }
 
 // ── ADD ITEM ──────────────────────────────────────────────────────────
@@ -1146,13 +1218,7 @@ function editItem(i){
     document.getElementById('iQty').value = it.qty;
     document.getElementById('iNotes').value = it.notes || '';
     redraw();
-    // Use double rAF to ensure button is set after all rendering/layout settles
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      if(btnResetTimer){ clearTimeout(btnResetTimer); btnResetTimer = null; }
-      const btn = document.getElementById('btnAdd');
-      btn.textContent = '💾 Save Changes';
-      btn.style.background = '#e07b00';
-    }));
+    syncBtn();
   });
 }
 
@@ -1219,6 +1285,134 @@ function exportPDF(){
   y+=6;doc.setFont('helvetica','bold');doc.text(`Total: ${listItems.length} items`,40,y);
   doc.save(`takeoff_${j('jName').replace(/\s+/g,'_')||'job'}_${new Date().toISOString().slice(0,10)}.pdf`);
 }
+
+
+// ── SEND MODAL ────────────────────────────────────────────────────────
+let attachedPhotos = []; // [{name, dataUrl}]
+
+function openSend(){
+  closeList();
+  document.getElementById('sendModal').classList.add('open');
+}
+function closeSend(){ document.getElementById('sendModal').classList.remove('open'); }
+function closeSendIfBg(e){ if(e.target===document.getElementById('sendModal')) closeSend(); }
+
+function handlePhotos(input){
+  const files = Array.from(input.files);
+  const thumbRow = document.getElementById('photoThumbs');
+  const prompt = document.getElementById('photoPrompt');
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      attachedPhotos.push({name: file.name, dataUrl: e.target.result});
+      renderPhotoThumbs();
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('photoArea').classList.add('has-photo');
+  prompt.style.display = 'none';
+}
+
+function removePhoto(i){
+  attachedPhotos.splice(i, 1);
+  if(!attachedPhotos.length){
+    document.getElementById('photoArea').classList.remove('has-photo');
+    document.getElementById('photoPrompt').style.display = '';
+  }
+  renderPhotoThumbs();
+}
+
+function renderPhotoThumbs(){
+  const row = document.getElementById('photoThumbs');
+  row.innerHTML = attachedPhotos.map((p,i) => `
+    <div class="photo-rm">
+      <img class="photo-thumb" src="${p.dataUrl}" alt="photo ${i+1}">
+      <button class="photo-rm-btn" onclick="removePhoto(${i})">×</button>
+    </div>`).join('');
+}
+
+function buildHTMLReport(){
+  // Build a self-contained HTML file with all renderings, dims, and job info
+  const j = n => document.getElementById(n)?.value || '';
+  let rows = listItems.map((it,i) => {
+    const dimStr = Object.entries(it.d)
+      .map(([k,v]) => `<span style="margin-right:6px"><b>${k}:</b> ${v}"</span>`)
+      .join('');
+    const thumb = it.thumb
+      ? `<img src="${it.thumb}" style="width:80px;height:80px;object-fit:cover;border-radius:6px;background:#1c2b3a">`
+      : '<div style="width:80px;height:80px;background:#eee;border-radius:6px"></div>';
+    return `<tr style="border-bottom:1px solid #eee">
+      <td style="padding:10px 8px;color:#888;font-size:13px">${i+1}</td>
+      <td style="padding:10px 8px">${thumb}</td>
+      <td style="padding:10px 8px"><b style="font-size:14px">${it.qty}× ${it.n}</b><br><span style="font-size:12px;color:#666">${dimStr}</span>${it.notes?`<br><span style="font-size:11px;color:#999">📝 ${it.notes}</span>`:''}</td>
+    </tr>`;
+  }).join('');
+
+  const photoSection = attachedPhotos.length
+    ? `<h3 style="margin:24px 0 10px;color:#333">Handwritten List</h3>
+       <div style="display:flex;flex-wrap:wrap;gap:10px">
+         ${attachedPhotos.map(p=>`<img src="${p.dataUrl}" style="max-width:320px;border-radius:8px;border:1px solid #ddd">`).join('')}
+       </div>` : '';
+
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <title>HVAC Takeoff — ${j('jName')}</title>
+    <style>body{font-family:-apple-system,sans-serif;max-width:800px;margin:0 auto;padding:20px;color:#222}
+    table{width:100%;border-collapse:collapse}th{text-align:left;padding:8px;background:#f5f5f5;font-size:12px;text-transform:uppercase;color:#888}
+    </style></head><body>
+    <div style="background:#2BA87E;color:#fff;padding:16px 20px;border-radius:10px;margin-bottom:20px">
+      <h1 style="margin:0;font-size:20px">HVAC Field Takeoff</h1>
+      <p style="margin:4px 0 0;opacity:.85;font-size:13px">Brookstone Industries</p>
+    </div>
+    <table style="width:100%;font-size:13px;margin-bottom:12px">
+      <tr><td><b>Job:</b> ${j('jName')}</td><td><b>Tech:</b> ${j('jTech')}</td></tr>
+      <tr><td><b>Date:</b> ${j('jDate')}</td><td><b>Zone:</b> ${j('jZone')}</td></tr>
+    </table>
+    <table><thead><tr><th>#</th><th>View</th><th>Item</th></tr></thead>
+    <tbody>${rows}</tbody></table>
+    <p style="margin-top:16px;color:#888;font-size:12px">Total: ${listItems.length} items</p>
+    ${photoSection}
+    </body></html>`;
+}
+
+function doSend(){
+  if(!listItems.length && !attachedPhotos.length){
+    alert('Add some items or attach a photo first.');
+    return;
+  }
+  const jv = function(n){ var el=document.getElementById(n); return el?el.value:''; };
+  const cc = document.getElementById('sendCC').value.trim();
+  const msg = document.getElementById('sendMsg').value.trim();
+  const jobName = jv('jName') || 'Takeoff';
+
+  const htmlReport = buildHTMLReport();
+  const blob = new Blob([htmlReport], {type:'text/html'});
+  const reportUrl = URL.createObjectURL(blob);
+
+  let mailto = 'mailto:sales@brookstoneind.com';
+  const params = [];
+  if(cc) params.push('cc=' + encodeURIComponent(cc));
+  params.push('subject=' + encodeURIComponent('HVAC Takeoff \u2014 ' + jobName + ' \u2014 ' + jv('jTech')));
+  let body = 'Hi Brookstone team,\n\nPlease find the attached HVAC takeoff list.\n\n';
+  body += 'Job: ' + jobName + '\n';
+  body += 'Tech: ' + jv('jTech') + '\n';
+  body += 'Date: ' + jv('jDate') + '\n';
+  body += 'Zone: ' + jv('jZone') + '\n';
+  body += 'Items: ' + listItems.length + '\n';
+  if(msg) body += 'Notes: ' + msg + '\n';
+  body += '\nList:\n' + listItems.map(function(it,i){ return (i+1)+'. '+it.qty+'x '+it.n; }).join('\n');
+  body += '\n\n(Full rendered list attached as HTML file)';
+  params.push('body=' + encodeURIComponent(body));
+  if(params.length) mailto += '?' + params.join('&');
+
+  const a = document.createElement('a');
+  a.href = reportUrl;
+  a.download = 'takeoff_' + jobName.replace(/\s+/g,'_') + '_' + (jv('jDate')||'today') + '.html';
+  a.click();
+
+  setTimeout(function(){ window.location.href = mailto; closeSend(); }, 800);
+  setTimeout(function(){ alert('Your takeoff report downloaded.\n\nAttach it to the email that just opened.'); }, 1400);
+}
+
 
 // ── TOUCH CONTROLS ─────────────────────────────────────────────────────
 let pinchDist=null;

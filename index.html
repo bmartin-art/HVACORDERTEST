@@ -150,7 +150,6 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
   </div>
   <div class="vp-wrap" id="vp">
     <canvas id="cv3d"></canvas>
-    <canvas id="lv" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"></canvas>
     <div class="vp-name" id="vpLabel"></div>
     <div class="vp-hint">drag to rotate · pinch to zoom</div>
   </div>
@@ -281,6 +280,16 @@ function initGL(){
   gl.linkProgram(prog);
   gl.useProgram(prog);
   uMVP=gl.getUniformLocation(prog,'mvp');
+  // Create label overlay canvas dynamically, sized to match cv
+  const existingLv = document.getElementById('lv');
+  if(!existingLv){
+    const newLv = document.createElement('canvas');
+    newLv.id = 'lv';
+    newLv.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none';
+    newLv.width = cv.width;
+    newLv.height = cv.height;
+    cv.parentNode.insertBefore(newLv, cv.nextSibling);
+  }
   return true;
 }
 
@@ -333,13 +342,14 @@ function uploadGeom(pos){
   camR=Math.max(x1-x0,y1-y0,z1-z0)*1.85;
   window.geoBB={x0,x1,y0,y1,z0,z1,cx:(x0+x1)/2,cy:(y0+y1)/2,cz:(z0+z1)/2};
   rX=0.35;rY=0.62;
-  document.getElementById('vpEmpty').style.display='none';
+  const vpE=document.getElementById('vpEmpty'); if(vpE) vpE.style.display='none';
 }
 
 
 // ── LABEL OVERLAY ───────────────────────────────────────
-const lv=document.getElementById('lv');
-const lctx=lv.getContext('2d');
+// lv canvas is created dynamically in initGL
+const getLv=()=>document.getElementById('lv');
+const getLctx=()=>{ const c=getLv(); return c?c.getContext('2d'):null; };
 let curLabels=[];
 
 function project3D(x,y,z,mvp,w,h){
@@ -351,51 +361,82 @@ function project3D(x,y,z,mvp,w,h){
 }
 
 function drawLabels(){
-  lv.width=cv.offsetWidth||cv.clientWidth;
-  lv.height=cv.offsetHeight||cv.clientHeight;
+  const lv=getLv(); const lctx=getLctx();
+  if(!lv||!lctx) return;
+  if(lv.width!==cv.width||lv.height!==cv.height){
+    lv.width=cv.width; lv.height=cv.height;
+    lv.style.width=cv.width+'px'; lv.style.height=cv.height+'px';
+  }
   lctx.clearRect(0,0,lv.width,lv.height);
-  if(!curLabels.length||!glBuf)return;
+  if(!curLabels.length||!glBuf) return;
   const[ex,ey,ez]=eyePos();
   const mvp=m4mul(persp(0.733,lv.width/lv.height,camR*.001,camR*100),lookAt(ex,ey,ez,...camTgt));
 
   curLabels.forEach(lb=>{
-    // lb.anchor = 3D point on the fitting surface
-    // lb.label  = 3D point where the label box sits (further out)
-    const pa=project3D(lb.ax,lb.ay,lb.az,mvp,lv.width,lv.height);
+    const col = lb.color||'rgba(255,220,80,0.9)';
     const pl=project3D(lb.lx,lb.ly,lb.lz,mvp,lv.width,lv.height);
-    if(!pa||!pl)return;
+    if(!pl) return;
 
-    // Draw dimension line from anchor to label
-    lctx.strokeStyle='rgba(255,220,80,0.85)';
-    lctx.lineWidth=1.5;
-    lctx.setLineDash([4,3]);
-    lctx.beginPath();
-    lctx.moveTo(pa[0],pa[1]);
-    lctx.lineTo(pl[0],pl[1]);
-    lctx.stroke();
-    lctx.setLineDash([]);
+    // Legacy L format: just a dot + dashed leader + label
+    if(lb.ax!==undefined){
+      const pa=project3D(lb.ax,lb.ay,lb.az,mvp,lv.width,lv.height);
+      if(!pa) return;
+      lctx.strokeStyle=col; lctx.lineWidth=1; lctx.setLineDash([3,3]);
+      lctx.beginPath(); lctx.moveTo(pa[0],pa[1]); lctx.lineTo(pl[0],pl[1]); lctx.stroke();
+      lctx.setLineDash([]);
+      lctx.fillStyle=col; lctx.beginPath(); lctx.arc(pa[0],pa[1],3,0,Math.PI*2); lctx.fill();
+      lctx.font='bold 11px sans-serif'; lctx.textAlign='center';
+      const tw=lctx.measureText(lb.text).width;
+      lctx.fillStyle='rgba(10,25,45,0.85)'; lctx.strokeStyle=col; lctx.lineWidth=1;
+      lctx.beginPath(); lctx.roundRect(pl[0]-tw/2-4,pl[1]-9,tw+8,17,3); lctx.fill(); lctx.stroke();
+      lctx.fillStyle=col; lctx.fillText(lb.text,pl[0],pl[1]+3);
+      return;
+    }
 
-    // Small dot at anchor point
-    lctx.fillStyle='rgba(255,220,80,0.9)';
-    lctx.beginPath();
-    lctx.arc(pa[0],pa[1],3,0,Math.PI*2);
-    lctx.fill();
+    // DL format: full dimension line (or PT if p1===p2)
+    const p1=project3D(lb.x1,lb.y1,lb.z1,mvp,lv.width,lv.height);
+    const p2=project3D(lb.x2,lb.y2,lb.z2,mvp,lv.width,lv.height);
+    if(!p1||!p2) return;
 
-    // Label box at label point
-    lctx.font='bold 12px sans-serif';
-    lctx.textAlign='left';
+    const isPoint = Math.abs(p1[0]-p2[0])<1 && Math.abs(p1[1]-p2[1])<1;
+
+    if(!isPoint){
+      const tickLen = 6;
+      lctx.strokeStyle=col; lctx.lineWidth=2; lctx.setLineDash([]);
+      lctx.beginPath(); lctx.moveTo(p1[0],p1[1]); lctx.lineTo(p2[0],p2[1]); lctx.stroke();
+      const ang=Math.atan2(p2[1]-p1[1],p2[0]-p1[0]);
+      const perp=ang+Math.PI/2;
+      [[p1[0],p1[1]],[p2[0],p2[1]]].forEach(([px,py])=>{
+        lctx.beginPath();
+        lctx.moveTo(px+Math.cos(perp)*tickLen, py+Math.sin(perp)*tickLen);
+        lctx.lineTo(px-Math.cos(perp)*tickLen, py-Math.sin(perp)*tickLen);
+        lctx.stroke();
+      });
+      const mx=(p1[0]+p2[0])/2, my=(p1[1]+p2[1])/2;
+      lctx.strokeStyle=col; lctx.lineWidth=1; lctx.setLineDash([3,3]);
+      lctx.beginPath(); lctx.moveTo(mx,my); lctx.lineTo(pl[0],pl[1]); lctx.stroke();
+      lctx.setLineDash([]);
+    }
+
+    // Label box — clamp to canvas bounds
+    lctx.font='bold 11px sans-serif';
+    lctx.textAlign='center';
     const text=lb.text;
     const tw=lctx.measureText(text).width;
-    const bx=pl[0]+4, by=pl[1]-8;
-    lctx.fillStyle='rgba(10,25,45,0.82)';
-    lctx.strokeStyle='rgba(255,220,80,0.6)';
+    const boxW=tw+8, boxH=17;
+    // Clamp label position so it stays visible
+    const clampX=Math.max(boxW/2+4, Math.min(lv.width-boxW/2-4, pl[0]));
+    const clampY=Math.max(boxH+4, Math.min(lv.height-4, pl[1]));
+    const bx=clampX-boxW/2, by=clampY-boxH;
+    lctx.fillStyle='rgba(10,25,45,0.85)';
+    lctx.strokeStyle=col;
     lctx.lineWidth=1;
     lctx.beginPath();
-    lctx.roundRect(bx-3,by-2,tw+8,18,3);
+    lctx.roundRect(bx,by,boxW,boxH,3);
     lctx.fill();
     lctx.stroke();
-    lctx.fillStyle='#ffe04a';
-    lctx.fillText(text,bx+1,by+12);
+    lctx.fillStyle=col;
+    lctx.fillText(text,clampX,clampY-3);
   });
 }
 // ────────────────────────────────────────────────────────
@@ -952,7 +993,6 @@ function buildFitting(id,variant,dv){
   }
   else if(id==='rd'){
     v=obox(-as/2,as/2,-bs/2,bs/2,-.01,.01,[]);
-    qd(v,[as/2,bs/2,.01],[as/2+1.5*S,bs/2,.01],[as/2+1.5*S,-bs/2,.01],[as/2,-bs/2,.01]);
   }
   else{
     v=obox(-as/2,as/2,-bs/2,bs/2,-.5*S,.5*S,[]);
@@ -1009,81 +1049,319 @@ function getFittingLabels(id,variant,dv){
   const S=1/12;
   const bb=window.geoBB;
   if(!bb) return [];
-  const {x0,x1,y0,y1,z0,z1,cx,cy,cz}=bb;
-  const pad=camR*0.08; // label standoff = 8% of camera distance
-  const L=(text,ax,ay,az,lx,ly,lz)=>({text,ax,ay,az,lx,ly,lz});
-
-  // Helper: place label at a face of the bounding box
-  // face: 'right','left','top','bot','front','back'
-  // t: 0..1 position along that face
-  const face=(text,f,tx,ty)=>{
-    // anchor on face, label offset outward
-    if(f==='right') return L(text, x1,    cy+(y1-y0)*(ty-0.5), cz+(z1-z0)*(tx-0.5),
-                                         x1+pad, cy+(y1-y0)*(ty-0.5), cz+(z1-z0)*(tx-0.5));
-    if(f==='left')  return L(text, x0,    cy+(y1-y0)*(ty-0.5), cz+(z1-z0)*(tx-0.5),
-                                         x0-pad, cy+(y1-y0)*(ty-0.5), cz+(z1-z0)*(tx-0.5));
-    if(f==='top')   return L(text, cx+(x1-x0)*(tx-0.5), y1, cz+(z1-z0)*(ty-0.5),
-                                         cx+(x1-x0)*(tx-0.5), y1+pad, cz+(z1-z0)*(ty-0.5));
-    if(f==='bot')   return L(text, cx+(x1-x0)*(tx-0.5), y0, cz+(z1-z0)*(ty-0.5),
-                                         cx+(x1-x0)*(tx-0.5), y0-pad, cz+(z1-z0)*(ty-0.5));
-    if(f==='front') return L(text, cx+(x1-x0)*(tx-0.5), cy+(y1-y0)*(ty-0.5), z1,
-                                         cx+(x1-x0)*(tx-0.5), cy+(y1-y0)*(ty-0.5), z1+pad);
-    if(f==='back')  return L(text, cx+(x1-x0)*(tx-0.5), cy+(y1-y0)*(ty-0.5), z0,
-                                         cx+(x1-x0)*(tx-0.5), cy+(y1-y0)*(ty-0.5), z0-pad);
-  };
-
+  const pad=camR*0.08;
   const A=(dv.A||24), B=(dv.B||12), C=(dv.C||0);
+  const as=A*S, bs=B*S, cs=C*S;
 
-  if(id==='st')   return [face('A: '+A+'"','top',0.5,0.5), face('B: '+B+'"','front',0.5,0.5), face('C: '+(dv.C||48)+'"','right',0.5,0.5)];
-  if(id==='ec')   return [face('A: '+A+'"','right',0.5,0.5), face('B: '+B+'"','front',0.5,0.5)];
-  if(id==='fc'){const sn=['3x3x3','4x4x4','Junior'][dv.A||0]||'3x3x3'; return [face(sn,'front',0.5,0.5), face('W: '+(dv.B||'')+'"','right',0.5,0.5), face('D: '+(dv.C||'')+'"','top',0.5,0.5)];}
-  if(id==='rd')   return [face('A: '+A+'"','right',0.5,0.5), face('B: '+B+'"','front',0.5,0.5)];
-  if(id==='bc')   return [face('A: '+A+'"','right',0.5,0.5), face('B: '+B+'"','front',0.5,0.5)];
-  if(id==='s2r')  return [face('A: '+A+'"','right',0.5,0.5), face('B: '+B+'"','front',0.5,0.5)];
-  if(id==='stap') return [face('A: '+A+'"','top',0.5,0.3), face('C: '+(dv.C||12)+'"','top',0.5,0.7)];
-  if(id==='sqe')  return [face('A: '+A+'"','left',0.5,0.5), face('B: '+B+'"','front',0.5,0.5), face('D: '+(dv.D||12)+'"','left',0.5,0.2), face('E: '+(dv.E||12)+'"','left',0.2,0.5)];
-  if(id==='reo')  return [face('A: '+A+'"','right',0.5,0.5), face('B: '+B+'"','front',0.5,0.5), face('C: '+(dv.C||40)+'"','top',0.5,0.5), face('F: '+(dv.F||12)+'"','right',0.5,0.2)];
-  if(id==='sqt'){
-    const hA2=(dv.A||12)*S/2, hB2=(dv.B||12)*S/2;
-    const lC2=(dv.C||12)*S, lD2=(dv.D||12)*S;
-    const lE2=(dv.E||6)*S, lF2=(dv.F||6)*S, lG2=(dv.G||6)*S;
-    const xL2=-(hA2+lC2), xR2=hA2+lD2;
-    const yBar2=(dv.A||12)*S;
-    const yTop2=yBar2*2;
-    const p=camR*0.09;
-    return [
-      L('A: '+dv.A+'"',   0,        yBar2/2,   0,      0,         yBar2/2-p,  0),
-      L('B: '+dv.B+'"',   0,        yBar2/2,   hB2,    0,         yBar2/2,    hB2+p),
-      L('C: '+dv.C+'"',   xL2,      yBar2/2,   0,      xL2-p,     yBar2/2,    0),
-      L('D: '+dv.D+'"',   xR2,      yBar2/2,   0,      xR2+p,     yBar2/2,    0),
-      L('E: '+dv.E+'"',   xL2+lC2/2, yBar2+p,  0,      xL2+lC2/2, yBar2+p*2, 0),
-      L('F: '+dv.F+'"',   xR2-lD2/2, yBar2+p,  0,      xR2-lD2/2, yBar2+p*2, 0),
-      L('G: '+dv.G+'"',   hA2,      yBar2+p,   0,      hA2+p,     yBar2+p*2,  0),
-    ];
+  const RED='rgba(255,80,80,0.95)';
+  const GRN='rgba(80,220,120,0.95)';
+  const YEL='rgba(255,220,80,0.9)';
+  const BLU='rgba(80,180,255,0.95)';
+
+  // DL: dimension line from p1→p2, label at lp
+  const DL=(text,x1,y1,z1,x2,y2,z2,lx,ly,lz,color)=>({text,x1,y1,z1,x2,y2,z2,lx,ly,lz,color});
+  // PT: point label — no line, just a floating tag at a 3D position
+  const PT=(text,lx,ly,lz,color)=>({text,x1:lx,y1:ly,z1:lz,x2:lx,y2:ly,z2:lz,lx,ly,lz,color});
+
+  // Connector label helper — returns label text for a connector
+  const connOpts=['S+D','TDC','F1','F1.5','F2','RAW'];
+  const cn1Label=connOpts[dv.CN1||0]||'S+D';
+  const cn2Label=connOpts[dv.CN2||0]||'S+D';
+
+  // For S+D: drive goes on shorter dim by default; flip flag reverses it
+  function connTag(conn, w, d, flipped){
+    if(conn!=='S+D') return conn;
+    if(w===d) return 'S+D';
+    // default: Drive on shorter. flipped: Drive on longer
+    let wLabel = (w<d) ? 'Drive' : 'Slip';
+    let dLabel = (d<w) ? 'Drive' : 'Slip';
+    if(flipped){ wLabel = wLabel==='Drive'?'Slip':'Drive'; dLabel = dLabel==='Drive'?'Slip':'Drive'; }
+    return w+'" W:'+wLabel+' / '+d+'" D:'+dLabel;
   }
-  if(id==='sp')   return [face('A: '+A+'"','bot',0.5,0.5), face('B: '+B+'"','front',0.5,0.5), face('Left','left',0.5,0.5), face('Right','right',0.5,0.5)];
-  if(id==='tr')   return [face('A: '+A+'"','bot',0.5,0.5), face('B: '+B+'"','front',0.7,0.5), face('C: '+(dv.C||20)+'"','top',0.5,0.5), face('D: '+(dv.Dp||10)+'"','front',0.3,0.5), face('E: '+(dv.E||16)+'"','right',0.5,0.5)];
+  const cn1Flip = document.getElementById('d_CN1')?.dataset.flip==='1';
+  const cn2Flip = document.getElementById('d_CN2')?.dataset.flip==='1';
+  const cn3Flip = document.getElementById('d_CN3')?.dataset.flip==='1';
+  const WHT='rgba(255,255,255,0.92)';
+
+  // ── ELBOWS ──────────────────────────────────────────────────────────
   if(id==='e90'||id==='e45'||id==='ev'){
+    const Dang=(dv.D||(id==='rgn'?135:90));
+    const Gv=dv.G||12;
+    const Ri=Gv*S, Ro=Ri+as, Rmid=(Ri+Ro)/2, hB2=bs/2;
+    const a0r=Math.PI, a1r=(180+Dang)*Math.PI/180;
+    const amid=(a0r+a1r)/2;
     return [
-      face('A: '+A+'"',  'front', 0.3, 0.3),
-      face('B: '+B+'"',  'front', 0.5, 0.5),
-      face('D: '+(dv.D||90)+'°', 'front', 0.7, 0.3),
-      face('E: '+(dv.E||0)+'"',  'left',  0.5, 0.7),
-      face('F: '+(dv.F||0)+'"',  'bot',   0.5, 0.5),
-      face('G: '+(dv.G||12)+'"', 'front', 0.5, 0.7),
+      // INLET: red=width, green=depth
+      DL('A: '+A+'"', -Ro,0,0, -Ri,0,0, -Ro-pad*2,pad*0.5,0, RED),
+      DL('B: '+B+'"', -Rmid,0,-hB2, -Rmid,0,hB2, -Rmid-pad*2,0,0, GRN),
+      // OUTLET: red=width, green=depth
+      DL('A: '+A+'"', Ri*Math.cos(a1r),Ri*Math.sin(a1r),0, Ro*Math.cos(a1r),Ro*Math.sin(a1r),0, Ro*Math.cos(a1r)+Math.cos(a1r)*pad*2,Ro*Math.sin(a1r)+Math.sin(a1r)*pad*2,0, RED),
+      DL('B: '+B+'"', Rmid*Math.cos(a1r),Rmid*Math.sin(a1r),-hB2, Rmid*Math.cos(a1r),Rmid*Math.sin(a1r),hB2, Rmid*Math.cos(a1r)+Math.cos(a1r)*pad*2,Rmid*Math.sin(a1r)+Math.sin(a1r)*pad*2,0, GRN),
+      // G: inner radius
+      DL('G: '+Gv+'"', 0,0,0, Ri*Math.cos(amid),Ri*Math.sin(amid),0, Ri*Math.cos(amid)+Math.cos(amid)*pad*1.5,Ri*Math.sin(amid)+Math.sin(amid)*pad*1.5,0, YEL),
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), -Ro-pad*3, 0, 0, WHT),
+      PT('C2: '+connTag(cn2Label,A,B,cn2Flip), Ro*Math.cos(a1r)+Math.cos(a1r)*pad*3, Ro*Math.sin(a1r)+Math.sin(a1r)*pad*3, 0, WHT),
     ];
   }
+
+  // ── GOOSENECK ────────────────────────────────────────────────────────
   if(id==='rgn'){
+    const Dang=(dv.D||135);
+    const Gv=dv.G||12;
+    const Ri=Gv*S, Ro=Ri+as;
+    const acx=-(Ri+as/2), acy=0;
+    const sweep=Dang*Math.PI/180;
+    const ca=Math.cos(sweep), sa=Math.sin(sweep);
+    const hB2=bs/2;
+    const inRix=acx+Ri, inRox=acx+Ro, inY=acy;
+    const inMidX=(inRix+inRox)/2;
+    const outRix=acx+Ri*ca, outRiy=acy+Ri*sa;
+    const outRox=acx+Ro*ca, outRoy=acy+Ro*sa;
+    const outMidX=(outRix+outRox)/2, outMidY=(outRiy+outRoy)/2;
+    const outNx=ca, outNy=sa;
+    const amid=sweep/2;
     return [
-      face('A: '+A+'"',  'front', 0.3, 0.3),
-      face('B: '+B+'"',  'front', 0.5, 0.5),
-      face('D: '+(dv.D||135)+'°', 'front', 0.7, 0.3),
-      face('E: '+(dv.E||0)+'"',  'bot',   0.5, 0.5),
-      face('G: '+(dv.G||12)+'"', 'front', 0.5, 0.7),
+      DL('A: '+A+'"',  inRix,inY,0, inRox,inY,0,  inMidX,inY-pad*2.5,0, RED),
+      DL('B: '+B+'"',  inMidX,inY,-hB2, inMidX,inY,hB2,  inRix-pad*2.5,inY,0, GRN),
+      DL('A: '+A+'"',  outRix,outRiy,0, outRox,outRoy,0,  outMidX+outNx*pad*2.5,outMidY+outNy*pad*2.5,0, RED),
+      DL('B: '+B+'"',  outMidX,outMidY,-hB2, outMidX,outMidY,hB2,  outMidX+outNx*pad*2.5,outMidY+outNy*0.5,0, GRN),
+      DL('G: '+Gv+'"',  acx,acy,0, acx+Ri*Math.cos(amid),acy+Ri*Math.sin(amid),0,  acx+Ri*Math.cos(amid)+Math.cos(amid)*pad*1.5,acy+Ri*Math.sin(amid)+Math.sin(amid)*pad*1.5,0, YEL),
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), acx+inRix-pad*3, inY, 0, WHT),
+      PT('C2: '+connTag(cn2Label,A,B,cn2Flip), outRox+Math.cos(sweep)*pad*3, outRoy+Math.sin(sweep)*pad*3, 0, WHT),
     ];
   }
+
+  // ── SQUARE ELBOW / MITERED ───────────────────────────────────────────
+  if(id==='sqe'||id==='me'){
+    const dt=(dv.D||6)*S, de=(dv.E||6)*S, cw=(dv.C||A)*S, hb=bs/2;
+    const xInlet=-(dt), yOutlet=-(de);
+    return [
+      // INLET (left face): red=height(A), green=depth(B)
+      DL('A: '+A+'"', xInlet,0,0, xInlet,as,0, xInlet-pad*2,as/2,0, RED),
+      DL('B: '+B+'"', xInlet,as/2,-hb, xInlet,as/2,hb, xInlet-pad*2,as/2,0, GRN),
+      // OUTLET (bottom face): red=width(C), green=depth(B)
+      DL('C: '+(dv.C||A)+'"', 0,yOutlet,0, cw,yOutlet,0, cw/2,yOutlet-pad*2,0, RED),
+      DL('B: '+B+'"', cw/2,yOutlet,-hb, cw/2,yOutlet,hb, cw/2+pad*2,yOutlet-pad,0, GRN),
+      // D throat label
+      DL('D: '+(dv.D||6)+'"', xInlet,as/2,0, 0,as/2,0, xInlet/2,as/2+pad*1.5,0, YEL),
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), xInlet-pad*3, as/2, 0, WHT),
+      PT('C2: '+connTag(cn2Label,dv.C||A,B,cn2Flip), cw/2, yOutlet-pad*3, 0, WHT),
+    ];
+  }
+
+  // ── STRAIGHT ────────────────────────────────────────────────────────
+  if(id==='st'){
+    // obox: x=C(length), y=B(depth), z=A(width). Open ends at x=±cs/2
+    const Cv=(dv.C||48)*S;
+    return [
+      // INLET (x=-Cv/2): red=A width (z axis), green=B depth (y axis)
+      DL('A: '+A+'"', -Cv/2,0,-as/2, -Cv/2,0,as/2,  -Cv/2-pad*2, bs/4,0, RED),
+      DL('B: '+B+'"', -Cv/2,-bs/2,0, -Cv/2,bs/2,0,  -Cv/2-pad*2,-bs/4,0, GRN),
+      // OUTLET (x=+Cv/2): same
+      DL('A: '+A+'"', Cv/2,0,-as/2,  Cv/2,0,as/2,   Cv/2+pad*2, bs/4,0, RED),
+      DL('B: '+B+'"', Cv/2,-bs/2,0,  Cv/2,bs/2,0,   Cv/2+pad*2,-bs/4,0, GRN),
+      // C: length along X, label above
+      DL('C: '+(dv.C||48)+'"', -Cv/2,bs/2,0, Cv/2,bs/2,0, 0,bs/2+pad*2,0, YEL),
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), -Cv/2-pad*3, 0, 0, WHT),
+      PT('C2: '+connTag(cn2Label,A,B,cn2Flip),  Cv/2+pad*3, 0, 0, WHT),
+    ];
+  }
+
+  // ── TRANSITION ───────────────────────────────────────────────────────
+  if(id==='tr'){
+    const hA=as/2, hB2=bs/2;
+    const hC=(dv.C||20)*S/2, hDp=(dv.Dp||10)*S/2;
+    const lE=(dv.E||16)*S;
+    return [
+      // BOTTOM inlet (y=0): red=A width (x axis), green=B depth (z axis)
+      DL('A: '+A+'"',  -hA,0,0,  hA,0,0,   0,  -pad*2.5, 0, RED),
+      DL('B: '+B+'"',  0,0,-hB2, 0,0,hB2,  -hA-pad*2.5, 0, 0, GRN),
+      // TOP outlet (y=lE): red=C width, green=D depth
+      DL('C: '+(dv.C||20)+'"',  -hC,lE,0,  hC,lE,0,   0,  lE+pad*2.5, 0, RED),
+      DL('D: '+(dv.Dp||10)+'"', 0,lE,-hDp, 0,lE,hDp,  hC+pad*2.5, lE, 0, GRN),
+      // E: height — right side from bottom to top
+      DL('E: '+(dv.E||16)+'"',  hA,0,0, hC,lE,0,  Math.max(hA,hC)+pad*2.5, lE/2, 0, YEL),
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip),  -hA-pad*3, 0, 0, WHT),
+      PT('C2: '+connTag(cn2Label,dv.C||20,dv.Dp||10,cn2Flip), hC+pad*3, lE, 0, WHT),
+    ];
+  }
+
+  // ── RECT OFFSET ──────────────────────────────────────────────────────
+  if(id==='reo'){
+    // Inlet at x=0: y=0..lA, z=-hB..+hB
+    // Outlet at x=lC: y=-lF..lA-lF, z=-hB..+hB
+    const lC=(dv.C||40)*S, lA=as, lF=(dv.F||0)*S, hB=bs/2;
+    const outMidY=(lA-lF)/2 - lF/2;
+    return [
+      // INLET (x=0): red=A height (y), green=B depth (z)
+      DL('A: '+A+'"',  0,0,0,      0,lA,0,     -pad*3, lA/2, 0,   RED),
+      DL('B: '+B+'"',  0,lA/2,-hB, 0,lA/2,hB,  -pad*3, lA*0.2, 0, GRN),
+      // OUTLET (x=lC): red=A height, green=B depth
+      DL('A: '+A+'"',  lC,-lF,0,        lC,lA-lF,0,        lC+pad*3, (lA-lF*2)/2, 0, RED),
+      DL('B: '+B+'"',  lC,(lA-lF)/2-lF/2,-hB, lC,(lA-lF)/2-lF/2,hB, lC+pad*3, -lF/2, 0, GRN),
+      // C: length along x (top edge)
+      DL('C: '+(dv.C||40)+'"',  0,lA,0, lC,lA-lF,0,  lC/2, lA+pad*2, 0, YEL),
+      // F: offset — horizontal line at outlet face from inlet-top-y to outlet-top-y
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), -pad*3, lA/2, 0, WHT),
+      PT('C2: '+connTag(cn2Label,A,B,cn2Flip), lC+pad*3, (lA-lF)/2, 0, WHT),
+      DL('F: '+(dv.F||0)+'"',  lC,lA-lF,0, lC,lA,0,  lC+pad*3, lA-lF/2, 0, BLU),
+    ];
+  }
+
+  // ── SQUARE TEE ───────────────────────────────────────────────────────
+  if(id==='sqt'){
+    const hA=as/2, hB=bs/2;
+    const lC=(dv.C||12)*S, lD=(dv.D||12)*S;
+    const Gv=dv.G||20; const lG=Gv*S;
+    const xL=-(hA+lC), xR=hA+lD;
+    const yArm=as;       // top of left/right arms
+    const yTop=as+lG;    // top of branch stem
+    return [
+      // LEFT arm open end (x=xL): red=height(A), green=depth(B)
+      // Label pulled left and slightly down to avoid overlap
+      DL('A: '+A+'"',  xL,0,0,   xL,yArm,0,  xL-pad*3, yArm*0.7,0, RED),
+      DL('B: '+B+'"',  xL,yArm/2,-hB, xL,yArm/2,hB, xL-pad*3,yArm*0.3,0, GRN),
+      // RIGHT arm open end (x=xR): label pulled right and mid-height
+      DL('A: '+A+'"',  xR,0,0,   xR,yArm,0,  xR+pad*3, yArm*0.7,0, RED),
+      DL('B: '+B+'"',  xR,yArm/2,-hB, xR,yArm/2,hB, xR+pad*3,yArm*0.3,0, GRN),
+      // BRANCH top open end: label above, offset slightly right for A, left for B
+      DL('A: '+A+'"',  -hA,yTop,0, hA,yTop,0,  -hA*0.5,yTop+pad*3,0, RED),
+      DL('B: '+B+'"',  0,yTop,-hB, 0,yTop,hB,  hA+pad*3,yTop+pad,0, GRN),
+      // G: branch stem height
+      DL('G: '+Gv+'"',  hA+pad*0.5,yArm,0, hA+pad*0.5,yTop,0,  hA+pad*3,yArm+lG/2,0, YEL),
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), xL-pad*3, yArm/2, 0, WHT),
+      PT('C2: '+connTag(cn2Label,A,B,cn2Flip), xR+pad*3, yArm/2, 0, WHT),
+      PT('C3: '+connTag(connOpts[dv.CN3||0]||'S+D',A,B,cn3Flip), 0, yTop+pad*3, 0, WHT),
+    ];
+  }
+
+  // ── SQUARE PANTS ────────────────────────────────────────────────────
+  if(id==='sp'){
+    const aS=A*S, bS=B*S, fS=(dv.F||28)*S;
+    const cS=(dv.C||12)*S, dS=(dv.D||12)*S, gS=(dv.G||6)*S;
+    const taper=2*S;
+    const xBL=-aS/2, xBR=aS/2;
+    const xTL=-aS/2+taper, xTR=aS/2-taper;
+    const xSL=xTL+cS, xSR=xTR-dS;
+    const zF=-bS/2, zBk=bS/2;
+    return [
+      // BOTTOM inlet: red=width(A), green=depth(B)
+      DL('A: '+A+'"', xBL,0,0, xBR,0,0, 0,-pad*2,0, RED),
+      DL('B: '+B+'"', 0,0,zF, 0,0,zBk, -aS/2-pad*2,0,0, GRN),
+      // LEFT leg top: red=leg width(C)
+      DL('C: '+(dv.C||12)+'"', xTL,fS,0, xSL,fS,0, xTL+cS/2,fS+pad*2,0, RED),
+      // RIGHT leg top: red=leg width(D)
+      DL('D: '+(dv.D||12)+'"', xSR,fS,0, xTR,fS,0, xSR+(xTR-xSR)/2,fS+pad*2,0, RED),
+      // F: total height
+      DL('F: '+(dv.F||28)+'"', xBR,0,0, xBR,fS,0, xBR+pad*2,fS/2,0, YEL),
+      // G: throat gap
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), xBL-pad*3, fS/2, 0, WHT),
+      PT('C2: '+connTag(cn2Label,A,B,cn2Flip), xBR+pad*3, fS/2, 0, WHT),
+      PT('C3: '+connTag(connOpts[dv.CN3||0]||'S+D',A,B,cn3Flip), 0, fS+pad*3, 0, WHT),
+      DL('G: '+(dv.G||6)+'"', -gS/2,fS*0.6,0, gS/2,fS*0.6,0, 0,fS*0.6+pad*2,0, BLU),
+    ];
+  }
+
+  // ── END CAP ──────────────────────────────────────────────────────────
+  // obox: x=A width, y=B height, z=tiny thickness
+  if(id==='ec'){
+    return [
+      DL('A: '+A+'"', -as/2,0,0,  as/2,0,0,   0, bs/2+pad*2, 0, RED),
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), 0, bs/2+pad*3, 0, WHT),
+      DL('B: '+B+'"',  0,-bs/2,0,  0,bs/2,0,  -as/2-pad*2, 0, 0, GRN),
+    ];
+  }
+
+  // ── BASE CAN ─────────────────────────────────────────────────────────
+  if(id==='bc'){
+    const hC=(dv.C||24)*S/2;
+    return [
+      // TOP inlet: red=width(A), green=depth(B)
+      DL('A: '+A+'"', -as/2,hC,0, as/2,hC,0, 0,hC+pad*2,0, RED),
+      DL('B: '+B+'"', 0,hC,-bs/2, 0,hC,bs/2, as/2+pad*2,hC,0, GRN),
+      // C: height
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), 0, hC+pad*3, 0, WHT),
+      DL('C: '+(dv.C||24)+'"', as/2,-hC,0, as/2,hC,0, as/2+pad*2,0,0, YEL),
+    ];
+  }
+
+  // ── FLEX CONN ────────────────────────────────────────────────────────
+  if(id==='fc'){
+    return [
+      DL('B: '+B+'"', -3*S,-bs/2,0, -3*S,bs/2,0, -3*S-pad*2,0,0, RED),
+      PT('C1: '+connTag(cn1Label,B,C,cn1Flip), -3*S-pad*3, 0, 0, WHT),
+      PT('C2: '+connTag(cn2Label,B,C,cn2Flip),  3*S+pad*3, 0, 0, WHT),
+      DL('C: '+(dv.C||8)+'"', -3*S,0,-cs/2, -3*S,0,cs/2, -3*S-pad*2,0,0, GRN),
+    ];
+  }
+
+  // ── STRAIGHT TAP ─────────────────────────────────────────────────────
+  if(id==='stap'){
+    return [
+      DL('A: '+A+'"', -as/2,0,0, as/2,0,0, 0,-pad*2,0, RED),
+      DL('B: '+B+'"', 0,0,-bs/2, 0,0,bs/2, pad*2,0,0, GRN),
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), -as/2-pad*3, 0, 0, WHT),
+      PT('C2: '+connTag(cn2Label,A,B,cn2Flip),  as/2+pad*3, 0, 0, WHT),
+      DL('C: '+(dv.C||6)+'"', as/2,0,0, as/2,0,(dv.C||6)*S, as/2+pad*2,0,(dv.C||6)*S/2, YEL),
+    ];
+  }
+
+  // ── SQUARE TO ROUND ──────────────────────────────────────────────────
+  if(id==='s2r'){
+    const hA=as/2, hB=bs/2;
+    const r=(dv.C||10)*S/2;
+    const lD=(dv.D||12)*S;
+    const lG=(dv.G||4)*S;
+    return [
+      // BASE inlet: red=width(A), green=depth(B)
+      DL('A: '+A+'"', -hA,0,0, hA,0,0, 0,-pad*2,0, RED),
+      DL('B: '+B+'"', 0,0,-hB, 0,0,hB, -hA-pad*2,0,0, GRN),
+      // TOP collar: red=diameter(C)
+      DL('C: '+(dv.C||10)+'"', -r,lD,0, r,lD,0, 0,lD+pad*2,0, RED),
+      // D: taper length, G: collar height
+      DL('D: '+(dv.D||12)+'"', hA,0,0, hA,lD,0, hA+pad*2,lD/2,0, YEL),
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), -hA-pad*3, 0, 0, WHT),
+      PT('C2: '+connTag(cn2Label,(dv.C||10),(dv.C||10),cn2Flip), 0, lD+lG+pad*3, 0, WHT),
+      DL('G: '+(dv.G||4)+'"', r,lD,0, r,lD+lG,0, r+pad*2,lD+lG/2,0, BLU),
+    ];
+  }
+
+  // ── RECT DAMPER ──────────────────────────────────────────────────────
+  // same obox as end cap: x=A width, y=B height
+  if(id==='rd'){
+    return [
+      DL('A: '+A+'"',  -as/2,0,0,  as/2,0,0,   0, bs/2+pad*2, 0, RED),
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), 0, bs/2+pad*3, 0, WHT),
+      DL('B: '+B+'"',   0,-bs/2,0,  0,bs/2,0,  -as/2-pad*2, 0, 0, GRN),
+    ];
+  }
+
+  // ── RADIUS OFFSET ────────────────────────────────────────────────────
+  // sc(t) = [x, z]: x=H*S*smoothstep, z=EL*S*t
+  // cross-section: ±hA in X, ±hB in Y
+  // Inlet at t=0: x=0, z=0. Outlet at t=1: x=H2*S, z=EL*S
+  if(id==='ro'){
+    const EL=(dv.E||32)*S, H2=(dv.H||8)*S, hA=as/2, hB=bs/2;
+    const hC2=(dv.C||A)*S/2, hD2=(dv.Dp||B)*S/2;
+    return [
+      // INLET (x=0, z=0): red=A width (x axis), green=B depth (y axis)
+      DL('A: '+A+'"',  -hA,0,0,  hA,0,0,   0, -pad*2.5, 0, RED),
+      DL('B: '+B+'"',  0,-hB,0,  0,hB,0,   -hA-pad*2.5, 0, 0, GRN),
+      // OUTLET (x=H2, z=EL): red=C top width, green=D top depth
+      DL('C: '+(dv.C||A)+'"',  H2-hC2,0,EL, H2+hC2,0,EL,  H2,-pad*2.5,EL, RED),
+      DL('D: '+(dv.Dp||B)+'"', H2,-hD2,EL,  H2,hD2,EL,    H2+hC2+pad*2.5,0,EL, GRN),
+      // E: length — diagonal from inlet to outlet along the curve path
+      DL('E: '+(dv.E||32)+'"',  hA,0,0,  H2+hA,0,EL,  H2+hA+pad*2, 0, EL/2, YEL),
+      // H: horizontal offset — horizontal line at mid-height
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), -hA-pad*3, 0, 0, WHT),
+      PT('C2: '+connTag(cn2Label,dv.C||A,dv.Dp||B,cn2Flip), H2+hC2+pad*3, 0, EL, WHT),
+      DL('H: '+(dv.H||8)+'"',   -hA,0,EL,  H2-hC2,0,EL,  (-hA+H2-hC2)/2, pad*2, EL, BLU),
+    ];
+  }
+
   return [];
 }
+
 
 // ── MOBILE UI ────────────────────────────────────────────────────────
 
@@ -1168,7 +1446,9 @@ function selFit(id){
     if(d.sel){
       const opts = d.sel.map((o,i) => `<option value="${i}"${i===d.v?' selected':''}>${o}</option>`).join('');
       const selChange = d.id==='A' && curFit==='fc' ? 'fcSyncPreset();redraw()' : 'redraw()';
-      div.innerHTML = `<label>${d.l}</label><select id="d_${d.id}" onchange="${selChange}">${opts}</select>`;
+      const isConn = d.id==='CN1'||d.id==='CN2'||d.id==='CN3';
+      div.innerHTML = `<label>${d.l}</label><select id="d_${d.id}" data-flip="0" onchange="${selChange}">${opts}</select>`
+        + (isConn ? `<label style="display:flex;align-items:center;gap:5px;margin-top:4px;font-size:11px;color:#888;cursor:pointer"><input type="checkbox" id="d_${d.id}_flip" onchange="document.getElementById('d_${d.id}').dataset.flip=this.checked?'1':'0';redraw()" style="width:14px;height:14px;accent-color:var(--teal);cursor:pointer"> Flip S/D</label>` : '');
     } else {
       div.innerHTML = `<label>${d.l}</label><input type="number" id="d_${d.id}" value="${d.v}" min="0" step="0.5" oninput="autoG();sqtSyncArms(this);redraw()">`;
     }

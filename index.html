@@ -10,8 +10,8 @@
 html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5}
 
 /* ── SCREENS ── */
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;transition:transform .28s cubic-bezier(.4,0,.2,1);will-change:transform}
-#palletScreen{transform:translateX(0)}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;transition:transform .28s cubic-bezier(.4,0,.2,1);will-change:transform;background:#f0f2f5}
+#palletScreen{transform:translateX(0);background:#f0f2f5}
 #detailScreen{transform:translateX(100%)}
 .screen.slide-in{transform:translateX(0)!important}
 .screen.slide-out{transform:translateX(-40%)!important}
@@ -31,12 +31,13 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .jf input:focus{border-color:var(--teal)}
 
 /* ── PALLET GRID ── */
-.pallet-scroll{flex:1;overflow-y:auto;padding:10px;-webkit-overflow-scrolling:touch}
+.pallet-scroll{flex:1;overflow-y:auto;padding:10px;-webkit-overflow-scrolling:touch;background:#f0f2f5}
 .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .pi{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:8px 4px 6px;text-align:center;cursor:pointer;active-scale:.95;transition:border-color .12s,transform .1s}
 .pi:active{transform:scale(.94)}
 .pi.on{border-color:var(--teal);background:rgba(43,168,126,.07)}
 .pi img{width:44px;height:44px;display:block;margin:0 auto 4px;image-rendering:pixelated}
+#runPalletGrid .pi{padding:4px 2px}#runPalletGrid .pi img{width:28px;height:28px;margin:0 auto 2px}#runPalletGrid .pi .pname{font-size:7px}
 .pi .pname{font-size:9px;color:var(--sub);line-height:1.2;font-weight:500}
 .pi .pimg-placeholder{width:44px;height:44px;background:#eee;border-radius:5px;margin:0 auto 4px}
 
@@ -114,9 +115,44 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .send-actions button{flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:#fff}
 .send-actions .send-btn{background:var(--teal);color:#fff;border-color:var(--teal)}
 .send-actions .send-btn:active{background:var(--teal-dk)}
+/* ── RUN BUILDER ── */
+#runScreen{background:var(--bg);transform:translateX(100%)}
+.run-toolbar{background:#1a2d3e;display:flex;align-items:center;gap:6px;padding:6px 10px;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.run-tool-btn{background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.run-tool-btn.active{background:var(--teal)}
+.run-tool-btn.danger{background:rgba(255,80,80,.3)}
+.run-canvas-wrap{flex:none;height:42vh;position:relative;min-height:120px}
+#runCv{display:block;width:100%;height:100%;touch-action:none}
+.run-bottom{background:#fff;border-top:1px solid #eee;flex-shrink:0;max-height:38vh;display:flex;flex-direction:column}
+.run-pieces{overflow-x:auto;display:flex;gap:8px;padding:8px 10px;-webkit-overflow-scrolling:touch;flex-shrink:0;border-bottom:1px solid #eee}
+.run-piece{flex-shrink:0;background:#f5f5f5;border:2px solid #eee;border-radius:8px;padding:6px 10px;text-align:center;cursor:pointer;min-width:70px}
+.run-piece.active-piece{border-color:var(--teal);background:rgba(43,168,126,.08)}
+.run-piece.err{border-color:#ff5050;background:rgba(255,80,80,.08)}
+.run-piece .rp-name{font-size:10px;font-weight:700;color:#333}
+.run-piece .rp-dims{font-size:9px;color:#888;margin-top:2px}
+.run-piece .rp-conn{font-size:9px;margin-top:2px}
+.run-piece{position:relative}
+.run-piece .rp-del{position:absolute;top:-8px;right:-8px;width:18px;height:18px;border-radius:50%;background:#e55;color:#fff;border:2px solid #fff;font-size:11px;font-weight:700;line-height:14px;text-align:center;cursor:pointer;z-index:2;box-shadow:0 1px 4px rgba(0,0,0,.25);display:none}
+.run-piece:hover .rp-del,.run-piece.active-piece .rp-del{display:block}
+.run-piece.active-piece{border-color:var(--teal);background:rgba(43,168,126,.1);box-shadow:0 0 0 2px rgba(43,168,126,.3)}
+.run-piece .rp-connrow{display:flex;gap:3px;margin-top:3px;justify-content:center;flex-wrap:wrap}
+.run-piece .rp-badge{font-size:8px;font-weight:700;padding:1px 4px;border-radius:3px;white-space:nowrap}
+.run-piece .rp-badge.c1{background:rgba(43,168,126,.15);color:#1a8060;border:1px solid rgba(43,168,126,.3)}
+.run-piece .rp-badge.c2{background:rgba(80,150,255,.12);color:#2255aa;border:1px solid rgba(80,150,255,.3)}
+.run-dir-picker{display:none;padding:8px 10px;border-bottom:1px solid #eee;flex-shrink:0}
+.run-dir-picker.show{display:block}
+.run-dir-picker p{font-size:12px;color:#666;margin-bottom:6px;font-weight:600}
+.run-dir-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.run-dir-btn{padding:8px;background:#f0f0f0;border:1.5px solid #ddd;border-radius:8px;font-size:12px;cursor:pointer;text-align:center}
+.run-dir-btn:active{background:var(--teal);color:#fff}
+.run-stats{padding:6px 10px;font-size:11px;color:#888;flex-shrink:0}
 .send-btn.sending{background:#888;pointer-events:none}
 .send-btn.sent{background:#1a6e52;pointer-events:none}
 .attach-list-btn{background:var(--teal);color:#fff;border:none;border-radius:9px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+/* ── MODE TOGGLE ── */
+.mode-toggle{display:flex;background:rgba(0,0,0,.25);border-radius:20px;padding:3px;gap:0;flex-shrink:0}
+.mode-btn{background:none;border:none;color:rgba(255,255,255,.7);border-radius:16px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.mode-btn.active{background:#fff;color:var(--teal)}
 </style>
 </head>
 <body>
@@ -128,6 +164,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     <button class="attach-list-btn" onclick="openSend()">📤 Send</button>
     <button class="attach-list-btn" style="background:#1a6e52" onclick="openImport()">📥 Import</button>
     <button class="list-btn" onclick="openList()">📋 List <span class="list-count" id="lCount">0</span></button>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btnSingle" onclick="setMode('single')">📋 Single</button>
+      <button class="mode-btn" id="btnRun" onclick="setMode('run')">🔧 Run</button>
+    </div>
   </div>
   <div class="job-bar">
     <div class="jf"><label>Job</label><input id="jName" placeholder="Job name"></div>
@@ -180,6 +220,89 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
       <button onclick="copyList()">📋 Copy</button>
       <button onclick="exportPDF()">⬇ PDF</button>
       <button class="bp" onclick="openSend()">📤 Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RUN BUILDER SCREEN ══ -->
+<div class="screen" id="runScreen" style="display:flex;flex-direction:column;overflow:hidden">
+  <div class="hdr">
+    <button class="back-btn" onclick="closeRunBuilder()">← Back</button>
+    <h1 style="font-size:13px">🔧 Run Builder</h1>
+    <button onclick="clearRun()" style="background:rgba(255,80,80,.3);border:none;color:#fff;border-radius:7px;padding:4px 10px;font-size:11px;cursor:pointer">Clear</button>
+  </div>
+
+  <!-- 3D viewport -->
+  <div class="run-canvas-wrap" id="runVp" style="flex:none;height:35vh;min-height:140px;position:relative">
+    <canvas id="runCv" style="position:absolute;top:0;left:0;width:100%;height:100%;display:block;touch-action:none"></canvas>
+    <canvas id="runLv" style="position:absolute;inset:0;pointer-events:none;z-index:10;overflow:hidden;width:100%;height:100%"></canvas>
+    <div style="position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:9px;color:rgba(100,150,170,.4);pointer-events:none">drag to rotate · pinch to zoom</div>
+  </div>
+
+  <!-- Run piece strip -->
+  <div style="background:#0d1b27;border-top:1px solid #1a3040;border-bottom:1px solid #1a3040;flex-shrink:0">
+    <div class="run-pieces" id="runPieces" style="padding:4px 6px">
+      <div style="font-size:11px;color:#556;padding:6px 8px;align-self:center;white-space:nowrap;font-style:italic">Add fittings below ↓</div>
+    </div>
+    <div style="display:flex;align-items:center;padding:2px 8px 4px;gap:6px">
+      <div id="runStats" style="flex:1;font-size:10px;color:#5a8aaa;font-weight:600"></div>
+    </div>
+  </div>
+
+  <!-- Always-visible fitting picker -->
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;background:#fff">
+    <!-- Fitting grid -->
+    <div id="runPalletGrid" class="pgrid" style="padding:4px;overflow-y:auto;flex:none;max-height:20vh;border-bottom:1px solid #eee;grid-template-columns:repeat(5,1fr);gap:4px"></div>
+    <!-- Dim inputs for selected fitting -->
+    <div id="runDimArea" style="overflow-y:auto;flex:1;padding:6px 10px;background:#fafafa">
+      <p style="font-size:12px;color:#bbb;text-align:center;padding:12px 0;margin:0">← Select a fitting above</p>
+    </div>
+    <!-- Direction picker (hidden until needed) -->
+    <div id="runDirPicker" style="display:none;padding:8px 12px;border-top:1px solid #eee;background:#fff;flex-shrink:0">
+      <p style="font-size:12px;font-weight:700;color:#333;margin:0 0 8px">Which way does it turn?</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+        <button class="run-dir-btn" onclick="setElbowDir('right')">↱ Turn Right</button>
+        <button class="run-dir-btn" onclick="setElbowDir('left')">↰ Turn Left</button>
+        <button class="run-dir-btn" onclick="setElbowDir('up')">↑ Turn Up</button>
+        <button class="run-dir-btn" onclick="setElbowDir('down')">↓ Turn Down</button>
+      </div>
+    </div>
+    <!-- Add to Run bar -->
+    <div style="display:flex;gap:6px;padding:6px 10px;border-top:1px solid #eee;flex-shrink:0;background:#fff">
+      <button onclick="rotateRunFit()" id="runRotateBtn" style="flex:1;padding:10px;border-radius:8px;border:1.5px solid #ddd;background:#f5f5f5;font-size:12px;cursor:pointer">↻ Rotate</button>
+      <button id="runAddBtn" onclick="confirmRunAdd()" style="flex:3;padding:10px;border-radius:8px;border:none;background:var(--teal);color:#fff;font-size:14px;font-weight:700;cursor:pointer">Add to Run</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RUN PICKER SHEET ══ -->
+<div id="runPickerOverlay" onclick="closeRunPickerIfBg(event)" style="position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:none;align-items:flex-end">
+  <div id="runPickerSheet" style="background:#fff;border-top-left-radius:20px;border-top-right-radius:20px;width:100%;max-height:88vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)">
+    <div style="width:36px;height:4px;background:#ddd;border-radius:2px;margin:10px auto 0"></div>
+
+    <!-- Fitting grid -->
+    <div id="runPickerGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px;overflow-y:auto;flex-shrink:0;max-height:35vh;border-bottom:1px solid #eee"></div>
+
+    <!-- Dim inputs for selected fitting -->
+    <div id="runPickerDims" style="overflow-y:auto;padding:8px 10px;flex:1">
+      <p style="font-size:12px;color:#bbb;text-align:center;padding:16px">Select a fitting above</p>
+    </div>
+
+    <!-- Direction picker for elbows -->
+    <div id="runDirPicker" style="display:none;padding:8px 12px;border-top:1px solid #eee;flex-shrink:0">
+      <p style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px">Which way does it turn?</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+        <button class="run-dir-btn" onclick="setElbowDir('right')">↱ Turn Right</button>
+        <button class="run-dir-btn" onclick="setElbowDir('left')">↰ Turn Left</button>
+        <button class="run-dir-btn" onclick="setElbowDir('up')">↑ Turn Up</button>
+        <button class="run-dir-btn" onclick="setElbowDir('down')">↓ Turn Down</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;padding:8px 12px;border-top:1px solid #eee;flex-shrink:0">
+      <button onclick="closeRunPicker()" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid #ddd;background:#fff;font-size:14px;cursor:pointer">Cancel</button>
+      <button onclick="rotateRunFit()" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid #ddd;background:#f5f5f5;font-size:13px;cursor:pointer" title="Rotate 90°">↻ Rotate</button>
+      <button id="runAddBtn" onclick="confirmRunAdd()" style="flex:2;padding:11px;border-radius:10px;border:none;background:var(--teal);color:#fff;font-size:14px;font-weight:700;cursor:pointer">Add to Run</button>
     </div>
   </div>
 </div>
@@ -239,9 +362,6 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     </div>
   </div>
 </div>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
   // EmailJS config — replace with your actual public key, service ID, template ID
@@ -251,6 +371,16 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
   const EMAILJS_PHOTOS_TEMPLATE_ID = 'template_t9sqam7';
   document.addEventListener('DOMContentLoaded', function(){
     if(typeof emailjs !== 'undefined') emailjs.init({publicKey: EMAILJS_PUBLIC_KEY});
+    setTimeout(buildRunInlineGrid, 500);
+    // Wire up Run buttons directly to avoid any onclick interference
+    document.querySelectorAll('button').forEach(function(btn){
+      if(btn.textContent.trim()==='🔧 Run'){
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          openRunBuilder();
+        });
+      }
+    });
   });
 </script>
 <script>
@@ -305,6 +435,15 @@ function eyePos(){return[camTgt[0]+camR*Math.sin(rY)*Math.cos(rX),camTgt[1]+camR
 
 function render3d(){
   if(!gl||!glBuf) return;
+  // Ensure canvas has dimensions (can be 0 if layout hasn't settled)
+  if(cv.width === 0 || cv.height === 0){
+    const vp2 = document.getElementById('vp');
+    if(vp2 && vp2.clientWidth > 0){
+      cv.width = vp2.clientWidth; cv.height = vp2.clientHeight;
+      gl.viewport(0,0,cv.width,cv.height);
+    }
+    return; // skip this frame, try again next tick
+  }
   gl.viewport(0,0,cv.width,cv.height);
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   const[ex,ey,ez]=eyePos();
@@ -441,7 +580,14 @@ function drawLabels(){
 }
 // ────────────────────────────────────────────────────────
 
-(function loop(){requestAnimationFrame(loop);render3d();drawLabels();})();
+window.runBuilderActive = false;
+(function loop(){
+  requestAnimationFrame(loop);
+  // Run builder is active only when runScreen is explicitly slid in
+  const runEl = document.getElementById('runScreen');
+  const runVisible = runBuilderActive || (runEl && runEl.classList.contains('slide-in'));
+  if(runVisible){ runDraw(); } else { render3d(); drawLabels(); }
+})();
 
 // ── GEOMETRY HELPERS ────────────────────────────────────────────────
 const S=1/12;
@@ -1372,14 +1518,23 @@ let curFit=null, curVar=null;
 function goToDetail(id){
   document.getElementById('palletScreen').classList.add('slide-out');
   document.getElementById('detailScreen').classList.add('slide-in');
-  // Resize canvas after screen is visible, then select fitting
-  requestAnimationFrame(() => {
+  // Use setTimeout so layout is settled (CSS transition starts immediately,
+  // but clientWidth/Height need at least one layout pass to reflect final size)
+  function doInit(){
     const vp2 = document.getElementById('vp');
-    cv.width = vp2.clientWidth; cv.height = vp2.clientHeight;
+    const W = vp2.clientWidth || window.innerWidth;
+    const H = vp2.clientHeight || Math.round(window.innerHeight * 0.55);
+    if(W === 0){
+      // Layout not ready yet, try again next frame
+      requestAnimationFrame(doInit);
+      return;
+    }
+    cv.width = W; cv.height = H;
     if(!gl) initGL();
-    if(gl) { gl.viewport(0,0,cv.width,cv.height); }
+    if(gl){ gl.viewport(0, 0, cv.width, cv.height); }
     selFit(id);
-  });
+  }
+  requestAnimationFrame(doInit);
 }
 function goBack(){
   editingIndex = -1;
@@ -1512,7 +1667,9 @@ function editItem(i){
   document.getElementById('detailScreen').classList.add('slide-in');
   requestAnimationFrame(() => {
     const vp2 = document.getElementById('vp');
-    cv.width = vp2.clientWidth; cv.height = vp2.clientHeight;
+    const W2 = vp2.clientWidth || window.innerWidth;
+    const H2 = vp2.clientHeight || Math.round(window.innerHeight * 0.55);
+    cv.width = W2; cv.height = H2;
     if(!gl) initGL();
     if(gl) gl.viewport(0, 0, cv.width, cv.height);
     selFit(it.id);
@@ -1544,6 +1701,7 @@ function renderList(){
     const el = document.getElementById(id);
     if(el) el.textContent = n;
   });
+  requestAnimationFrame(patchListForRun);
   const el = document.getElementById('listArea');
   if(!n){ el.innerHTML = '<div class="empty-msg">No items yet</div>'; return; }
   el.innerHTML = listItems.map((it,i) => `
@@ -1949,6 +2107,1213 @@ function doImport(){
   }
 }
 
+
+// ══════════════════════════════════════════════════════════════════
+// RUN BUILDER
+// ══════════════════════════════════════════════════════════════════
+const runState = {
+  pieces: [],          // [{item, dir, matrix}]
+  pendingElbow: null,  // item waiting for direction choice
+  gl: null, prog: null, buf: null, uMVP: null, vc: 0,
+  rX: 0.4, rY: 0.5, camR: 4,
+  drag: false, mx: 0, my: 0, pinch: null,
+};
+let runSelectedPiece = -1;
+let runEditingPiece = -1; // index of piece being edited (-1 = adding new)
+
+// ── Global run interaction (set up once) ─────────────────────────────
+let _runLastTouch = null;
+(function setupRunInteraction(){
+  function inRunVp(e){
+    const vp=document.getElementById('runVp');
+    if(!vp) return false;
+    const r=vp.getBoundingClientRect();
+    const cx=e.clientX||( e.touches&&e.touches[0]?e.touches[0].clientX:0);
+    const cy=e.clientY||( e.touches&&e.touches[0]?e.touches[0].clientY:0);
+    return cx>=r.left&&cx<=r.right&&cy>=r.top&&cy<=r.bottom;
+  }
+  document.addEventListener('mousedown',function(e){
+    const pal=document.getElementById('palletScreen'); if(!(runBuilderActive||(pal&&pal.classList.contains('slide-out')))||!inRunVp(e)) return;
+    runState.drag=true; runState.mx=e.clientX; runState.my=e.clientY;
+    e.preventDefault();
+  },{passive:false});
+  document.addEventListener('mouseup',function(){runState.drag=false;});
+  document.addEventListener('mousemove',function(e){
+    const pal3=document.getElementById('palletScreen'); if(!runState.drag||(!(runBuilderActive||(pal3&&pal3.classList.contains('slide-out'))))) return;
+    runState.rY-=(e.clientX-runState.mx)*.013;
+    runState.rX+=(e.clientY-runState.my)*.013;
+    runState.rX=Math.max(-1.3,Math.min(1.3,runState.rX));
+    runState.mx=e.clientX; runState.my=e.clientY;
+  });
+  document.addEventListener('wheel',function(e){
+    const pal=document.getElementById('palletScreen'); if(!(runBuilderActive||(pal&&pal.classList.contains('slide-out')))||!inRunVp(e)) return;
+    runState.camR*=e.deltaY>0?1.1:.91;
+    runState.userZoomed=true;
+    e.preventDefault();
+  },{passive:false});
+  document.addEventListener('touchstart',function(e){
+    const pal=document.getElementById('palletScreen'); if(!(runBuilderActive||(pal&&pal.classList.contains('slide-out')))||!inRunVp(e)) return;
+    e.preventDefault();
+    if(e.touches.length===1){_runLastTouch=e.touches[0];runState.pinch=null;}
+    else if(e.touches.length===2){
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      runState.pinch=Math.sqrt(dx*dx+dy*dy); _runLastTouch=null;
+    }
+  },{passive:false});
+  document.addEventListener('touchmove',function(e){
+    const pal5=document.getElementById('palletScreen'); if(!(runBuilderActive||(pal5&&pal5.classList.contains('slide-out')))) return;
+    if(!inRunVp(e)&&!runState.pinch&&!_runLastTouch) return;
+    e.preventDefault();
+    if(e.touches.length===1&&_runLastTouch){
+      const t=e.touches[0];
+      runState.rY-=(t.clientX-_runLastTouch.clientX)*.015;
+      runState.rX+=(t.clientY-_runLastTouch.clientY)*.015;
+      runState.rX=Math.max(-1.3,Math.min(1.3,runState.rX));
+      _runLastTouch=t;
+    } else if(e.touches.length===2&&runState.pinch){
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      runState.camR*=runState.pinch/d; runState.pinch=d; runState.userZoomed=true;
+    }
+  },{passive:false});
+})();
+
+// ── Navigation ────────────────────────────────────────────────────
+let runPickerFit = null; // currently selected fitting in picker
+let runPickerRotation = 0; // 0,1,2,3 = 0°,90°,180°,270° rotation around flow axis
+
+function rotateRunFit(){
+  runPickerRotation = (runPickerRotation + 1) % 4;
+  const angles = ['0°','90°','180°','270°'];
+  // Show current rotation in button
+  document.querySelectorAll('#runPickerSheet button').forEach(b=>{
+    if(b.textContent.startsWith('↻')) b.textContent = '↻ ' + angles[runPickerRotation];
+  });
+}
+
+// ── MODE TOGGLE ───────────────────────────────────────────────────────
+let appMode = 'single'; // 'single' | 'run'
+function setMode(mode){
+  appMode = mode;
+  document.getElementById('btnSingle').classList.toggle('active', mode==='single');
+  document.getElementById('btnRun').classList.toggle('active', mode==='run');
+  if(mode==='run'){
+    openRunBuilder();
+  } else {
+    closeRunBuilder();
+  }
+}
+
+function openRunBuilder(){
+  closeList();
+  // Slide pallet out only if we're coming from pallet screen
+  const pal = document.getElementById('palletScreen');
+  const det = document.getElementById('detailScreen');
+  const run = document.getElementById('runScreen');
+  // If detail is open, close it first
+  if(det.classList.contains('slide-in')){ det.classList.remove('slide-in'); }
+  pal.classList.add('slide-out');
+  run.classList.add('slide-in');
+  runState.drag = false;
+  runState.rX = 0.4; runState.rY = 0.6; runState.camR = 5; runState.userZoomed = false;
+  buildRunInlineGrid();
+  setTimeout(buildRunInlineGrid, 200);
+  renderRunPieces();
+  setTimeout(function(){
+    initRunGL();
+    if(runState.pieces.length) runUpload();
+    runBuilderActive = true;
+  }, 350);
+}
+
+function closeRunBuilder(){
+  runBuilderActive = false;
+  document.getElementById('palletScreen').classList.remove('slide-out');
+  document.getElementById('runScreen').classList.remove('slide-in');
+  // Sync toggle if closed via Back button
+  appMode = 'single';
+  const bs = document.getElementById('btnSingle');
+  const br = document.getElementById('btnRun');
+  if(bs){ bs.classList.add('active'); }
+  if(br){ br.classList.remove('active'); }
+}
+function clearRun(){
+  runState.pieces = [];
+  runState.pendingElbow = null;
+  runState.userZoomed = false;
+  runSelectedPiece = -1;
+  runEditingPiece = -1;
+  syncRunAddBtn();
+  document.getElementById('runDirPicker').style.display='none';
+  renderRunPieces();
+  runDraw();
+}
+
+// ── Run Picker Sheet ──────────────────────────────────────────────
+function openRunPicker(){
+  // Picker is always visible in new layout - no-op
+}
+function closeRunPicker(){
+  // Reset selection
+  runPickerFit = null;
+  document.querySelectorAll('#runPalletGrid .pi').forEach(el=>el.classList.remove('on'));
+  document.getElementById('runDimArea').innerHTML='<p style="font-size:12px;color:#bbb;text-align:center;padding:12px 0;margin:0">← Select a fitting above</p>';
+}
+function closeRunPickerIfBg(e){}
+
+function buildRunPickerGrid(){
+  const grid = document.getElementById('runPickerGrid');
+  // Only show fittings that make sense in a run (exclude caps, dampers, flex)
+  const runFits = DB.filter(f=>!['ec','bc','rd','fc','stap'].includes(f.id));
+  grid.innerHTML = runFits.map(f=>`
+    <div onclick="selectRunFit('${f.id}')" id="rpg_${f.id}" style="background:#f5f5f5;border:2px solid #eee;border-radius:10px;padding:6px 4px;text-align:center;cursor:pointer">
+      ${f.iconData?`<img src="${f.iconData}" style="width:36px;height:36px;object-fit:contain;display:block;margin:0 auto 3px">`:
+        `<div style="width:36px;height:36px;background:#ddd;border-radius:6px;margin:0 auto 3px"></div>`}
+      <div style="font-size:9px;font-weight:600;color:#333;line-height:1.2">${f.n}</div>
+    </div>`).join('');
+}
+
+function buildRunInlineGrid(){
+  const grid = document.getElementById('runPalletGrid');
+  if(!grid) return;
+  if(grid.children.length > 0) return;
+  const excluded = ['ec','bc','rd','fc','stap','sp'];
+  DB.filter(f=>!excluded.includes(f.id)).forEach(f=>{
+    const el = document.createElement('div');
+    el.className = 'pi';
+    el.dataset.id = f.id;
+    const img = f.iconData
+      ? `<img src="${f.iconData}" alt="${f.n}">`
+      : `<div class="pimg-placeholder"></div>`;
+    el.innerHTML = `${img}<div class="pname">${f.n}</div>`;
+    el.onclick = () => quickAddToRun(f.id);
+    grid.appendChild(el);
+  });
+}
+
+function quickAddToRun(id){
+  // Selecting a new fitting from pallet exits edit mode
+  runSelectedPiece = -1;
+  runEditingPiece = -1;
+  syncRunAddBtn();
+  selectRunFit(id);
+  // Scroll dim area into view so user can adjust dims then tap Add to Run
+  const dims = document.getElementById('runDimArea');
+  if(dims) dims.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function selectRunFit(id){
+  runPickerFit = id;
+  // Highlight selected in both grids
+  document.querySelectorAll('#runPalletGrid .pi, #runPickerGrid > div').forEach(el=>{
+    const isMatch = el.dataset.id===id || el.id==='rpg_'+id;
+    el.style.borderColor = isMatch ? 'var(--teal)' : '';
+    el.style.background  = isMatch ? 'rgba(43,168,126,.08)' : '';
+  });
+  // Build dim inputs
+  const f = DB.find(x=>x.id===id);
+  if(!f) return;
+  const dg = document.getElementById('runDimArea');
+
+  // If prev piece exists, pre-fill dims to match outlet
+  let prefill = {};
+  if(runState.pieces.length>0){
+    const prev = runState.pieces[runState.pieces.length-1];
+    const out = getFittingOutlet(prev.item);
+    prefill.A = out.outW||out.w; prefill.B = out.outD||out.d;
+  }
+
+  // Build dims using DOM to avoid template literal issues
+  dg.innerHTML='';
+  const dWrap=document.createElement('div');
+  dWrap.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px 0';
+  f.dims.forEach(function(d){
+    const val=prefill[d.id]!==undefined?prefill[d.id]:d.v;
+    const cell=document.createElement('div');
+    cell.style.cssText='display:flex;flex-direction:column;gap:2px';
+    const lbl=document.createElement('label');
+    lbl.textContent=d.l;
+    lbl.style.cssText='font-size:10px;color:#888;font-weight:600;text-transform:uppercase';
+    cell.appendChild(lbl);
+    if(d.sel){
+      const sel=document.createElement('select');
+      sel.id='rp_'+d.id;
+      sel.style.cssText='padding:7px;border:1.5px solid #ddd;border-radius:8px;font-size:14px';
+      sel.onchange = liveUpdateRunPiece;
+      d.sel.forEach(function(o,i){
+        const opt=document.createElement('option');
+        opt.value=i; opt.textContent=o;
+        if(i===val) opt.selected=true;
+        sel.appendChild(opt);
+      });
+      cell.appendChild(sel);
+      // Flip S/D for connectors
+      if(d.id==='CN1'||d.id==='CN2'||d.id==='CN3'){
+        const flipLbl=document.createElement('label');
+        flipLbl.style.cssText='display:flex;align-items:center;gap:4px;margin-top:3px;font-size:10px;color:#888;cursor:pointer';
+        const flipChk=document.createElement('input');
+        flipChk.type='checkbox'; flipChk.id='rp_'+d.id+'_flip';
+        flipChk.style.cssText='accent-color:var(--teal)';
+        flipLbl.appendChild(flipChk);
+        flipLbl.appendChild(document.createTextNode(' Flip S/D'));
+        cell.appendChild(flipLbl);
+      }
+    } else {
+      const inp=document.createElement('input');
+      inp.type='number'; inp.id='rp_'+d.id;
+      inp.value=val; inp.min=0; inp.step=0.5;
+      inp.style.cssText='padding:7px;border:1.5px solid #ddd;border-radius:8px;font-size:14px';
+      inp.oninput = liveUpdateRunPiece;
+      cell.appendChild(inp);
+    }
+    dWrap.appendChild(cell);
+  });
+  dg.appendChild(dWrap);
+}
+
+function getRunPickerDims(){
+  const f = DB.find(x=>x.id===runPickerFit);
+  if(!f) return {};
+  const d={};
+  f.dims.forEach(dim=>{
+    const el=document.getElementById('rp_'+dim.id);
+    if(!el) return;
+    if(el.tagName==='SELECT') d[dim.id]=parseInt(el.value)||0;
+    else d[dim.id]=Math.max(0,parseFloat(el.value)||0);
+  });
+  return d;
+}
+
+function liveUpdateRunPiece(){
+  // Only live-update when editing an existing piece
+  if(runEditingPiece < 0 || !runState.pieces[runEditingPiece]) return;
+  if(!runPickerFit) return;
+  const f = DB.find(x=>x.id===runPickerFit);
+  if(!f) return;
+  const dv = getRunPickerDims();
+  const item = {id:runPickerFit, var:null, n:f.n, d:dv, qty:1, notes:runState.pieces[runEditingPiece].item.notes||''};
+  runState.pieces[runEditingPiece].item = item;
+  runUpload();
+  renderRunPieces();
+}
+
+function confirmRunAdd(){
+  if(!runPickerFit){ alert('Select a fitting above first'); return; }
+  const f = DB.find(x=>x.id===runPickerFit);
+  const dv = getRunPickerDims();
+  const item = {id:runPickerFit, var:null, n:f.n, d:dv, qty:1, notes:''};
+
+  // EDIT MODE: update existing piece in-place
+  if(runEditingPiece >= 0 && runState.pieces[runEditingPiece]){
+    runState.pieces[runEditingPiece].item = item;
+    // Keep dir unchanged
+    const btn = document.getElementById('runAddBtn');
+    btn.textContent = '✓ Saved!'; btn.style.background = '#1a6e52';
+    runUpload();
+    renderRunPieces();
+    // Stay in edit mode, reset button after delay
+    setTimeout(()=>{ syncRunAddBtn(); }, 1200);
+    return;
+  }
+
+  const isElbow = ['e90','e45','ev','sqe','me'].includes(runPickerFit);
+  const needsDir = isElbow || runPickerFit==='reo' || runPickerFit==='ro';
+
+  // Dim check
+  if(runState.pieces.length>0){
+    const prev=runState.pieces[runState.pieces.length-1];
+    const prevOut=getFittingOutlet(prev.item);
+    const prevW = prevOut.outW||prevOut.w;
+    const prevD = prevOut.outD||prevOut.d;
+    const A=dv.A||24, B=dv.B||12;
+    if(Math.abs(prevW-A)>0.5||Math.abs(prevD-B)>0.5){
+      const ok=confirm(`Dim mismatch!
+Previous outlet: ${prevW}"×${prevD}"
+This fitting: ${A}"×${B}"
+Add anyway?`);
+      if(!ok) return;
+    }
+  }
+
+  if(needsDir){
+    runState.pendingElbow = item;
+    runState.pendingRot = runPickerRotation;
+    runPickerRotation = 0;
+    // Update dir picker label for offset
+    const dirTitle = document.querySelector('#runDirPicker p');
+    if(dirTitle) dirTitle.textContent = (runPickerFit==='reo'||runPickerFit==='ro') ? 'Which way does it offset?' : 'Which way does it turn?';
+    document.getElementById('runDirPicker').style.display='block';
+    document.getElementById('runAddBtn').style.display='none';
+    return;
+  }
+
+  runState.pieces.push({item, dir:null, rot:runPickerRotation});
+  runPickerRotation=0;
+  // Keep selection, just update
+  runUpload();
+  renderRunPieces();
+  // Flash the add button
+  const ab=document.getElementById('runAddBtn');
+  ab.textContent='✓ Added!'; ab.style.background='#1a6e52';
+  setTimeout(()=>{ab.textContent='Add to Run'; ab.style.background='var(--teal)';},1000);
+}
+
+// ── GL init for run canvas ────────────────────────────────────────
+function initRunGL(){
+  const rcv = document.getElementById('runCv');
+  if(!rcv) return;
+  // Size the canvas to its container or window
+  const vp = document.getElementById('runVp');
+  const W = (vp&&(vp.clientWidth||vp.offsetWidth)) || window.innerWidth || 800;
+  const H = (vp&&(vp.clientHeight||vp.offsetHeight)) || Math.round(window.innerHeight*0.55) || 400;
+  rcv.width = W; rcv.height = H;
+
+  // Get or reuse context
+  var rgl = rcv.getContext('webgl') || rcv.getContext('experimental-webgl');
+  if(!rgl){ console.error('No WebGL'); return; }
+
+  rgl.enable(rgl.DEPTH_TEST); rgl.disable(rgl.CULL_FACE);
+  rgl.clearColor(0.18,0.26,0.35,1);
+  rgl.viewport(0,0,W,H);
+  runState.gl = rgl;
+
+  if(runState.prog) return; // shader already compiled
+
+  var VS='attribute vec3 pos;attribute vec3 nrm;attribute float hi;uniform mat4 mvp;varying vec3 vN;varying float vH;void main(){vN=nrm;vH=hi;gl_Position=mvp*vec4(pos,1.);}';
+  var FS='precision mediump float;varying vec3 vN;varying float vH;void main(){vec3 L=normalize(vec3(.6,.8,.4));float d=max(dot(normalize(vN),L),.18)+0.1;vec3 base=vH>0.5?vec3(0.9,0.75,0.1):vec3(0.17,0.66,0.5);gl_FragColor=vec4(base*d,1.);}';
+  function rsh(t,s){var x=rgl.createShader(t);rgl.shaderSource(x,s);rgl.compileShader(x);if(!rgl.getShaderParameter(x,rgl.COMPILE_STATUS))console.error(rgl.getShaderInfoLog(x));return x;}
+  var p=rgl.createProgram();
+  rgl.attachShader(p,rsh(rgl.VERTEX_SHADER,VS));
+  rgl.attachShader(p,rsh(rgl.FRAGMENT_SHADER,FS));
+  rgl.linkProgram(p);
+  if(!rgl.getProgramParameter(p,rgl.LINK_STATUS)){console.error('Run shader link:',rgl.getProgramInfoLog(p));return;}
+
+  runState.prog = p;
+  runState.uMVP = rgl.getUniformLocation(p,'mvp');
+  runState.buf = runState.buf || rgl.createBuffer();
+
+  // Touch/mouse controls — register on runCv
+  const tgt=document.getElementById('runCv')||cv;
+  tgt.addEventListener('mousedown', e=>{runState.drag=true;runState.mx=e.clientX;runState.my=e.clientY;});
+
+  // Canvas tap/click → pick piece by projected screen distance
+  let _tapX=0, _tapY=0;
+  tgt.addEventListener('pointerdown', e=>{ _tapX=e.clientX; _tapY=e.clientY; });
+  tgt.addEventListener('pointerup', e=>{
+    // Only treat as tap if pointer barely moved (not a drag)
+    if(Math.abs(e.clientX-_tapX)>8 || Math.abs(e.clientY-_tapY)>8) return;
+    if(!runState.pieces.length || !runState.gl || !runState.prog) return;
+    // Build MVP same as runDraw
+    const cv2=document.getElementById('runCv');
+    const W=cv2.width||cv2.clientWidth, H=cv2.height||cv2.clientHeight;
+    let minX2=0,maxX2=0,minY2=0,maxY2=0,minZ2=0,maxZ2=0;
+    runState.pieces.forEach(p=>{
+      if(!p.worldPos) return;
+      const[wx,wy,wz]=p.worldPos;
+      minX2=Math.min(minX2,wx);maxX2=Math.max(maxX2,wx);
+      minY2=Math.min(minY2,wy);maxY2=Math.max(maxY2,wy);
+      minZ2=Math.min(minZ2,wz);maxZ2=Math.max(maxZ2,wz);
+    });
+    const cxP=(minX2+maxX2)/2, cyP=(minY2+maxY2)/2, czP=(minZ2+maxZ2)/2;
+    const camR2=runState.camR, rX2=runState.rX, rY2=runState.rY;
+    const ex2=cxP+camR2*Math.sin(rY2)*Math.cos(rX2);
+    const ey2=cyP+camR2*Math.sin(rX2);
+    const ez2=czP+camR2*Math.cos(rY2)*Math.cos(rX2);
+    const view2=lookAt(ex2,ey2,ez2,cxP,cyP,czP);
+    const proj2=persp(0.733,W/(H||1),camR2*.001,camR2*100);
+    const mvp2=m4mul(proj2,view2);
+    // Get tap in canvas-relative coords
+    const rect2=cv2.getBoundingClientRect();
+    const tapCx=e.clientX-rect2.left, tapCy=e.clientY-rect2.top;
+    // Scale to canvas pixel coords
+    const scaleX=W/rect2.width, scaleY=H/rect2.height;
+    const tapPx=tapCx*scaleX, tapPy=tapCy*scaleY;
+    // Project each piece worldPos and find closest
+    let bestIdx=-1, bestDist=40*40; // 40px threshold
+    runState.pieces.forEach((p,pi)=>{
+      if(!p.worldPos) return;
+      const[wx2,wy2,wz2]=p.worldPos;
+      const ix2=mvp2[0]*wx2+mvp2[4]*wy2+mvp2[8]*wz2+mvp2[12];
+      const iy2=mvp2[1]*wx2+mvp2[5]*wy2+mvp2[9]*wz2+mvp2[13];
+      const iw2=mvp2[3]*wx2+mvp2[7]*wy2+mvp2[11]*wz2+mvp2[15];
+      if(Math.abs(iw2)<0.001) return;
+      const sx=(ix2/iw2+1)*0.5*W, sy=(1-iy2/iw2)*0.5*H;
+      const dx=sx-tapPx, dy=sy-tapPy;
+      const dist=dx*dx+dy*dy;
+      if(dist<bestDist){ bestDist=dist; bestIdx=pi; }
+    });
+    if(bestIdx>=0){
+      selectRunPiece(bestIdx);
+    } else {
+      // Tapped empty space — deselect
+      if(runSelectedPiece >= 0){
+        runSelectedPiece = -1;
+        runEditingPiece = -1;
+        syncRunAddBtn();
+        renderRunPieces();
+        runUpload();
+      }
+    }
+  });
+  window.addEventListener('mouseup', ()=>runState.drag=false);
+  window.addEventListener('mousemove', e=>{
+    if(!runState.drag) return;
+    runState.rY -= (e.clientX-runState.mx)*.013;
+    runState.rX += (e.clientY-runState.my)*.013;
+    runState.rX = Math.max(-1.3,Math.min(1.3,runState.rX));
+    runState.mx=e.clientX; runState.my=e.clientY;
+  });
+  tgt.addEventListener('wheel',e=>{runState.camR*=e.deltaY>0?1.1:.91;e.preventDefault();},{passive:false});
+
+  let lastT=null;
+  tgt.addEventListener('touchstart',e=>{
+    e.preventDefault();
+    if(e.touches.length===1){lastT=e.touches[0];runState.pinch=null;}
+    else if(e.touches.length===2){
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      runState.pinch=Math.sqrt(dx*dx+dy*dy); lastT=null;
+    }
+  },{passive:false});
+  tgt.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    if(e.touches.length===1&&lastT){
+      const t=e.touches[0];
+      runState.rY-=(t.clientX-lastT.clientX)*.015;
+      runState.rX+=(t.clientY-lastT.clientY)*.015;
+      runState.rX=Math.max(-1.3,Math.min(1.3,runState.rX));
+      lastT=t; runDraw();
+    } else if(e.touches.length===2&&runState.pinch){
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      runState.camR*=runState.pinch/d; runState.pinch=d; runDraw();
+    }
+  },{passive:false});
+}
+
+// ── Matrix helpers (4x4 column-major Float32Array) ────────────────
+function m4id(){return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]);}
+function m4tr(x,y,z){return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, x,y,z,1]);}
+function m4ry(a){const c=Math.cos(a),s=Math.sin(a);return new Float32Array([c,0,-s,0, 0,1,0,0, s,0,c,0, 0,0,0,1]);}
+function m4rx(a){const c=Math.cos(a),s=Math.sin(a);return new Float32Array([1,0,0,0, 0,c,s,0, 0,-s,c,0, 0,0,0,1]);}
+function m4rz(a){const c=Math.cos(a),s=Math.sin(a);return new Float32Array([c,s,0,0, -s,c,0,0, 0,0,1,0, 0,0,0,1]);}
+function m4mul2(a,b){
+  const r=new Float32Array(16);
+  for(let i=0;i<4;i++) for(let j=0;j<4;j++){
+    let s=0; for(let k=0;k<4;k++) s+=a[i+k*4]*b[k+j*4]; r[i+j*4]=s;
+  }
+  return r;
+}
+function m4mulV(m,v){
+  return [
+    m[0]*v[0]+m[4]*v[1]+m[8]*v[2]+m[12],
+    m[1]*v[0]+m[5]*v[1]+m[9]*v[2]+m[13],
+    m[2]*v[0]+m[6]*v[1]+m[10]*v[2]+m[14],
+  ];
+}
+
+// ── Fitting outlet info ───────────────────────────────────────────
+// Returns {pos:[x,y,z], fwd:[x,y,z], up:[x,y,z], w, d}
+// in the fitting's LOCAL coordinate space
+// pos = where the outlet center is
+// fwd = direction flow exits (unit vector)
+function getFittingOutlet(item){
+  const dv=item.d, id=item.id;
+  const S=1/12;
+  const A=dv.A||24, B=dv.B||12;
+  const as=A*S, bs=B*S;
+
+  // inlet = local coords of inlet face center (cursor attaches here)
+  // pos   = local coords of outlet face center
+  // fwd   = local flow direction out of outlet (unit vec)
+  // up    = local up vector for building next cursor basis
+  // rotate90 = fitting flows along Y, needs rotation to align with +X flow
+
+  if(id==='st'){
+    const cs=(dv.C||48)*S;
+    // obox(-cs/2,cs/2,...): open left(x=-cs/2) and right(x=+cs/2)
+    return {inlet:[-cs/2,0,0], pos:[cs/2,0,0], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
+  }
+  if(id==='e90'||id==='e45'||id==='ev'){
+    // Arc center at origin, inlet at (-Rmid,0,0) in XY plane
+    const Dang=(dv.D||90)*Math.PI/180;
+    const Ri=(dv.G||A*0.5)*S, Ro=Ri+as, Rmid=(Ri+Ro)/2;
+    const a1r=Math.PI+Dang; // outlet angle
+    const ox=Rmid*Math.cos(a1r), oy=Rmid*Math.sin(a1r);
+    // Tangent at outlet (perpendicular to radius, pointing away)
+    const fx=-Math.sin(a1r), fy=Math.cos(a1r);
+    return {inlet:[-Rmid,0,0], pos:[ox,oy,0], fwd:[fx,fy,0], up:[0,0,1], w:A, d:B};
+  }
+  if(id==='sqe'||id==='me'){
+    // L-shape: inlet on left face, outlet on bottom
+    const dt=(dv.D||6)*S, de=(dv.E||6)*S, cw=(dv.C||A)*S;
+    return {inlet:[-dt,as/2,0], pos:[cw/2,-(de),0], fwd:[0,-1,0], up:[0,0,1], w:dv.C||A, d:B};
+  }
+  if(id==='tr'){
+    // Transition: y=0=inlet(large A×B), y=lE=outlet(small C×D)
+    // rotate90 (-PI/2 around Z) aligns Y-flow with X-cursor
+    // After rotation: inlet(y=0)->x=0, outlet(y=lE)->x=lE, fwd->+X
+    const lE=(dv.E||16)*S;
+    return {inlet:[0,0,0], pos:[0,lE,0], fwd:[0,1,0], up:[0,0,1],
+            w:A, d:B, outW:dv.C||20, outD:dv.Dp||10, rotate90:true};
+  }
+  if(id==='reo'){
+    // Rect offset: inlet x=0 face center at (0, lA/2, 0)
+    // outlet x=lC face center at (lC, lA/2-lF, 0) where lF is the shift
+    const lC=(dv.C||40)*S, lF=(dv.F||0)*S, lA=as;
+    // Offset direction: user picks via piece.elbowDir (reuse dir field)
+    // Default: offset goes in +Y (upward in local space)
+    // inlet center: (0, lA/2, 0) — midpoint of inlet face
+    // outlet center: (lC, lA/2-lF, 0)
+    return {inlet:[0,lA/2,0], pos:[lC,lA/2-lF,0], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
+  }
+  if(id==='ro'){
+    // S-curve flows along Z, offset along X by H
+    const lE2=(dv.E||32)*S, H22=(dv.H||8)*S;
+    return {inlet:[0,0,0], pos:[H22,0,lE2], fwd:[0,0,1], up:[0,1,0], w:A, d:B};
+  }
+  // Default: flows along Y
+  return {inlet:[0,0,0], pos:[0,as,0], fwd:[0,1,0], up:[0,0,1], w:A, d:B};
+}
+
+function getFittingInletDims(item){
+  const dv=item.d, id=item.id;
+  const A=dv.A||24, B=dv.B||12;
+  // Most fittings inlet is A×B
+  return {w:A, d:B};
+}
+
+// ── Direction for elbows ──────────────────────────────────────────
+// When adding an elbow, user picks: right/left/up/down
+// This returns an extra rotation to apply to the fitting
+function elbowDirMatrix(dir){
+  // Elbow default: inlet along -X, turns to outlet along +Y (right turn in XY plane)
+  if(dir==='right') return m4id();
+  if(dir==='left')  return m4rx(Math.PI);   // flip arc to turn left
+  if(dir==='up')    return m4rx(Math.PI/2); // rotate arc up
+  if(dir==='down')  return m4rx(-Math.PI/2);// rotate arc down
+  return m4id();
+}
+
+// ── Build the assembled geometry ─────────────────────────────────
+function buildRunGeometry(){
+  const allVerts = [];
+  let cursor = {
+    pos: [0,0,0],
+    mat: m4id(),  // rotation matrix for current flow direction
+  };
+
+  runState.pieces.forEach((piece, pi) => {
+    const {item, dir} = piece;
+    const localVerts = buildFitting(item.id, item.var, item.d);
+    const outlet = getFittingOutlet(item);
+
+    // Apply rotation around flow axis (roll)
+    const rollAngles = [0, Math.PI/2, Math.PI, -Math.PI/2];
+    const rollAngle = rollAngles[piece.rot||0];
+    let rollMat = rollAngle ? m4rx(rollAngle) : m4id();
+
+    // Apply elbow direction rotation
+    let localMat = rollMat;
+    const isElbow = ['e90','e45','ev','sqe','me'].includes(item.id);
+    if(isElbow && dir) localMat = m4mul2(elbowDirMatrix(dir), rollMat);
+    else if((item.id==='reo'||item.id==='ro') && dir) localMat = m4mul2(elbowDirMatrix(dir), rollMat);
+    // Fittings with Y-axis flow need 90° rotation to align inlet with +X
+    if(outlet.rotate90) localMat = m4mul2(m4rz(-Math.PI/2), localMat);
+
+    const worldMat = m4mul2(cursor.mat, localMat);
+
+    // Translate so fitting's inlet aligns with cursor.pos
+    const inlet = outlet.inlet || [0,0,0];
+    const worldInlet = m4mulV(worldMat, inlet);
+    const tx = cursor.pos[0] - worldInlet[0];
+    const ty2 = cursor.pos[1] - worldInlet[1];
+    const tz = cursor.pos[2] - worldInlet[2];
+
+    // buildFitting returns [x,y,z, x,y,z, x,y,z...] (3 floats/vert, raw triangles, no normals)
+    // Compute normals per triangle then transform
+    for(let i=0; i<localVerts.length; i+=9){
+      const ax=localVerts[i],   ay=localVerts[i+1], az=localVerts[i+2];
+      const bx=localVerts[i+3], by=localVerts[i+4], bz=localVerts[i+5];
+      const cx=localVerts[i+6], cy=localVerts[i+7], cz=localVerts[i+8];
+      // Edge vectors
+      const ex=bx-ax, ey=by-ay, ez=bz-az;
+      const fx=cx-ax, fy=cy-ay, fz=cz-az;
+      // Cross product for normal
+      let nx=ey*fz-ez*fy, ny=ez*fx-ex*fz, nz=ex*fy-ey*fx;
+      const nl=Math.sqrt(nx*nx+ny*ny+nz*nz)||1;
+      nx/=nl; ny/=nl; nz/=nl;
+      // Transform all 3 vertices
+      const hi=((pi===runSelectedPiece)?1.0:0.0);
+      [[ax,ay,az],[bx,by,bz],[cx,cy,cz]].forEach(function(v){
+        const wp=m4mulV(worldMat,[v[0],v[1],v[2]]);
+        const wn=m4mulV(worldMat,[nx,ny,nz]);
+        allVerts.push(wp[0]+tx,wp[1]+ty2,wp[2]+tz, wn[0],wn[1],wn[2], hi);
+      });
+    }
+
+    // Advance cursor to outlet of this fitting
+    // Transform outlet pos/fwd through world matrix
+    const outWorldPos = m4mulV(worldMat, outlet.pos);
+    const outWorldFwd = m4mulV(worldMat, outlet.fwd);
+    const outWorldUp  = m4mulV(worldMat, outlet.up);
+
+    // New cursor position
+    cursor.pos = [
+      tx + outWorldPos[0],
+      ty2 + outWorldPos[1],
+      tz + outWorldPos[2],
+    ];
+
+    // Build new rotation matrix so that the next fitting's inlet (+X axis)
+    // aligns with the current outlet's forward direction
+    const fw = normalize3(outWorldFwd);
+    const up = normalize3(outWorldUp);
+    // Gram-Schmidt: make up orthogonal to fw
+    const dot = fw[0]*up[0]+fw[1]*up[1]+fw[2]*up[2];
+    const up2 = normalize3([up[0]-dot*fw[0], up[1]-dot*fw[1], up[2]-dot*fw[2]]);
+    const rt = cross3(fw, up2);
+    // New basis: X=forward(fw), Y=up2, Z=right(rt)
+    // Column-major 4x4
+    cursor.mat = new Float32Array([
+      fw[0], fw[1], fw[2], 0,
+      up2[0],up2[1],up2[2],0,
+      rt[0], rt[1], rt[2], 0,
+      0,     0,     0,     1
+    ]);
+
+
+    // Draw seam line — rectangular outline at each piece outlet face
+    // This shows where pieces connect
+    {
+      const hW=(item.d.A||24)/(12*2), hD=(item.d.B||12)/(12*2);
+      const fwdV=[worldMat[0],worldMat[1],worldMat[2]];
+      const upV=[worldMat[4],worldMat[5],worldMat[6]];
+      const rtV=[worldMat[8],worldMat[9],worldMat[10]];
+      const ox=tx+m4mulV(worldMat,outlet.pos)[0];
+      const oy=ty2+m4mulV(worldMat,outlet.pos)[1];
+      const oz=tz+m4mulV(worldMat,outlet.pos)[2];
+      // 4 corners of the outlet face
+      const t2=0.012;
+      const corners=[
+        [ox+upV[0]*hW+rtV[0]*hD, oy+upV[1]*hW+rtV[1]*hD, oz+upV[2]*hW+rtV[2]*hD],
+        [ox-upV[0]*hW+rtV[0]*hD, oy-upV[1]*hW+rtV[1]*hD, oz-upV[2]*hW+rtV[2]*hD],
+        [ox-upV[0]*hW-rtV[0]*hD, oy-upV[1]*hW-rtV[1]*hD, oz-upV[2]*hW-rtV[2]*hD],
+        [ox+upV[0]*hW-rtV[0]*hD, oy+upV[1]*hW-rtV[1]*hD, oz+upV[2]*hW-rtV[2]*hD],
+      ];
+      // Draw 4 thin quads forming a rectangle outline
+      for(let ci=0;ci<4;ci++){
+        const a=corners[ci], b=corners[(ci+1)%4];
+        const nx=fwdV[0],ny=fwdV[1],nz=fwdV[2];
+        const a2=[a[0]+fwdV[0]*t2,a[1]+fwdV[1]*t2,a[2]+fwdV[2]*t2];
+        const b2=[b[0]+fwdV[0]*t2,b[1]+fwdV[1]*t2,b[2]+fwdV[2]*t2];
+        allVerts.push(a[0],a[1],a[2],nx,ny,nz,0, b[0],b[1],b[2],nx,ny,nz,0, a2[0],a2[1],a2[2],nx,ny,nz,0);
+        allVerts.push(b[0],b[1],b[2],nx,ny,nz,0, b2[0],b2[1],b2[2],nx,ny,nz,0, a2[0],a2[1],a2[2],nx,ny,nz,0);
+      }
+    }
+    piece.worldPos = [...cursor.pos];
+  });
+
+  return new Float32Array(allVerts);
+}
+
+function normalize3(v){
+  const l=Math.sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2])||1;
+  return [v[0]/l,v[1]/l,v[2]/l];
+}
+function cross3(a,b){
+  return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+}
+
+// ── WebGL upload & draw ───────────────────────────────────────────
+function runDraw(){
+  const cv=document.getElementById('runCv');
+  if(!cv) return;
+  // Always get context fresh from canvas
+  const gl=cv.getContext('webgl')||cv.getContext('experimental-webgl');
+  if(!gl) return;
+  // Ensure our prog is current
+  if(!runState.prog) return;
+  const vp=document.getElementById('runVp');
+  const W=vp.clientWidth||window.innerWidth, H=vp.clientHeight||300;
+  cv.width=W; cv.height=H;
+  // Keep runLv in sync
+  const rlv=document.getElementById('runLv');
+  if(rlv&&(rlv.width!==W||rlv.height!==H)){rlv.width=W;rlv.height=H;}
+  gl.viewport(0,0,W,H);
+  gl.useProgram(runState.prog);
+  gl.clearColor(0.22,0.32,0.42,1);
+  gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  if(!runState.vc){
+    drawRunLabels(); // clear labels
+    return;
+  }
+
+  // Compute center of run for camera target
+  let minX=0,maxX=0,minY=0,maxY=0,minZ=0,maxZ=0;
+  runState.pieces.forEach(p=>{
+    if(!p.worldPos) return;
+    const[wx,wy,wz]=p.worldPos;
+    minX=Math.min(minX,wx);maxX=Math.max(maxX,wx);
+    minY=Math.min(minY,wy);maxY=Math.max(maxY,wy);
+    minZ=Math.min(minZ,wz);maxZ=Math.max(maxZ,wz);
+  });
+  const cx=(minX+maxX)/2, cy=(minY+maxY)/2, cz=(minZ+maxZ)/2;
+  const camR=runState.camR;
+  const rX=runState.rX, rY=runState.rY;
+  const ex=cx+camR*Math.sin(rY)*Math.cos(rX);
+  const ey=cy+camR*Math.sin(rX);
+  const ez=cz+camR*Math.cos(rY)*Math.cos(rX);
+
+  const view=lookAt(ex,ey,ez,cx,cy,cz);
+  const proj=persp(0.733,cv.width/(cv.height||1),camR*.001,camR*100);
+  const mvp=m4mul(proj,view);
+  gl.uniformMatrix4fv(runState.uMVP,false,mvp);
+  // Bind the run buffer before drawing
+  runState.gl=gl;
+  gl.bindBuffer(gl.ARRAY_BUFFER,runState.buf);
+  const posA=gl.getAttribLocation(runState.prog,'pos');
+  const nrmA=gl.getAttribLocation(runState.prog,'nrm');
+  const hiA2=gl.getAttribLocation(runState.prog,'hi');
+  gl.enableVertexAttribArray(posA); gl.enableVertexAttribArray(nrmA);
+  if(hiA2>=0) gl.enableVertexAttribArray(hiA2);
+  gl.vertexAttribPointer(posA,3,gl.FLOAT,false,28,0);
+  gl.vertexAttribPointer(nrmA,3,gl.FLOAT,false,28,12);
+  if(hiA2>=0) gl.vertexAttribPointer(hiA2,1,gl.FLOAT,false,28,24);
+  gl.drawArrays(gl.TRIANGLES,0,runState.vc);
+  // Draw 2D dimension labels on overlay canvas
+  drawRunLabels();
+}
+
+function drawRunLabels(){
+  const lv = document.getElementById('runLv');
+  if(!lv) return;
+  const vp = document.getElementById('runVp');
+  const lw = (vp&&vp.clientWidth) || window.innerWidth || 800;
+  const lh = (vp&&vp.clientHeight) || 300;
+  if(lv.width!==lw||lv.height!==lh){ lv.width=lw; lv.height=lh; }
+  const lctx = lv.getContext('2d');
+  if(!lctx) return;
+  lctx.clearRect(0,0,lv.width,lv.height);
+  if(!runState.pieces.length) return;
+
+  // Rebuild MVP to match runDraw
+  let minX=0,maxX=0,minY=0,maxY=0,minZ=0,maxZ=0;
+  runState.pieces.forEach(p=>{
+    if(!p.worldPos) return;
+    const[wx,wy,wz]=p.worldPos;
+    minX=Math.min(minX,wx);maxX=Math.max(maxX,wx);
+    minY=Math.min(minY,wy);maxY=Math.max(maxY,wy);
+    minZ=Math.min(minZ,wz);maxZ=Math.max(maxZ,wz);
+  });
+  const cx=(minX+maxX)/2, cy=(minY+maxY)/2, cz=(minZ+maxZ)/2;
+  const span=Math.max(maxX-minX,maxY-minY,maxZ-minZ,3);
+  const camR=runState.camR||span*1.5+1; // use same camera as runDraw
+  const rX=runState.rX, rY=runState.rY;
+  const ex=cx+camR*Math.sin(rY)*Math.cos(rX);
+  const ey=cy+camR*Math.sin(rX);
+  const ez=cz+camR*Math.cos(rY)*Math.cos(rX);
+  const view=lookAt(ex,ey,ez,cx,cy,cz);
+  const proj=persp(0.733,lv.width/(lv.height||1),camR*.001,camR*100);
+  const mvp=m4mul(proj,view);
+
+  function proj3(x,y,z){return project3D(x,y,z,mvp,lv.width,lv.height);}
+
+  function drawLabel(text, x,y,z, offsetX, offsetY, col, bg){
+    const p=proj3(x,y,z); if(!p) return;
+    const px=p[0]+offsetX, py=p[1]+offsetY;
+    lctx.font='bold 10px sans-serif';
+    const tw=lctx.measureText(text).width;
+    lctx.fillStyle=bg||'rgba(10,20,35,0.82)';
+    lctx.beginPath();
+    lctx.roundRect(px-tw/2-3,py-8,tw+6,14,3);
+    lctx.fill();
+    lctx.fillStyle=col||'#fff';
+    lctx.textAlign='center';
+    lctx.fillText(text,px,py+3);
+  }
+
+  function drawDimLine(x1,y1,z1, x2,y2,z2, label, col){
+    const p1=proj3(x1,y1,z1), p2=proj3(x2,y2,z2); if(!p1||!p2) return;
+    // Dashed line
+    lctx.strokeStyle=col||'rgba(255,220,80,0.7)';
+    lctx.lineWidth=1.5;
+    lctx.setLineDash([4,3]);
+    lctx.beginPath();
+    lctx.moveTo(p1[0],p1[1]);
+    lctx.lineTo(p2[0],p2[1]);
+    lctx.stroke();
+    lctx.setLineDash([]);
+    // Tick ends
+    const ang=Math.atan2(p2[1]-p1[1],p2[0]-p1[0]);
+    const perp=ang+Math.PI/2;
+    [[p1[0],p1[1]],[p2[0],p2[1]]].forEach(([px,py])=>{
+      lctx.beginPath();
+      lctx.moveTo(px+Math.cos(perp)*5,py+Math.sin(perp)*5);
+      lctx.lineTo(px-Math.cos(perp)*5,py-Math.sin(perp)*5);
+      lctx.stroke();
+    });
+    // Label at midpoint
+    const mx=(p1[0]+p2[0])/2, my=(p1[1]+p2[1])/2;
+    const tw2=lctx.measureText(label).width;
+    lctx.font='bold 10px sans-serif';
+    lctx.fillStyle='rgba(10,20,35,0.85)';
+    lctx.beginPath();
+    lctx.roundRect(mx-tw2/2-4,my-9,tw2+8,16,3);
+    lctx.fill();
+    lctx.strokeStyle=col||'rgba(255,220,80,0.9)';
+    lctx.lineWidth=1;
+    lctx.beginPath();
+    lctx.roundRect(mx-tw2/2-4,my-9,tw2+8,16,3);
+    lctx.stroke();
+    lctx.fillStyle=col||'rgba(255,220,80,1)';
+    lctx.textAlign='center';
+    lctx.fillText(label,mx,my+4);
+  }
+
+  // Track cursor position for labels (same logic as buildRunGeometry)
+  let cursor={pos:[0,0,0], mat:m4id()};
+  const connOpts2=['S+D','TDC','F1','F1.5','F2','RAW'];
+
+  runState.pieces.forEach(function(piece,pi){
+    const item=piece.item, dir=piece.dir;
+    const outlet=getFittingOutlet(item);
+    const dv=item.d;
+    const A=dv.A||24, B=dv.B||12;
+
+    const rollAngles=[0,Math.PI/2,Math.PI,-Math.PI/2];
+    const rollAngle=rollAngles[piece.rot||0];
+    let rollMat=rollAngle?m4rx(rollAngle):m4id();
+    let localMat=rollMat;
+    const isElbow=['e90','e45','ev','sqe','me'].includes(item.id);
+    if(isElbow&&dir) localMat=m4mul2(elbowDirMatrix(dir),rollMat);
+    else if((item.id==='reo'||item.id==='ro')&&dir) localMat=m4mul2(elbowDirMatrix(dir),rollMat);
+    if(outlet.rotate90) localMat=m4mul2(m4rz(-Math.PI/2),localMat);
+
+    const worldMat=m4mul2(cursor.mat,localMat);
+    const inlet=outlet.inlet||[0,0,0];
+    const worldInlet=m4mulV(worldMat,inlet);
+    const tx=cursor.pos[0]-worldInlet[0];
+    const ty2=cursor.pos[1]-worldInlet[1];
+    const tz=cursor.pos[2]-worldInlet[2];
+
+    // Inlet label position
+    const inWorld=[tx+worldInlet[0], ty2+worldInlet[1], tz+worldInlet[2]];
+
+    // Connector info
+    const cn1=connOpts2[dv.CN1||0]||'S+D';
+    const cn2=connOpts2[dv.CN2||0]||'S+D';
+
+    // Label at inlet: show dims and C1
+    const inLabel=A+'×'+B+'" '+cn1;
+    drawLabel(inLabel, inWorld[0],inWorld[1],inWorld[2], 0,-18, '#aef','rgba(10,30,50,0.85)');
+
+    // Advance cursor
+    const outWorldPos=m4mulV(worldMat,outlet.pos);
+    const outPos=[tx+outWorldPos[0], ty2+outWorldPos[1], tz+outWorldPos[2]];
+
+    // Label at outlet: show outlet dims and C2
+    const outW=outlet.outW||A, outD=outlet.outD||B;
+    const outLabel=outW+'×'+outD+'" '+cn2;
+    if(pi===runState.pieces.length-1){
+      drawLabel(outLabel, outPos[0],outPos[1],outPos[2], 0,-18, '#aef','rgba(10,30,50,0.85)');
+    }
+
+    // Update cursor
+    const outWorldFwd=m4mulV(worldMat,outlet.fwd);
+    const outWorldUp=m4mulV(worldMat,outlet.up);
+    const fw=normalize3(outWorldFwd);
+    const up=normalize3(outWorldUp);
+    const dot2=fw[0]*up[0]+fw[1]*up[1]+fw[2]*up[2];
+    const up2=normalize3([up[0]-dot2*fw[0],up[1]-dot2*fw[1],up[2]-dot2*fw[2]]);
+    const rt=cross3(fw,up2);
+    cursor.pos=outPos;
+    cursor.mat=new Float32Array([fw[0],fw[1],fw[2],0, up2[0],up2[1],up2[2],0, rt[0],rt[1],rt[2],0, 0,0,0,1]);
+  });
+
+  // ── SEGMENT DIMENSION LINES ──────────────────────────────────────────
+  // piece.worldPos = outlet of that piece (set by buildRunGeometry)
+  // inlet of piece[i] = worldPos of piece[i-1], or [0,0,0] for piece[0]
+  const TURNING_IDS2 = new Set(['e90','e45','ev','rgn','sqe','me','ro','reo']);
+  const SEG_COLORS = ['rgba(255,220,80,0.95)','rgba(80,220,180,0.95)','rgba(180,130,255,0.95)','rgba(255,150,60,0.95)'];
+
+  const segments2 = [];
+  let segStart2 = [0,0,0];  // inlet of first piece
+  let segLenIn = 0;          // accumulated length in inches
+
+  runState.pieces.forEach(function(piece, pi){
+    if(!piece.worldPos) return;
+    const outPos = piece.worldPos;           // outlet of this piece
+    const inPos  = pi===0 ? [0,0,0] : runState.pieces[pi-1].worldPos;
+    if(!inPos) return;
+
+    // Length of this piece in world units (×12 → inches)
+    const dx=outPos[0]-inPos[0], dy=outPos[1]-inPos[1], dz=outPos[2]-inPos[2];
+    segLenIn += Math.sqrt(dx*dx+dy*dy+dz*dz)*12;
+
+    const isTurning2 = TURNING_IDS2.has(piece.item.id);
+    const isLast2    = pi === runState.pieces.length-1;
+
+    if(isTurning2 || isLast2){
+      if(segLenIn > 0.5){
+        segments2.push({ start:[...segStart2], end:[...outPos], len:segLenIn });
+      }
+      segStart2 = [...outPos];
+      segLenIn  = 0;
+    }
+  });
+
+  segments2.forEach(function(seg, si){
+    const sx=seg.start[0], sy=seg.start[1], sz=seg.start[2];
+    const ex2=seg.end[0],  ey2=seg.end[1],  ez2=seg.end[2];
+    const col2 = SEG_COLORS[si % SEG_COLORS.length];
+
+    // Segment direction unit vector
+    const ddx=ex2-sx, ddy=ey2-sy, ddz=ez2-sz;
+    const dlenS=Math.sqrt(ddx*ddx+ddy*ddy+ddz*ddz)||1;
+    const dnx=ddx/dlenS, dny=ddy/dlenS, dnz=ddz/dlenS;
+
+    // Perpendicular offset = cross(segDir, worldUp[0,1,0])
+    //   cross(d,up): cx=-dnz, cy=0, cz=dnx
+    let cx2=-dnz, cy2=0, cz2=dnx;
+    const clen2=Math.sqrt(cx2*cx2+cz2*cz2);
+    if(clen2 > 0.01){ cx2/=clen2; cz2/=clen2; } else { cx2=0; cy2=0; cz2=1; }
+
+    // Scale offset so the dim line sits visibly beside the duct
+    // Use half the duct A dim in world units (A is in inches, /12 = feet)
+    const ductA = (seg.len > 0 && runState.pieces.length > 0)
+      ? ((runState.pieces[0].item.d.A||16)/12) : 0.5;
+    const offS = Math.max(ductA * 1.2, (runState.camR||5) * 0.12);
+    const ox=cx2*offS, oy=cy2*offS, oz=cz2*offS;
+
+    const lenFt = seg.len/12;
+    const lenLabel = lenFt>=1 ? lenFt.toFixed(1)+"'" : Math.round(seg.len)+'"';
+
+    // Witness lines from duct endpoints out to dim line
+    function tick(wx,wy,wz){
+      const pa=proj3(wx,wy,wz), pb=proj3(wx+ox,wy+oy,wz+oz);
+      if(!pa||!pb) return;
+      lctx.save();
+      lctx.strokeStyle=col2; lctx.lineWidth=1; lctx.setLineDash([3,3]);
+      lctx.globalAlpha=0.7;
+      lctx.beginPath(); lctx.moveTo(pa[0],pa[1]); lctx.lineTo(pb[0],pb[1]); lctx.stroke();
+      lctx.restore();
+    }
+    tick(sx,sy,sz);
+    tick(ex2,ey2,ez2);
+
+    // Main dimension line with ticks and label
+    const pa=proj3(sx+ox,sy+oy,sz+oz), pb=proj3(ex2+ox,ey2+oy,ez2+oz);
+    if(!pa||!pb) return;
+    // Line
+    lctx.save();
+    lctx.strokeStyle=col2; lctx.lineWidth=2; lctx.setLineDash([]);
+    lctx.beginPath(); lctx.moveTo(pa[0],pa[1]); lctx.lineTo(pb[0],pb[1]); lctx.stroke();
+    // End ticks
+    const ang2=Math.atan2(pb[1]-pa[1],pb[0]-pa[0]), perp2=ang2+Math.PI/2;
+    [[pa[0],pa[1]],[pb[0],pb[1]]].forEach(([px2,py2])=>{
+      lctx.beginPath();
+      lctx.moveTo(px2+Math.cos(perp2)*6,py2+Math.sin(perp2)*6);
+      lctx.lineTo(px2-Math.cos(perp2)*6,py2-Math.sin(perp2)*6);
+      lctx.stroke();
+    });
+    // Label pill at midpoint
+    const mx2=(pa[0]+pb[0])/2, my2=(pa[1]+pb[1])/2;
+    lctx.font='bold 11px sans-serif';
+    const tw3=lctx.measureText(lenLabel).width;
+    lctx.fillStyle='rgba(8,18,32,0.88)';
+    lctx.beginPath(); lctx.roundRect(mx2-tw3/2-5,my2-10,tw3+10,18,4); lctx.fill();
+    lctx.strokeStyle=col2; lctx.lineWidth=1.5;
+    lctx.beginPath(); lctx.roundRect(mx2-tw3/2-5,my2-10,tw3+10,18,4); lctx.stroke();
+    lctx.fillStyle=col2; lctx.textAlign='center'; lctx.textBaseline='middle';
+    lctx.fillText(lenLabel, mx2, my2+1);
+    lctx.restore();
+  });
+}
+
+function runUpload(){
+  if(!runState.pieces.length){runState.vc=0;return;}
+  // Initialize GL synchronously if needed
+  if(!runState.prog){ initRunGL(); }
+  if(!runState.prog){ setTimeout(runUpload,100); return; }
+  const verts=buildRunGeometry();
+  const rcv=document.getElementById('runCv');
+  const gl=rcv?(rcv.getContext('webgl')||rcv.getContext('experimental-webgl')):null;
+  gl.bindBuffer(gl.ARRAY_BUFFER,runState.buf);
+  gl.bufferData(gl.ARRAY_BUFFER,verts,gl.DYNAMIC_DRAW);
+  const p=runState.prog;
+  gl.useProgram(p);
+  const posA=gl.getAttribLocation(p,'pos'), nrmA=gl.getAttribLocation(p,'nrm');
+  if(posA<0||nrmA<0){ console.error('[RUN] attrib not found'); return; }
+  gl.enableVertexAttribArray(posA); gl.enableVertexAttribArray(nrmA);
+  gl.vertexAttribPointer(posA,3,gl.FLOAT,false,24,0);
+  gl.vertexAttribPointer(nrmA,3,gl.FLOAT,false,24,12);
+  runState.vc=verts.length/7;
+  // Auto-fit camera only on first piece
+  if(runState.pieces.length===1){
+    runState.camR = 5;
+    runState.rX = 0.4; runState.rY = 0.6;
+    runState.userZoomed = false;
+  }
+  runDraw();
+}
+
+// ── Add item to run ───────────────────────────────────────────────
+function addToRun(item){
+  // Used when adding from list view — just push directly
+  runState.pieces.push({item, dir:null});
+  runUpload();
+  renderRunPieces();
+}
+
+function setElbowDir(dir){
+  if(!runState.pendingElbow) return;
+  runState.pieces.push({item:runState.pendingElbow, dir});
+  runState.pendingElbow = null;
+  document.getElementById('runDirPicker').style.display='none';
+  document.getElementById('runAddBtn').style.display='';
+  runUpload();
+  renderRunPieces();
+  const ab2=document.getElementById('runAddBtn');
+  ab2.textContent='✓ Added!'; ab2.style.background='#1a6e52';
+  setTimeout(()=>{ab2.textContent='Add to Run'; ab2.style.background='var(--teal)';},1000);
+}
+
+function selectRunPiece(i){
+  if(runSelectedPiece === i){
+    // Deselect — go back to new-piece mode
+    runSelectedPiece = -1;
+    runEditingPiece = -1;
+    syncRunAddBtn();
+    renderRunPieces();
+    runUpload();
+    return;
+  }
+  runSelectedPiece = i;
+  runEditingPiece = i;
+  syncRunAddBtn();
+  renderRunPieces();
+  runUpload();
+  // Load this piece's dims into the picker
+  const p = runState.pieces[i];
+  if(!p) return;
+  // Select the fitting in the pallet grid
+  selectRunFit(p.item.id);
+  // Then override dim values with the piece's actual saved dims
+  const dv = p.item.d;
+  Object.entries(dv).forEach(([k,v])=>{
+    const el = document.getElementById('rp_'+k);
+    if(el) el.value = v;
+  });
+  // Scroll card into view
+  const strip = document.getElementById('runPieces');
+  const cards = strip.querySelectorAll('.run-piece');
+  if(cards[i]) cards[i].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+}
+
+function syncRunAddBtn(){
+  const btn = document.getElementById('runAddBtn');
+  if(!btn) return;
+  if(runEditingPiece >= 0){
+    btn.textContent = '💾 Save Changes';
+    btn.style.background = '#e07b00';
+  } else {
+    btn.textContent = 'Add to Run';
+    btn.style.background = 'var(--teal)';
+  }
+}
+
+function removeRunPiece(i){
+  if(runSelectedPiece === i || runEditingPiece === i){
+    runSelectedPiece = -1;
+    runEditingPiece = -1;
+    syncRunAddBtn();
+  } else {
+    if(runSelectedPiece > i) runSelectedPiece--;
+    if(runEditingPiece > i) runEditingPiece--;
+  }
+  runState.pieces.splice(i);
+  runUpload();
+  renderRunPieces();
+}
+
+function showRunError(msg){
+  const s=document.getElementById('runStats');
+  s.style.color='#ff5050';
+  s.textContent='⚠ '+msg;
+  setTimeout(()=>{s.style.color='';renderRunStats();},3000);
+}
+
+// ── Render piece list ─────────────────────────────────────────────
+function renderRunPieces(){
+  const el=document.getElementById('runPieces');
+  if(!runState.pieces.length){
+    el.innerHTML='<div style="font-size:12px;color:#bbb;padding:8px;align-self:center">Tap items from your list → 🔧 Run</div>';
+    renderRunStats(); return;
+  }
+  const connLabels=['S+D','TDC','F1','F1.5','F2','RAW'];
+  el.innerHTML=runState.pieces.map((p,i)=>{
+    const dv=p.item.d;
+    const A=dv.A||'?', B=dv.B||'?';
+    const dirLabel=p.dir?` <span style="font-weight:400;color:#888">(${p.dir})</span>`:'';
+    const c1=connLabels[dv.CN1||0]||'S+D';
+    const c2=connLabels[dv.CN2||0]||'S+D';
+    const hasCN2 = p.item.d.hasOwnProperty('CN2') || (()=>{
+      const f=DB.find(x=>x.id===p.item.id);
+      return f && f.dims.some(d=>d.id==='CN2');
+    })();
+    const connRow = hasCN2
+      ? `<div class="rp-connrow"><span class="rp-badge c1">IN:${c1}</span><span class="rp-badge c2">OUT:${c2}</span></div>`
+      : `<div class="rp-connrow"><span class="rp-badge c1">${c1}</span></div>`;
+    const isActive = i === runSelectedPiece;
+    return `<div class="run-piece${isActive?' active-piece':''}" onclick="selectRunPiece(${i})" title="Tap to highlight">
+      <button class="rp-del" onclick="event.stopPropagation();removeRunPiece(${i})" title="Remove">×</button>
+      <div class="rp-name">${p.item.n}${dirLabel}</div>
+      <div class="rp-dims">${A}×${B}"</div>
+      ${connRow}
+    </div>`;
+  }).join('')+'<div style="font-size:11px;color:#bbb;padding:8px;align-self:center;flex-shrink:0">← tap piece to cut run here</div>';
+  renderRunStats();
+}
+
+function renderRunStats(){
+  const s=document.getElementById('runStats');
+  if(!runState.pieces.length){s.textContent='';return;}
+  let straightFt=0, totalPcs=runState.pieces.length;
+  runState.pieces.forEach(p=>{
+    if(p.item.id==='st') straightFt+=(p.item.d.C||48)/12;
+  });
+  // Total run length from first to last worldPos
+  let runLen=0;
+  if(runState.pieces.length>0 && runState.pieces[runState.pieces.length-1].worldPos){
+    const last=runState.pieces[runState.pieces.length-1].worldPos;
+    runLen=Math.sqrt(last[0]*last[0]+last[1]*last[1]+last[2]*last[2])*12; // in inches
+  }
+  s.style.color='';
+  const lenStr = runLen>0 ? ` · ~${(runLen/12).toFixed(1)}ft run` : '';
+  s.textContent=`${totalPcs} piece${totalPcs!==1?'s':''}${straightFt>0?' · '+straightFt.toFixed(1)+'ft straight':''}${lenStr}`;
+}
+
+// ── Hook into list items ──────────────────────────────────────────
+// Patch renderList to add +Run buttons when run screen is open
+function patchListForRun(){
+  if(!document.getElementById('runScreen').classList.contains('slide-in')) return;
+  const items=document.querySelectorAll('#listArea .li');
+  items.forEach((el,i)=>{
+    if(el.querySelector('.run-add-btn')) return; // already patched
+    const btn=document.createElement('button');
+    btn.className='run-add-btn';
+    btn.textContent='+Run';
+    btn.style.cssText='position:absolute;top:8px;right:36px;background:var(--teal);color:#fff;border:none;border-radius:6px;padding:3px 7px;font-size:10px;font-weight:700;cursor:pointer;z-index:2';
+    btn.onclick=e=>{e.stopPropagation();addToRun(listItems[i]);closeList();};
+    el.style.position='relative';
+    el.appendChild(btn);
+  });
+}
+
 // ── TOUCH CONTROLS ─────────────────────────────────────────────────────
 let pinchDist=null;
 
@@ -1965,6 +3330,7 @@ cv.addEventListener('wheel', e => { camR *= e.deltaY > 0 ? 1.1 : .91; e.preventD
 // Single touch = rotate
 let lastTouch = null;
 cv.addEventListener('touchstart', e => {
+  e.preventDefault();
   if(e.touches.length === 1){ lastTouch = e.touches[0]; pinchDist = null; }
   else if(e.touches.length === 2){
     const dx = e.touches[0].clientX - e.touches[1].clientX;
@@ -1972,7 +3338,7 @@ cv.addEventListener('touchstart', e => {
     pinchDist = Math.sqrt(dx*dx + dy*dy);
     lastTouch = null;
   }
-}, {passive:true});
+}, {passive:false});
 
 cv.addEventListener('touchmove', e => {
   e.preventDefault();
@@ -2006,4 +3372,134 @@ window.addEventListener('load', () => {
 });
 </script>
 </body>
-</html>
+</htmlfunction _drawRunLabels(W,H){
+  const lv=document.getElementById('runLv');
+  if(!lv||!runState.pieces.length) return;
+  if(!runState.prog) return;
+
+  // Rebuild MVP same as runDraw
+  let minX=0,maxX=0,minY=0,maxY=0,minZ=0,maxZ=0;
+  runState.pieces.forEach(p=>{
+    if(!p.worldPos) return;
+    const[wx,wy,wz]=p.worldPos;
+    minX=Math.min(minX,wx);maxX=Math.max(maxX,wx);
+    minY=Math.min(minY,wy);maxY=Math.max(maxY,wy);
+    minZ=Math.min(minZ,wz);maxZ=Math.max(maxZ,wz);
+  });
+  const cx=(minX+maxX)/2,cy=(minY+maxY)/2,cz=(minZ+maxZ)/2;
+  const camR=runState.camR;
+  const rX=runState.rX,rY=runState.rY;
+  const ex=cx+camR*Math.sin(rY)*Math.cos(rX);
+  const ey=cy+camR*Math.sin(rX);
+  const ez=cz+camR*Math.cos(rY)*Math.cos(rX);
+  const view=lookAt(ex,ey,ez,cx,cy,cz);
+  const proj=persp(0.733,(W||window.innerWidth)/((H||300)||1),camR*.001,camR*100);
+  const mvp=m4mul(proj,view);
+
+  function proj3d(x,y,z){
+    return project3D(x,y,z,mvp,W||window.innerWidth,H||300);
+  }
+
+  // Build HTML for all labels
+  const connOpts2=['S+D','TDC','F1','F1.5','F2','RAW'];
+  const divs=[];
+  let cursor={pos:[0,0,0], mat:m4id()};
+
+  runState.pieces.forEach(function(piece,pi){
+    const item=piece.item, dv=item.d;
+    const A=dv.A||24, B=dv.B||12;
+    const outlet=getFittingOutlet(item);
+    const rollAngles=[0,Math.PI/2,Math.PI,-Math.PI/2];
+    const rollAngle=rollAngles[piece.rot||0];
+    let localMat=rollAngle?m4rx(rollAngle):m4id();
+    const isElbow=['e90','e45','ev','sqe','me'].includes(item.id);
+    if(isElbow&&piece.dir) localMat=m4mul2(elbowDirMatrix(piece.dir),localMat);
+    else if((item.id==='reo'||item.id==='ro')&&piece.dir) localMat=m4mul2(elbowDirMatrix(piece.dir),localMat);
+    if(outlet.rotate90) localMat=m4mul2(m4rz(-Math.PI/2),localMat);
+    const worldMat=m4mul2(cursor.mat,localMat);
+    const inlet2=outlet.inlet||[0,0,0];
+    const worldInlet=m4mulV(worldMat,inlet2);
+    const tx=cursor.pos[0]-worldInlet[0];
+    const ty2=cursor.pos[1]-worldInlet[1];
+    const tz=cursor.pos[2]-worldInlet[2];
+
+    // Project inlet position
+    const ip=proj3d(tx+worldInlet[0], ty2+worldInlet[1], tz+worldInlet[2]);
+    if(ip&&ip[0]>0&&ip[0]<W&&ip[1]>0&&ip[1]<H){
+      const cn1=connOpts2[dv.CN1||0]||'S+D';
+      const label=A+'×'+B+'" '+cn1;
+      const d1=document.createElement('div'); 
+      d1.textContent=label; 
+      d1.style.cssText='position:absolute;left:'+(Math.round(ip[0])-1)+'px;top:'+(Math.round(ip[1])-22)+'px;background:rgba(10,25,40,0.85);color:#9df;font-size:10px;font-weight:700;padding:2px 5px;border-radius:4px;border:1px solid rgba(43,168,126,0.5);white-space:nowrap;pointer-events:none';
+      divs.push(d1);
+    }
+
+    // Advance cursor
+    const outWorldPos=m4mulV(worldMat,outlet.pos);
+    const outPos=[tx+outWorldPos[0],ty2+outWorldPos[1],tz+outWorldPos[2]];
+    const op=proj3d(outPos[0],outPos[1],outPos[2]);
+    if(op&&pi===runState.pieces.length-1){
+      const cn2=connOpts2[dv.CN2||0]||'S+D';
+      const outW=outlet.outW||A, outD=outlet.outD||B;
+      const label2=outW+'×'+outD+'" '+cn2;
+      if(op&&op[0]>0&&op[0]<W&&op[1]>0&&op[1]<H){
+        const d2=document.createElement('div');
+        d2.textContent=label2;
+        d2.style.cssText='position:absolute;left:'+(Math.round(op[0])-1)+'px;top:'+(Math.round(op[1])-22)+'px;background:rgba(10,25,40,0.85);color:#fda;font-size:10px;font-weight:700;padding:2px 5px;border-radius:4px;border:1px solid rgba(255,180,80,0.5);white-space:nowrap;pointer-events:none';
+        divs.push(d2);
+      }
+    }
+
+    const fw=normalize3(m4mulV(worldMat,outlet.fwd));
+    const up=normalize3(m4mulV(worldMat,outlet.up));
+    const dot2=fw[0]*up[0]+fw[1]*up[1]+fw[2]*up[2];
+    const up2=normalize3([up[0]-dot2*fw[0],up[1]-dot2*fw[1],up[2]-dot2*fw[2]]);
+    const rt=cross3(fw,up2);
+    cursor.pos=outPos;
+    cursor.mat=new Float32Array([fw[0],fw[1],fw[2],0,up2[0],up2[1],up2[2],0,rt[0],rt[1],rt[2],0,0,0,0,1]);
+  });
+
+  lv.innerHTML='';
+  divs.forEach(function(d){lv.appendChild(d);});
+
+  // Run length dim line as SVG overlay
+  if(runState.pieces.length>1){
+    const last=runState.pieces[runState.pieces.length-1];
+    if(last.worldPos){
+      const p1=proj3d(0,0,0);
+      const p2=proj3d(last.worldPos[0],last.worldPos[1],last.worldPos[2]);
+      if(p1&&p2){
+        const lp=last.worldPos;
+        const lenFt=(Math.sqrt(lp[0]*lp[0]+lp[1]*lp[1]+lp[2]*lp[2])*12/12).toFixed(1);
+        const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+        svg.setAttribute('style','position:absolute;inset:0;pointer-events:none;overflow:visible');
+        svg.setAttribute('width',W); svg.setAttribute('height',H);
+        // Dashed line
+        const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+        line.setAttribute('x1',p1[0]); line.setAttribute('y1',p1[1]);
+        line.setAttribute('x2',p2[0]); line.setAttribute('y2',p2[1]);
+        line.setAttribute('stroke','rgba(255,220,80,0.7)'); line.setAttribute('stroke-width','1.5');
+        line.setAttribute('stroke-dasharray','4,3');
+        svg.appendChild(line);
+        // Label at midpoint
+        const mx=(p1[0]+p2[0])/2, my=(p1[1]+p2[1])/2;
+        const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+        rect.setAttribute('x',mx-22); rect.setAttribute('y',my-10);
+        rect.setAttribute('width',44); rect.setAttribute('height',18);
+        rect.setAttribute('rx',4); rect.setAttribute('fill','rgba(10,20,35,0.85)');
+        rect.setAttribute('stroke','rgba(255,220,80,0.7)'); rect.setAttribute('stroke-width','1');
+        svg.appendChild(rect);
+        const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+        txt.setAttribute('x',mx); txt.setAttribute('y',my+4);
+        txt.setAttribute('text-anchor','middle');
+        txt.setAttribute('fill','rgba(255,220,80,1)'); txt.setAttribute('font-size','10');
+        txt.setAttribute('font-weight','bold'); txt.setAttribute('font-family','sans-serif');
+        txt.textContent=lenFt+"'";
+        svg.appendChild(txt);
+        lv.appendChild(svg);
+      }
+    }
+  }
+}
+
+>

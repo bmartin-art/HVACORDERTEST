@@ -6,14 +6,7 @@
 <title>Brookstone Industries HVAC Takeoff</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --teal:#2BA87E;--teal-dk:#1a8060;--teal-lt:rgba(43,168,126,.08);
-  --hdr:#1a2630;--hdr2:#243040;
-  --bg:#f5f6f8;--card:#fff;--border:#e8eaed;--border2:#d0d3d8;
-  --txt:#1a1d23;--sub:#64697a;--lbl:#8890a0;
-  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
-  --shadow-md:0 4px 12px rgba(0,0,0,.1),0 2px 4px rgba(0,0,0,.06);
-}
+:root{--teal:#2BA87E;--teal-dk:#1a8060;--hdr:#1a2630;--bg:#f5f6f8;--card:#fff;--border:#e8eaed;--txt:#1a1d23;--sub:#64697a;--lbl:#8890a0;--shadow:0 1px 3px rgba(0,0,0,.08)}
 html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;background:var(--bg);-webkit-font-smoothing:antialiased}
 
 /* ── SCREENS ── */
@@ -25,47 +18,29 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 
 /* ── HEADER ── */
 .hdr{background:var(--hdr);color:#fff;display:flex;flex-direction:column;padding:10px 14px 8px;flex-shrink:0;gap:8px}
-.hdr-row1{display:flex;align-items:center;gap:8px;width:100%}
+.hdr-row1{display:flex;align-items:center;gap:6px;width:100%}
 .hdr-row2{display:flex;align-items:center;gap:6px;width:100%}
-.hdr h1{font-size:15px;font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em;color:#fff}
-.hdr .brand{font-size:13px;font-weight:700;flex:1;color:#fff;letter-spacing:-.02em}
-.hdr .brand span{color:var(--teal)}
-
-/* Back button — chevron style */
-.back-btn{display:flex;align-items:center;gap:4px;background:none;border:none;color:rgba(255,255,255,.8);padding:4px 0;font-size:13px;font-weight:500;cursor:pointer;flex-shrink:0;letter-spacing:-.01em}
-.back-btn svg{width:16px;height:16px;flex-shrink:0}
-.back-btn:active{color:#fff}
-
-/* List button */
-.list-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:5px 9px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;letter-spacing:-.01em}
-.list-btn:active{background:rgba(255,255,255,.18)}
+.hdr h1{font-size:15px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.back-btn{display:flex;align-items:center;gap:5px;background:none;border:none;color:rgba(255,255,255,.8);padding:4px 0;font-size:13px;font-weight:500;cursor:pointer;flex-shrink:0}
+.list-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:5px 9px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0}
 .list-count{background:var(--teal);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;min-width:16px;text-align:center}
 
-/* Header action buttons */
-.hdr-action{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.9);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:5px;letter-spacing:-.01em}
-.hdr-action:active{background:rgba(255,255,255,.18)}
-.hdr-action svg{width:13px;height:13px;flex-shrink:0}
-
-/* Mode toggle */
-.mode-toggle{display:flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:2px;gap:2px;flex:1}
-.mode-btn{background:none;border:none;color:rgba(255,255,255,.55);border-radius:7px;padding:5px 0;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;flex:1;text-align:center;letter-spacing:-.01em}
-.mode-btn.active{background:#fff;color:var(--txt);font-weight:700}
-
 /* ── JOB INFO BAR ── */
-.job-bar{background:#fff;border-bottom:1px solid var(--border);padding:7px 14px;display:grid;grid-template-columns:1fr 1fr;gap:5px;flex-shrink:0}
+.job-bar{background:#fff;border-bottom:1px solid var(--border);padding:6px 10px;display:grid;grid-template-columns:1fr 1fr;gap:5px;flex-shrink:0}
 .jf{display:flex;flex-direction:column;gap:2px}
-.jf label{font-size:9px;color:var(--lbl);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.jf input{border:1px solid var(--border);border-radius:6px;padding:5px 7px;font-size:13px;outline:none;width:100%;min-width:0;color:var(--txt);background:#fff}
-.jf input:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(43,168,126,.12)}
+.jf label{font-size:10px;color:var(--lbl);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.jf input{border:1px solid var(--border);border-radius:6px;padding:5px 6px;font-size:13px;outline:none;width:100%;min-width:0}
+.jf input:focus{border-color:var(--teal)}
 
 /* ── PALLET GRID ── */
 .pallet-scroll{flex:1;overflow-y:auto;padding:10px 12px;-webkit-overflow-scrolling:touch;background:var(--bg)}
 .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .pi{background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px 2px 6px;text-align:center;cursor:pointer;transition:border-color .12s,transform .1s,box-shadow .12s;box-shadow:var(--shadow)}
-.pi:active{transform:scale(.93);box-shadow:none}
+.pi:active{transform:scale(.94)}
 .pi.on{border-color:var(--teal);background:rgba(43,168,126,.05);box-shadow:0 0 0 1px var(--teal)}
 .pi img{width:60px;height:60px;display:block;margin:0 auto 4px;image-rendering:pixelated}
-.pi .pname{font-size:8.5px;color:var(--sub);line-height:1.2;font-weight:500;letter-spacing:-.01em}
+#runPalletGrid .pi .pname{font-size:8.5px}
+.pi .pname{font-size:9px;color:var(--sub);line-height:1.2;font-weight:500}
 .pi .pimg-placeholder{width:60px;height:60px;background:#eee;border-radius:5px;margin:0 auto 4px}
 
 /* ── DETAIL SCREEN ── */
@@ -74,118 +49,112 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 #cv3d{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
 #cv3d:active{cursor:grabbing}
 #lv{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
-.vp-name{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:11px;font-weight:600;color:rgba(180,210,230,.8);pointer-events:none;letter-spacing:.01em}
-.vp-hint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:9px;color:rgba(100,140,160,.35);pointer-events:none;letter-spacing:.01em}
+.vp-name{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:12px;font-weight:600;color:rgba(190,225,240,.9);pointer-events:none}
+.vp-hint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:rgba(100,150,170,.4);pointer-events:none}
 
 /* ── DIM PANEL ── */
-.dim-panel{background:#fff;border-top-left-radius:18px;border-top-right-radius:18px;box-shadow:0 -2px 16px rgba(0,0,0,.12);flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
-.dim-panel-handle{width:32px;height:3px;background:#d8dbe0;border-radius:2px;margin:8px auto 2px;flex-shrink:0}
-.vtabs-row{display:flex;gap:5px;padding:5px 12px 4px;flex-shrink:0;flex-wrap:wrap}
-.vt-btn{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:600;cursor:pointer;color:var(--sub);letter-spacing:-.01em}
-.vt-btn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-.dim-scroll{overflow-y:auto;flex:1;padding:0 12px 4px;-webkit-overflow-scrolling:touch;max-height:30vh}
-.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.dim-panel{background:#fff;border-top-left-radius:16px;border-top-right-radius:16px;box-shadow:0 -3px 20px rgba(0,0,0,.15);flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
+.dim-panel-handle{width:36px;height:4px;background:#ddd;border-radius:2px;margin:8px auto 2px;flex-shrink:0}
+.vtabs-row{display:flex;gap:6px;padding:4px 10px 4px;flex-shrink:0;flex-wrap:wrap}
+.vt-btn{background:#f0f0f0;border:none;border-radius:20px;padding:5px 10px;font-size:11px;cursor:pointer;color:var(--sub)}
+.vt-btn.on{background:var(--teal);color:#fff;font-weight:600}
+.dim-scroll{overflow-y:auto;flex:1;padding:0 10px 4px;-webkit-overflow-scrolling:touch;max-height:30vh}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
 .df{display:flex;flex-direction:column;gap:2px}
-.df label{font-size:9px;color:var(--lbl);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.df label{font-size:10px;color:var(--lbl);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
 .df input,.df select{padding:7px 8px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;background:#fff;width:100%;color:var(--txt)}
 .df input:focus,.df select:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(43,168,126,.12)}
-.add-row{display:flex;gap:8px;padding:7px 12px;border-top:1px solid var(--border);flex-shrink:0;align-items:center}
+.add-row{display:flex;gap:8px;padding:6px 10px;border-top:1px solid #eee;flex-shrink:0;align-items:center}
 .qty-wrap{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
-.qty-wrap label{font-size:9px;color:var(--lbl);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
-.qty-wrap input{width:48px;padding:7px;border:1px solid var(--border);border-radius:8px;font-size:15px;text-align:center;outline:none;color:var(--txt)}
-.qty-wrap input:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(43,168,126,.12)}
-.btn-add{flex:1;padding:11px;background:var(--teal);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:-.01em}
+.qty-wrap label{font-size:10px;color:var(--lbl);font-weight:600;text-transform:uppercase}
+.qty-wrap input{width:50px;padding:7px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;text-align:center;outline:none}
+.qty-wrap input:focus{border-color:var(--teal)}
+.btn-add{flex:1;padding:11px;background:var(--teal);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer}
 .btn-add:active{background:var(--teal-dk)}
-.notes-wrap{padding:0 12px 5px;flex-shrink:0}
-.notes-wrap input{width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;outline:none;color:var(--txt)}
-.notes-wrap input:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(43,168,126,.12)}
+.notes-wrap{padding:0 10px 4px;flex-shrink:0}
+.notes-wrap input{width:100%;padding:6px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none}
+.notes-wrap input:focus{border-color:var(--teal)}
 
-/* ── LIST OVERLAY ── */
-#listOverlay{position:absolute;inset:0;background:rgba(0,0,0,.4);z-index:50;display:none;align-items:flex-end}
+/* ── SLIDE-UP LIST PANEL ── */
+#listOverlay{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end}
 #listOverlay.open{display:flex}
-#listSheet{background:#fff;border-top-left-radius:22px;border-top-right-radius:22px;width:100%;max-height:82vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 24px rgba(0,0,0,.15)}
-.sheet-handle{width:32px;height:3px;background:#d8dbe0;border-radius:2px;margin:10px auto 6px}
-.sheet-hdr{display:flex;align-items:center;padding:0 16px 10px;border-bottom:1px solid var(--border);gap:8px}
-.sheet-hdr h2{flex:1;font-size:15px;font-weight:700;color:var(--txt);letter-spacing:-.02em}
-.sheet-hdr .close-btn{background:var(--bg);border:none;color:var(--sub);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
-.list-scroll{overflow-y:auto;flex:1;padding:8px 14px;-webkit-overflow-scrolling:touch}
-.li{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 40px 10px 12px;margin-bottom:7px;position:relative;cursor:pointer;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow)}
-.li .ln{font-size:13px;font-weight:600;color:var(--txt);letter-spacing:-.01em}
-.li .ld{font-size:11px;color:var(--sub);margin-top:2px;word-break:break-all}
-.li .lr{position:absolute;top:50%;right:10px;transform:translateY(-50%);background:none;border:none;color:#c8cdd6;font-size:16px;cursor:pointer;line-height:1;padding:4px}
+#listSheet{background:#fff;border-top-left-radius:20px;border-top-right-radius:20px;width:100%;max-height:82vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+.sheet-handle{width:36px;height:4px;background:#ddd;border-radius:2px;margin:10px auto 6px}
+.sheet-hdr{display:flex;align-items:center;padding:0 14px 10px;border-bottom:1px solid #eee;gap:8px}
+.sheet-hdr h2{flex:1;font-size:16px;font-weight:700}
+.sheet-hdr .close-btn{background:none;border:none;font-size:20px;cursor:pointer;color:#999}
+.list-scroll{overflow-y:auto;flex:1;padding:8px 12px;-webkit-overflow-scrolling:touch}
+.li{background:#f8f8f8;border:1px solid #eee;border-radius:10px;padding:10px 38px 10px 12px;margin-bottom:8px;position:relative}
+.li .ln{font-size:13px;font-weight:600;color:#222}
+.li .ld{font-size:11px;color:#888;margin-top:3px;word-break:break-all}
+.li .lr{position:absolute;top:8px;right:10px;background:none;border:none;color:#ccc;font-size:18px;cursor:pointer}
 .li .lr:active{color:#c22}
-.li-thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;flex-shrink:0;background:#1a2630}
-.li-thumb-ph{width:50px;height:50px;border-radius:8px;background:#eef0f3;flex-shrink:0}
+.li{cursor:pointer;display:flex;align-items:center;gap:10px}
+.li-thumb{width:54px;height:54px;object-fit:cover;border-radius:8px;flex-shrink:0;background:#1c2b3a}
+.li-thumb-ph{width:54px;height:54px;border-radius:8px;background:#e8e8e8;flex-shrink:0}
 .li-body{flex:1;min-width:0}
-.empty-msg{text-align:center;color:#b8bcc8;font-size:13px;padding:28px}
-.sheet-btm{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--border);flex-shrink:0}
-.sheet-btm button{flex:1;padding:10px;border:1px solid var(--border);border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;background:#fff;color:var(--txt);display:flex;align-items:center;justify-content:center;gap:5px;letter-spacing:-.01em}
-.sheet-btm button svg{width:13px;height:13px;flex-shrink:0}
+.empty-msg{text-align:center;color:#bbb;font-size:13px;padding:24px}
+.sheet-btm{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #eee;flex-shrink:0}
+.sheet-btm button{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:#fff}
 .sheet-btm .bp{background:var(--teal);color:#fff;border-color:var(--teal)}
-
 /* ── SEND MODAL ── */
-#sendModal{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:60;display:none;align-items:flex-end}
+#sendModal{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:60;display:none;align-items:flex-end}
 #sendModal.open{display:flex}
-#sendSheet{background:#fff;border-top-left-radius:22px;border-top-right-radius:22px;width:100%;max-height:90vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
-.send-body{overflow-y:auto;flex:1;padding:12px 16px;display:flex;flex-direction:column;gap:11px}
-.send-field{display:flex;flex-direction:column;gap:3px}
-.send-field label{font-size:9px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.06em}
-.send-field input{padding:9px 10px;border:1px solid var(--border);border-radius:9px;font-size:14px;outline:none;color:var(--txt)}
-.send-field input:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(43,168,126,.12)}
-.photo-attach-area{border:1.5px dashed var(--border2);border-radius:12px;padding:16px;text-align:center;cursor:pointer;color:var(--sub);font-size:12px;position:relative;transition:border-color .15s}
-.photo-attach-area.has-photo{border-color:var(--teal);background:rgba(43,168,126,.04)}
+#sendSheet{background:#fff;border-top-left-radius:20px;border-top-right-radius:20px;width:100%;max-height:90vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+.send-body{overflow-y:auto;flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:12px}
+.send-field{display:flex;flex-direction:column;gap:4px}
+.send-field label{font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.04em}
+.send-field input{padding:9px 10px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;outline:none}
+.send-field input:focus{border-color:var(--teal)}
+.photo-attach-area{border:2px dashed var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;color:var(--sub);font-size:13px;position:relative;transition:border-color .15s}
+.photo-attach-area.has-photo{border-color:var(--teal);background:rgba(43,168,126,.05)}
 .photo-attach-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
 .photo-thumb-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.photo-thumb{width:68px;height:68px;object-fit:cover;border-radius:8px;border:1px solid var(--border)}
+.photo-thumb{width:72px;height:72px;object-fit:cover;border-radius:8px;border:1.5px solid var(--border)}
 .photo-rm{position:relative;display:inline-block}
-.photo-rm-btn{position:absolute;top:-5px;right:-5px;background:#c22;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.send-actions{display:flex;gap:8px;padding:10px 16px;border-top:1px solid var(--border);flex-shrink:0}
-.send-actions button{flex:1;padding:12px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--txt);letter-spacing:-.01em}
+.photo-rm-btn{position:absolute;top:-5px;right:-5px;background:#c22;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.send-actions{display:flex;gap:8px;padding:10px 14px;border-top:1px solid #eee;flex-shrink:0}
+.send-actions button{flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:#fff}
 .send-actions .send-btn{background:var(--teal);color:#fff;border-color:var(--teal)}
 .send-actions .send-btn:active{background:var(--teal-dk)}
-.send-btn.sending{background:#8890a0!important;pointer-events:none}
-.send-btn.sent{background:#1a6e52!important;pointer-events:none}
-
 /* ── RUN BUILDER ── */
 #runScreen{background:#1a2630;transform:translateX(100%)}
-.run-canvas-wrap{flex:none;height:35vh;position:relative;min-height:140px}
+.run-toolbar{background:#1a2d3e;display:flex;align-items:center;gap:6px;padding:6px 10px;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.run-tool-btn{background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.run-tool-btn.active{background:var(--teal)}
+.run-tool-btn.danger{background:rgba(255,80,80,.3)}
+.run-canvas-wrap{flex:none;height:42vh;position:relative;min-height:120px}
 #runCv{display:block;width:100%;height:100%;touch-action:none}
-.run-piece-strip{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-shrink:0}
-.run-pieces{overflow-x:auto;display:flex;gap:7px;padding:8px 12px 6px;-webkit-overflow-scrolling:touch;flex-shrink:0}
-.run-piece{flex-shrink:0;background:#fff;border:1px solid var(--border);border-radius:10px;padding:6px 8px;text-align:center;cursor:pointer;min-width:66px;position:relative;box-shadow:var(--shadow);transition:border-color .12s,box-shadow .12s}
-.run-piece:active{transform:scale(.95)}
-.run-piece.active-piece{border-color:var(--teal);background:rgba(43,168,126,.05);box-shadow:0 0 0 1.5px var(--teal)}
-.run-piece.err{border-color:#f55;background:rgba(255,80,80,.05)}
-.run-piece .rp-name{font-size:9.5px;font-weight:700;color:var(--txt);letter-spacing:-.02em}
-.run-piece .rp-dims{font-size:8.5px;color:var(--lbl);margin-top:1px}
-.run-piece .rp-del{position:absolute;top:-7px;right:-7px;width:17px;height:17px;border-radius:50%;background:#e44;color:#fff;border:2px solid #fff;font-size:10px;font-weight:700;line-height:13px;text-align:center;cursor:pointer;z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.2);display:none}
+.run-bottom{background:#fff;border-top:1px solid #eee;flex-shrink:0;max-height:38vh;display:flex;flex-direction:column}
+.run-pieces{overflow-x:auto;display:flex;gap:8px;padding:8px 10px;-webkit-overflow-scrolling:touch;flex-shrink:0;border-bottom:1px solid #eee}
+.run-piece{flex-shrink:0;background:#fff;border:1px solid var(--border);border-radius:10px;padding:6px 8px;text-align:center;cursor:pointer;min-width:66px;box-shadow:var(--shadow);transition:border-color .12s}
+.run-piece.active-piece{border-color:var(--teal);background:rgba(43,168,126,.08)}
+.run-piece.err{border-color:#ff5050;background:rgba(255,80,80,.08)}
+.run-piece .rp-name{font-size:10px;font-weight:700;color:#333}
+.run-piece .rp-dims{font-size:9px;color:#888;margin-top:2px}
+.run-piece .rp-conn{font-size:9px;margin-top:2px}
+.run-piece{position:relative}
+.run-piece .rp-del{position:absolute;top:-8px;right:-8px;width:18px;height:18px;border-radius:50%;background:#e55;color:#fff;border:2px solid #fff;font-size:11px;font-weight:700;line-height:14px;text-align:center;cursor:pointer;z-index:2;box-shadow:0 1px 4px rgba(0,0,0,.25);display:none}
 .run-piece:hover .rp-del,.run-piece.active-piece .rp-del{display:block}
-.run-piece .rp-connrow{display:flex;gap:2px;margin-top:3px;justify-content:center;flex-wrap:wrap}
-.run-piece .rp-badge{font-size:7.5px;font-weight:700;padding:1px 3px;border-radius:3px;white-space:nowrap;letter-spacing:-.01em}
-.run-piece .rp-badge.c1{background:rgba(43,168,126,.1);color:#1a7a5e;border:1px solid rgba(43,168,126,.2)}
-.run-piece .rp-badge.c2{background:rgba(60,130,255,.08);color:#2050a0;border:1px solid rgba(60,130,255,.15)}
-.run-stats-bar{padding:4px 12px 6px;font-size:10px;color:var(--sub);font-weight:600;letter-spacing:-.01em}
-
-/* Run pallet — same look as single mode */
-.run-pallet-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
-.run-pallet-hint{padding:6px 14px 4px;flex-shrink:0;font-size:10px;color:var(--lbl);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-#runPalletGrid{padding:8px 12px;overflow-y:auto;flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-#runPalletGrid .pi .pname{font-size:8.5px}
-
-/* Dir picker buttons */
-.run-dir-btn{padding:9px 6px;background:#fff;border:1px solid var(--border);border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;text-align:center;color:var(--txt);letter-spacing:-.01em;box-shadow:var(--shadow)}
-.run-dir-btn:active{background:var(--teal);color:#fff;border-color:var(--teal)}
-
-/* Sheet shared */
-.sheet-handle2{width:32px;height:3px;background:#d8dbe0;border-radius:2px;margin:10px auto 0}
-.sheet-title-row{display:flex;align-items:center;padding:8px 16px 7px;border-bottom:1px solid var(--border);gap:8px}
-.sheet-title{flex:1;font-size:14px;font-weight:700;color:var(--txt);letter-spacing:-.02em}
-.sheet-close{background:none;border:none;color:var(--lbl);cursor:pointer;padding:2px;display:flex;align-items:center;justify-content:center;border-radius:50%}
-.sheet-close svg{width:18px;height:18px}
-
-/* Import modal */
-#importModal{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:60;display:none;align-items:flex-end}
-#importModal.open{display:flex}
+.run-piece.active-piece{border-color:var(--teal);background:rgba(43,168,126,.1);box-shadow:0 0 0 2px rgba(43,168,126,.3)}
+.run-piece .rp-connrow{display:flex;gap:3px;margin-top:3px;justify-content:center;flex-wrap:wrap}
+.run-piece .rp-badge{font-size:8px;font-weight:700;padding:1px 4px;border-radius:3px;white-space:nowrap}
+.run-piece .rp-badge.c1{background:rgba(43,168,126,.15);color:#1a8060;border:1px solid rgba(43,168,126,.3)}
+.run-piece .rp-badge.c2{background:rgba(80,150,255,.12);color:#2255aa;border:1px solid rgba(80,150,255,.3)}
+.run-dir-picker{display:none;padding:8px 10px;border-bottom:1px solid #eee;flex-shrink:0}
+.run-dir-picker.show{display:block}
+.run-dir-picker p{font-size:12px;color:#666;margin-bottom:6px;font-weight:600}
+.run-dir-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.run-dir-btn{padding:8px;background:#f0f0f0;border:1.5px solid #ddd;border-radius:8px;font-size:12px;cursor:pointer;text-align:center}
+.run-dir-btn:active{background:var(--teal);color:#fff}
+.run-stats{padding:6px 10px;font-size:11px;color:#888;flex-shrink:0}
+.send-btn.sending{background:#888;pointer-events:none}
+.send-btn.sent{background:#1a6e52;pointer-events:none}
+.hdr-action{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.9);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:5px}
+/* ── MODE TOGGLE ── */
+.mode-toggle{display:flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:2px;gap:2px;flex:1}
+.mode-btn{background:none;border:none;color:rgba(255,255,255,.55);border-radius:7px;padding:5px 0;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;flex:1;text-align:center}
+.mode-btn.active{background:#fff;color:var(--txt);font-weight:700}
 </style>
 </head>
 <body>
@@ -194,20 +163,21 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 <div class="screen" id="palletScreen">
   <div class="hdr">
     <div class="hdr-row1">
-      <h1 class="brand">Brookstone <span>Industries</span></h1>
+      <h1 style="font-size:15px;font-weight:700;flex:1;letter-spacing:-.02em">Brookstone <span style="color:var(--teal)">Industries</span></h1>
+      <button class="list-btn" onclick="openAI()" style="background:rgba(43,168,126,.25);border-color:rgba(43,168,126,.4)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><circle cx="8" cy="8" r="6"/><path d="M5.5 9.5c.5 1 3.5 1 4.5 0M6 6.5h.01M10 6.5h.01"/></svg>AI
+      </button>
       <button class="list-btn" onclick="openList()">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
         List <span class="list-count" id="lCount">0</span>
       </button>
     </div>
     <div class="hdr-row2">
       <button class="hdr-action" onclick="openSend()">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 8 L14 2 L10 8 L14 14 Z"/></svg>
-        Send
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><path d="M2 8L14 2l-4 6 4 6z"/></svg>Send
       </button>
       <button class="hdr-action" onclick="openImport()">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 2v8M5 7l3 3 3-3M3 12h10"/></svg>
-        Import
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>Import
       </button>
       <div class="mode-toggle">
         <button class="mode-btn active" id="btnSingle" onclick="setMode('single')">Single</button>
@@ -230,15 +200,9 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 <!-- ══ DETAIL SCREEN ══ -->
 <div class="screen" id="detailScreen">
   <div class="hdr" style="flex-direction:row;align-items:center;padding:10px 14px">
-    <button class="back-btn" onclick="goBack()">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
-      Back
-    </button>
-    <h1 id="vpName" style="font-size:14px;flex:1;text-align:center;margin:0 8px">Select fitting</h1>
-    <button class="list-btn" onclick="openList()">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
-      <span class="list-count" id="lCount2">0</span>
-    </button>
+    <button class="back-btn" onclick="goBack()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="16" height="16"><path d="M10 3L5 8l5 5"/></svg>Back</button>
+    <h1 id="vpName" style="font-size:14px;flex:1;text-align:center;font-weight:600">Select fitting</h1>
+    <button class="list-btn" onclick="openList()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><path d="M2 4h12M2 8h8M2 12h10"/></svg><span class="list-count" id="lCount2">0</span></button>
   </div>
   <div class="vp-wrap" id="vp">
     <canvas id="cv3d"></canvas>
@@ -269,8 +233,8 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     </div>
     <div class="list-scroll" id="listArea"></div>
     <div class="sheet-btm">
-      <button onclick="copyList()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><rect x="5" y="5" width="9" height="9" rx="2"/><path d="M3 11V3a2 2 0 012-2h8"/></svg>Copy</button>
-      <button onclick="exportPDF()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>PDF</button>
+      <button onclick="copyList()">Copy</button>
+      <button onclick="exportPDF()">PDF</button>
       <button class="bp" onclick="openSend()">Send</button>
     </div>
   </div>
@@ -279,12 +243,9 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 <!-- ══ RUN BUILDER SCREEN ══ -->
 <div class="screen" id="runScreen" style="display:flex;flex-direction:column;overflow:hidden">
   <div class="hdr" style="flex-direction:row;align-items:center;padding:10px 14px">
-    <button class="back-btn" onclick="closeRunBuilder()">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
-      Back
-    </button>
-    <h1 style="font-size:14px;flex:1;text-align:center;margin:0;font-weight:600;letter-spacing:-.01em">Run Builder</h1>
-    <button onclick="clearRun()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:-.01em">Clear</button>
+    <button class="back-btn" onclick="closeRunBuilder()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" width="16" height="16"><path d="M10 3L5 8l5 5"/></svg>Back</button>
+    <h1 style="font-size:14px;flex:1;text-align:center;font-weight:600">Run Builder</h1>
+    <button onclick="clearRun()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.85);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer">Clear</button>
   </div>
 
   <!-- 3D viewport -->
@@ -295,11 +256,13 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
   </div>
 
   <!-- Run piece strip -->
-  <div class="run-piece-strip">
-    <div class="run-pieces" id="runPieces">
-      <div style="font-size:11px;color:var(--lbl);padding:6px 4px;align-self:center;white-space:nowrap;">Add fittings below</div>
+  <div style="background:#0d1b27;border-top:1px solid #1a3040;border-bottom:1px solid #1a3040;flex-shrink:0">
+    <div class="run-pieces" id="runPieces" style="padding:4px 6px">
+      <div style="font-size:11px;color:#556;padding:6px 8px;align-self:center;white-space:nowrap;font-style:italic">Add fittings below ↓</div>
     </div>
-    <div id="runStats" class="run-stats-bar"></div>
+    <div style="display:flex;align-items:center;padding:2px 8px 4px;gap:6px">
+      <div id="runStats" style="flex:1;font-size:10px;color:#5a8aaa;font-weight:600"></div>
+    </div>
   </div>
 
   <!-- Fitting grid — full remaining height, tap a tile to open dim sheet -->
@@ -307,7 +270,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     <div style="padding:6px 10px 4px;flex-shrink:0;border-bottom:1px solid #eee">
       <p style="font-size:11px;color:#999;margin:0;text-align:center">Tap a fitting to set dimensions</p>
     </div>
-    <div id="runPalletGrid"></div>
+    <div id="runPalletGrid" style="padding:8px 12px;overflow-y:auto;flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:6px"></div>
   </div>
 </div>
 
@@ -319,7 +282,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
       <div style="width:36px;height:4px;background:#ddd;border-radius:2px;margin:10px auto 0"></div>
       <div style="display:flex;align-items:center;padding:8px 14px 6px;border-bottom:1px solid #eee;gap:8px">
         <span id="runDimSheetTitle" style="flex:1;font-size:14px;font-weight:700;color:#222">Dimensions</span>
-        <button onclick="closeRunDimSheet()" style="background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;color:var(--lbl)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg></button>
+        <button onclick="closeRunDimSheet()" style="background:none;border:none;font-size:20px;color:#bbb;cursor:pointer;line-height:1;padding:0">⌄</button>
       </div>
     </div>
     <!-- Dim inputs -->
@@ -418,7 +381,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
   <div style="background:#fff;border-top-left-radius:20px;border-top-right-radius:20px;width:100%;padding-bottom:env(safe-area-inset-bottom);display:flex;flex-direction:column">
     <div style="width:36px;height:4px;background:#ddd;border-radius:2px;margin:10px auto 6px"></div>
     <div style="display:flex;align-items:center;padding:0 14px 10px;border-bottom:1px solid #eee;gap:8px">
-      <h2 style="flex:1;font-size:15px;font-weight:700;letter-spacing:-.02em">Import Order</h2>
+      <h2 style="flex:1;font-size:15px;font-weight:700">Import Order</h2>
       <button onclick="closeImport()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#999">×</button>
     </div>
     <div style="padding:14px">
@@ -447,7 +410,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     }, 600);
     // Wire up Run buttons directly to avoid any onclick interference
     document.querySelectorAll('button').forEach(function(btn){
-      if(btn.textContent.trim()==='Run'||btn.classList.contains('mode-btn')){
+      if(btn.id==='btnRun'||btn.textContent.trim()==='Run'){
         btn.addEventListener('click', function(e){
           e.stopPropagation();
           if(typeof openRunBuilder === 'function') openRunBuilder();
@@ -1984,7 +1947,7 @@ function buildHTMLReport(){
     +'<p style="margin:12px 0 0;color:#aaa;font-size:12px">Total: '+listItems.length+' items</p></div>'
     +photoSection
     +'<div style="margin-top:32px;border-top:2px solid #eee;padding-top:16px">'
-    +'<details><summary style="cursor:pointer;font-size:12px;color:#aaa;user-select:none">Order Data (click to expand, copy to reimport)</summary>'
+    +'<details><summary style="cursor:pointer;font-size:12px;color:#aaa;user-select:none">📋 Order Data (click to expand, copy to reimport)</summary>'
     +'<textarea onclick="this.select()" readonly style="width:100%;margin-top:8px;padding:10px;font-size:11px;font-family:monospace;border:1px solid #ddd;border-radius:6px;background:#f8f8f8;height:120px;resize:none">'
     +JSON.stringify(listItems.map(function(it){ return {id:it.id,'var':it['var'],n:it.n,d:it.d,qty:it.qty,notes:it.notes}; }))
     +'</textarea></details></div>'
@@ -3388,7 +3351,7 @@ function showRunError(msg){
 function renderRunPieces(){
   const el=document.getElementById('runPieces');
   if(!runState.pieces.length){
-    el.innerHTML='<div style="font-size:12px;color:#bbb;padding:8px;align-self:center">Tap items from your list to add to run</div>';
+    el.innerHTML='<div style="font-size:12px;color:#bbb;padding:8px;align-self:center">Tap items from your list → 🔧 Run</div>';
     renderRunStats(); return;
   }
   const connLabels=['S+D','TDC','F1','F1.5','F2','RAW'];
@@ -3508,135 +3471,88 @@ window.addEventListener('load', () => {
   initGL();
 });
 </script>
+
+<!-- ══ AI DUCT ASSISTANT ══ -->
+<div id="aiOverlay" onclick="closeAIIfBg(event)" style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10000;display:none;align-items:flex-end">
+  <div style="background:#fff;border-top-left-radius:22px;border-top-right-radius:22px;width:100%;height:82vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 32px rgba(0,0,0,.2)">
+    <div style="flex-shrink:0">
+      <div style="width:32px;height:3px;background:#d8dbe0;border-radius:2px;margin:10px auto 0"></div>
+      <div style="display:flex;align-items:center;padding:10px 16px 8px;border-bottom:1px solid #eee;gap:10px">
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#2BA87E,#1a5c8a);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.8"><circle cx="8" cy="8" r="6"/><path d="M5.5 9.5c.5 1 3.5 1 4.5 0M6 6.5h.01M10 6.5h.01"/></svg>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:700;color:#1a1d23;letter-spacing:-.02em">AI Duct Assistant</div>
+          <div style="font-size:10px;color:#8890a0" id="aiStatus">Ready</div>
+        </div>
+        <button onclick="openAISettings()" style="background:#f5f6f8;border:1px solid #e8eaed;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:11px;font-weight:600;color:#64697a">Key</button>
+        <button onclick="closeAI()" style="background:none;border:none;cursor:pointer;padding:4px;color:#999;font-size:22px;line-height:1">&#215;</button>
+      </div>
+    </div>
+    <div id="aiKeyBanner" style="display:none;margin:10px 14px 0;background:#fff8ed;border:1px solid #f0c060;border-radius:10px;padding:10px 12px;flex-shrink:0">
+      <div style="font-size:12px;font-weight:700;color:#8a5a00;margin-bottom:3px">API Key Required</div>
+      <div style="font-size:11px;color:#a06000;margin-bottom:8px">Get a key at console.anthropic.com</div>
+      <div style="display:flex;gap:6px">
+        <input id="aiKeyInput" type="password" placeholder="sk-ant-..." style="flex:1;padding:7px 9px;border:1px solid #ddd;border-radius:8px;font-size:12px;outline:none;font-family:monospace">
+        <button onclick="saveAIKey()" style="background:#2BA87E;color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer">Save</button>
+      </div>
+    </div>
+    <div id="aiMessages" style="flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch"></div>
+    <div style="flex-shrink:0;border-top:1px solid #eee;padding:8px 12px;display:flex;gap:8px;align-items:flex-end;background:#fff">
+      <textarea id="aiInput" placeholder="Ask me to design a duct run, size a branch, calculate CFM..." rows="1"
+        style="flex:1;border:1px solid #e8eaed;border-radius:10px;padding:9px 11px;font-size:13px;outline:none;resize:none;font-family:inherit;line-height:1.4;max-height:100px;overflow-y:auto;color:#1a1d23"
+        oninput="this.style.height=&quot;auto&quot;;this.style.height=this.scrollHeight+&quot;px&quot;"
+        onkeydown="if(event.key===&quot;Enter&quot;&amp;&amp;!event.shiftKey){event.preventDefault();sendAIMessage()}"
+      ></textarea>
+      <button onclick="sendAIMessage()" id="aiSendBtn" style="background:#2BA87E;border:none;border-radius:10px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M2 8L14 2l-4 6 4 6z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+<div id="aiSettingsOverlay" onclick="if(event.target===this)closeAISettings()" style="position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:10001;display:none;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;width:100%;max-width:360px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,.2)">
+    <div style="font-size:15px;font-weight:700;color:#1a1d23;margin-bottom:4px">Anthropic API Key</div>
+    <div style="font-size:11px;color:#8890a0;margin-bottom:12px">Get a key at <b>console.anthropic.com</b>. Stored locally on this device only.</div>
+    <input id="aiKeyInput2" type="password" placeholder="sk-ant-api03-..." style="width:100%;padding:9px 11px;border:1px solid #e8eaed;border-radius:9px;font-size:13px;outline:none;font-family:monospace;margin-bottom:10px">
+    <div style="display:flex;gap:8px">
+      <button onclick="closeAISettings()" style="flex:1;padding:10px;border:1px solid #e8eaed;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;background:#fff;color:#64697a">Cancel</button>
+      <button onclick="saveAIKey2()" style="flex:2;padding:10px;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;background:#2BA87E;color:#fff">Save Key</button>
+    </div>
+    <div id="aiKeyStatus" style="margin-top:8px;font-size:11px;color:#2BA87E;text-align:center;display:none">Key saved</div>
+    <button onclick="clearAIKey()" style="margin-top:8px;width:100%;padding:8px;background:none;border:none;color:#c44;font-size:11px;cursor:pointer">Remove saved key</button>
+  </div>
+</div>
+<script>
+var AI_MODEL="claude-sonnet-4-20250514";
+var AI_SYS="You are an expert HVAC duct design assistant in the Brookstone Industries takeoff app."
+  +" Help techs design duct runs using SMACNA standards. Keep responses concise."
+  +" SMACNA low-pressure: trunk 800-1200 FPM, branch 500-800 FPM, max 0.1 in.wg/100ft."
+  +" Area sq-in = CFM / FPM * 144. Round to 2-inch increments."
+  +" Trunk steps down after each branch takeoff."
+  +" Fittings: sd=Straight e90=90Elbow e45=45Elbow ev=VarElbow rgn=Gooseneck"
+  +" sqe=SqElbow me=MiteredElbow tr=Transition ro=RadOffset reo=RectOffset"
+  +" sqt=SqTee sqp=SqPants ec=EndCap can=BaseCan fc=FlexConn st=StraightTap s2r=SqToRound rd=RectDamper."
+  +" Dims inches: A=width B=depth C=topW D=topD E=length CN1/CN2=connector(0=S+D 1=TDC 2=F1 3=F1.5 4=F2 5=RAW)."
+  +" To add pieces output one block per piece: <<<add_piece>>>{id:sd,A:24,B:16,E:48,CN1:0,CN2:0}<<</add_piece>>>"
+  +" To clear run first output: <<<clear_run>>>"
+  +" Narrate sizing briefly then output all piece blocks.";
+var aiMsgs=[],aiTyping=false;
+function getAIKey(){return localStorage.getItem("brookstone_ai_key")||"";}
+function saveAIKey(){var k=document.getElementById("aiKeyInput").value.trim();if(!k){alert("Paste your API key first");return;}localStorage.setItem("brookstone_ai_key",k);document.getElementById("aiKeyBanner").style.display="none";addAIBubble("assistant","Key saved! Ask me to design a duct run and I will build it in the 3D view.");}
+function saveAIKey2(){var k=document.getElementById("aiKeyInput2").value.trim();if(!k){alert("Paste your API key first");return;}localStorage.setItem("brookstone_ai_key",k);var st=document.getElementById("aiKeyStatus");st.style.display="block";st.textContent="Key saved";document.getElementById("aiKeyBanner").style.display="none";setTimeout(closeAISettings,900);}
+function clearAIKey(){localStorage.removeItem("brookstone_ai_key");var st=document.getElementById("aiKeyStatus");st.textContent="Key removed";st.style.display="block";st.style.color="#c44";}
+function openAI(){document.getElementById("aiOverlay").style.display="flex";document.getElementById("aiKeyBanner").style.display=getAIKey()?"none":"block";var msgs=document.getElementById("aiMessages");if(msgs.children.length===0){addAIBubble("assistant","Hi! I am your AI duct design assistant.\n\nTry:\n  Design a 40ft main at 1800 CFM with 3 branches\n  What size duct for 500 CFM at 800 FPM?\n  Add a 90 elbow turning right\n\nI can answer questions or build the run in the 3D view.");}setTimeout(function(){document.getElementById("aiInput").focus();},300);}
+function closeAI(){document.getElementById("aiOverlay").style.display="none";}
+function closeAIIfBg(e){if(e.target===document.getElementById("aiOverlay"))closeAI();}
+function openAISettings(){var k=getAIKey();if(k)document.getElementById("aiKeyInput2").value=k;document.getElementById("aiSettingsOverlay").style.display="flex";document.getElementById("aiKeyStatus").style.display="none";}
+function closeAISettings(){document.getElementById("aiSettingsOverlay").style.display="none";}
+function addAIBubble(role,text){var msgs=document.getElementById("aiMessages");var isUser=(role==="user");var wrap=document.createElement("div");wrap.style.cssText="display:flex;justify-content:"+(isUser?"flex-end":"flex-start");var b=document.createElement("div");b.style.cssText="max-width:82%;padding:9px 12px;border-radius:"+(isUser?"14px 14px 4px 14px":"14px 14px 14px 4px")+";background:"+(isUser?"#2BA87E":"#f5f6f8")+";color:"+(isUser?"#fff":"#1a1d23")+";font-size:13px;line-height:1.45;white-space:pre-wrap";b.textContent=text;wrap.appendChild(b);msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;return b;}
+function addAITyping(){if(!document.getElementById("aiDotStyle")){var s=document.createElement("style");s.id="aiDotStyle";s.textContent="@keyframes aiDot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}";document.head.appendChild(s);}var msgs=document.getElementById("aiMessages");var wrap=document.createElement("div");wrap.id="aiTypingBubble";wrap.style.cssText="display:flex;justify-content:flex-start";wrap.innerHTML='<div style="padding:10px 14px;background:#f5f6f8;border-radius:14px 14px 14px 4px;display:flex;gap:4px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:#bbb;animation:aiDot 1s infinite 0s both;display:block"></span><span style="width:6px;height:6px;border-radius:50%;background:#bbb;animation:aiDot 1s infinite .2s both;display:block"></span><span style="width:6px;height:6px;border-radius:50%;background:#bbb;animation:aiDot 1s infinite .4s both;display:block"></span></div>';msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;}
+function removeAITyping(){var b=document.getElementById("aiTypingBubble");if(b)b.remove();}
+function executeAITools(text){var acted=false;if(text.indexOf("<<<clear_run>>>")>=0){if(typeof clearRun==="function")clearRun();acted=true;}var re=/<<<add_piece>>>([\s\S]*?)<<<\/add_piece>>>/g,m;while((m=re.exec(text))!==null){try{var dims=JSON.parse(m[1].trim());var f=typeof DB!=="undefined"?DB.find(function(x){return x.id===dims.id;}):null;if(!f){console.warn("AI: unknown fitting",dims.id);continue;}var d={};f.dims.forEach(function(dim){d[dim.id]=(dims[dim.id]!==undefined)?dims[dim.id]:(dim.def!==undefined?dim.def:(dim.opts&&dim.opts[0]?dim.opts[0].v:0));});if(typeof setMode==="function"&&typeof appMode!=="undefined"&&appMode!=="run")setMode("run");var item={id:dims.id,"var":null,n:f.n,d:d,qty:1,notes:""};if(typeof runState!=="undefined")runState.pieces.push({item:item,dir:null,rot:0,worldPos:null});acted=true;}catch(e){console.warn("AI piece error",e);}}if(acted){if(typeof runUpload==="function")runUpload();if(typeof renderRunPieces==="function")renderRunPieces();if(typeof renderRunStats==="function")renderRunStats();}return acted;}
+function cleanAIText(text){text=text.replace(/<<<clear_run>>>/g,"[Cleared run]");text=text.replace(/<<<add_piece>>>([\s\S]*?)<<<\/add_piece>>>/g,function(_,json){try{var d=JSON.parse(json.trim());var f=typeof DB!=="undefined"?DB.find(function(x){return x.id===d.id;}):null;return "[Added "+(f?f.n:d.id)+" "+(d.A||"")+"x"+(d.B||"")+'"]';}catch(e){return "[Added piece]";}});return text.trim();}
+async function sendAIMessage(){if(aiTyping)return;var input=document.getElementById("aiInput");var text=input.value.trim();if(!text)return;var key=getAIKey();if(!key){document.getElementById("aiKeyBanner").style.display="block";return;}addAIBubble("user",text);aiMsgs.push({role:"user",content:text});input.value="";input.style.height="auto";var ctx="";if(typeof runState!=="undefined"&&runState.pieces&&runState.pieces.length){var sum=runState.pieces.map(function(p){return p.item.n+" "+(p.item.d.A||"?")+"x"+(p.item.d.B||"?")+(p.item.d.E?" L="+p.item.d.E:"");}).join(", ");ctx="\n\n[Current run: "+runState.pieces.length+" pieces: "+sum+"]";}var apiMsgs=aiMsgs.map(function(msg,i){return(i===aiMsgs.length-1&&ctx)?{role:msg.role,content:msg.content+ctx}:msg;});aiTyping=true;document.getElementById("aiSendBtn").style.background="#999";document.getElementById("aiStatus").textContent="Thinking...";addAITyping();try{var resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-calls":"true"},body:JSON.stringify({model:AI_MODEL,max_tokens:1024,system:AI_SYS,messages:apiMsgs})});if(!resp.ok){var errText=await resp.text();removeAITyping();addAIBubble("assistant","HTTP "+resp.status+": "+errText.slice(0,200));document.getElementById("aiStatus").textContent="Error";aiTyping=false;document.getElementById("aiSendBtn").style.background="#2BA87E";return;}var data=await resp.json();removeAITyping();if(data.error){addAIBubble("assistant","API error "+data.error.type+": "+(data.error.message||"Check your API key."));document.getElementById("aiStatus").textContent="Error";}else{var raw=data.content&&data.content[0]?data.content[0].text:"";executeAITools(raw);addAIBubble("assistant",cleanAIText(raw));aiMsgs.push({role:"assistant",content:raw});document.getElementById("aiStatus").textContent="Ready";}}catch(e){removeAITyping();var msg="Error: "+e.message;if(e instanceof TypeError&&e.message.indexOf("fetch")>=0){msg="Network error - if testing locally, open this file via a local server (not file://) or use Claude.ai. Error: "+e.message;}addAIBubble("assistant",msg);console.error("AI fetch error:",e);document.getElementById("aiStatus").textContent="Error";}aiTyping=false;document.getElementById("aiSendBtn").style.background="#2BA87E";}
+</script>
 </body>
-</htmlfunction _drawRunLabels(W,H){
-  const lv=document.getElementById('runLv');
-  if(!lv||!runState.pieces.length) return;
-  if(!runState.prog) return;
-
-  // Rebuild MVP same as runDraw
-  let minX=0,maxX=0,minY=0,maxY=0,minZ=0,maxZ=0;
-  runState.pieces.forEach(p=>{
-    if(!p.worldPos) return;
-    const[wx,wy,wz]=p.worldPos;
-    minX=Math.min(minX,wx);maxX=Math.max(maxX,wx);
-    minY=Math.min(minY,wy);maxY=Math.max(maxY,wy);
-    minZ=Math.min(minZ,wz);maxZ=Math.max(maxZ,wz);
-  });
-  const cx=(minX+maxX)/2,cy=(minY+maxY)/2,cz=(minZ+maxZ)/2;
-  const camR=runState.camR;
-  const rX=runState.rX,rY=runState.rY;
-  const ex=cx+camR*Math.sin(rY)*Math.cos(rX);
-  const ey=cy+camR*Math.sin(rX);
-  const ez=cz+camR*Math.cos(rY)*Math.cos(rX);
-  const view=lookAt(ex,ey,ez,cx,cy,cz);
-  const proj=persp(0.733,(W||window.innerWidth)/((H||300)||1),camR*.001,camR*100);
-  const mvp=m4mul(proj,view);
-
-  function proj3d(x,y,z){
-    return project3D(x,y,z,mvp,W||window.innerWidth,H||300);
-  }
-
-  // Build HTML for all labels
-  const connOpts2=['S+D','TDC','F1','F1.5','F2','RAW'];
-  const divs=[];
-  let cursor={pos:[0,0,0], mat:m4id()};
-
-  runState.pieces.forEach(function(piece,pi){
-    const item=piece.item, dv=item.d;
-    const A=dv.A||24, B=dv.B||12;
-    const outlet=getFittingOutlet(item);
-    const rollAngles=[0,Math.PI/2,Math.PI,-Math.PI/2];
-    const rollAngle=rollAngles[piece.rot||0];
-    let localMat=rollAngle?m4rx(rollAngle):m4id();
-    const isElbow=['e90','e45','ev','sqe','me'].includes(item.id);
-    if(isElbow&&piece.dir) localMat=m4mul2(elbowDirMatrix(piece.dir),localMat);
-    else if((item.id==='reo'||item.id==='ro')&&piece.dir) localMat=m4mul2(elbowDirMatrix(piece.dir),localMat);
-    if(outlet.rotate90) localMat=m4mul2(m4rz(-Math.PI/2),localMat);
-    const worldMat=m4mul2(cursor.mat,localMat);
-    const inlet2=outlet.inlet||[0,0,0];
-    const worldInlet=m4mulV(worldMat,inlet2);
-    const tx=cursor.pos[0]-worldInlet[0];
-    const ty2=cursor.pos[1]-worldInlet[1];
-    const tz=cursor.pos[2]-worldInlet[2];
-
-    // Project inlet position
-    const ip=proj3d(tx+worldInlet[0], ty2+worldInlet[1], tz+worldInlet[2]);
-    if(ip&&ip[0]>0&&ip[0]<W&&ip[1]>0&&ip[1]<H){
-      const cn1=connOpts2[dv.CN1||0]||'S+D';
-      const label=A+'×'+B+'" '+cn1;
-      const d1=document.createElement('div'); 
-      d1.textContent=label; 
-      d1.style.cssText='position:absolute;left:'+(Math.round(ip[0])-1)+'px;top:'+(Math.round(ip[1])-22)+'px;background:rgba(10,25,40,0.85);color:#9df;font-size:10px;font-weight:700;padding:2px 5px;border-radius:4px;border:1px solid rgba(43,168,126,0.5);white-space:nowrap;pointer-events:none';
-      divs.push(d1);
-    }
-
-    // Advance cursor
-    const outWorldPos=m4mulV(worldMat,outlet.pos);
-    const outPos=[tx+outWorldPos[0],ty2+outWorldPos[1],tz+outWorldPos[2]];
-    const op=proj3d(outPos[0],outPos[1],outPos[2]);
-    if(op&&pi===runState.pieces.length-1){
-      const cn2=connOpts2[dv.CN2||0]||'S+D';
-      const outW=outlet.outW||A, outD=outlet.outD||B;
-      const label2=outW+'×'+outD+'" '+cn2;
-      if(op&&op[0]>0&&op[0]<W&&op[1]>0&&op[1]<H){
-        const d2=document.createElement('div');
-        d2.textContent=label2;
-        d2.style.cssText='position:absolute;left:'+(Math.round(op[0])-1)+'px;top:'+(Math.round(op[1])-22)+'px;background:rgba(10,25,40,0.85);color:#fda;font-size:10px;font-weight:700;padding:2px 5px;border-radius:4px;border:1px solid rgba(255,180,80,0.5);white-space:nowrap;pointer-events:none';
-        divs.push(d2);
-      }
-    }
-
-    const fw=normalize3(m4mulV(worldMat,outlet.fwd));
-    const up=normalize3(m4mulV(worldMat,outlet.up));
-    const dot2=fw[0]*up[0]+fw[1]*up[1]+fw[2]*up[2];
-    const up2=normalize3([up[0]-dot2*fw[0],up[1]-dot2*fw[1],up[2]-dot2*fw[2]]);
-    const rt=cross3(fw,up2);
-    cursor.pos=outPos;
-    cursor.mat=new Float32Array([fw[0],fw[1],fw[2],0,up2[0],up2[1],up2[2],0,rt[0],rt[1],rt[2],0,0,0,0,1]);
-  });
-
-  lv.innerHTML='';
-  divs.forEach(function(d){lv.appendChild(d);});
-
-  // Run length dim line as SVG overlay
-  if(runState.pieces.length>1){
-    const last=runState.pieces[runState.pieces.length-1];
-    if(last.worldPos){
-      const p1=proj3d(0,0,0);
-      const p2=proj3d(last.worldPos[0],last.worldPos[1],last.worldPos[2]);
-      if(p1&&p2){
-        const lp=last.worldPos;
-        const lenFt=(Math.sqrt(lp[0]*lp[0]+lp[1]*lp[1]+lp[2]*lp[2])*12/12).toFixed(1);
-        const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-        svg.setAttribute('style','position:absolute;inset:0;pointer-events:none;overflow:visible');
-        svg.setAttribute('width',W); svg.setAttribute('height',H);
-        // Dashed line
-        const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-        line.setAttribute('x1',p1[0]); line.setAttribute('y1',p1[1]);
-        line.setAttribute('x2',p2[0]); line.setAttribute('y2',p2[1]);
-        line.setAttribute('stroke','rgba(255,220,80,0.7)'); line.setAttribute('stroke-width','1.5');
-        line.setAttribute('stroke-dasharray','4,3');
-        svg.appendChild(line);
-        // Label at midpoint
-        const mx=(p1[0]+p2[0])/2, my=(p1[1]+p2[1])/2;
-        const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
-        rect.setAttribute('x',mx-22); rect.setAttribute('y',my-10);
-        rect.setAttribute('width',44); rect.setAttribute('height',18);
-        rect.setAttribute('rx',4); rect.setAttribute('fill','rgba(10,20,35,0.85)');
-        rect.setAttribute('stroke','rgba(255,220,80,0.7)'); rect.setAttribute('stroke-width','1');
-        svg.appendChild(rect);
-        const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
-        txt.setAttribute('x',mx); txt.setAttribute('y',my+4);
-        txt.setAttribute('text-anchor','middle');
-        txt.setAttribute('fill','rgba(255,220,80,1)'); txt.setAttribute('font-size','10');
-        txt.setAttribute('font-weight','bold'); txt.setAttribute('font-family','sans-serif');
-        txt.textContent=lenFt+"'";
-        svg.appendChild(txt);
-        lv.appendChild(svg);
-      }
-    }
-  }
-}
-
->
+</html>

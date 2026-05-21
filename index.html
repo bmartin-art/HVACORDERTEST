@@ -17,17 +17,19 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .screen.slide-out{transform:translateX(-40%)!important}
 
 /* ── HEADER ── */
-.hdr{background:var(--teal);color:#fff;display:flex;align-items:center;gap:10px;padding:12px 14px;flex-shrink:0;min-height:54px}
-.hdr h1{font-size:17px;font-weight:700;flex:1}
-.hdr .back-btn{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
-.hdr .list-btn{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.hdr{background:var(--teal);color:#fff;display:flex;flex-direction:column;padding:8px 10px;flex-shrink:0;gap:6px}
+.hdr-row1{display:flex;align-items:center;gap:6px;width:100%}
+.hdr-row2{display:flex;align-items:center;gap:6px;width:100%}
+.hdr h1{font-size:15px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hdr .back-btn{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0}
+.hdr .list-btn{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:8px;padding:6px 8px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;flex-shrink:0}
 .hdr .list-count{background:#fff;color:var(--teal);border-radius:10px;padding:1px 6px;font-size:11px;font-weight:700}
 
 /* ── JOB INFO BAR ── */
-.job-bar{background:#fff;border-bottom:1px solid var(--border);padding:8px 12px;display:grid;grid-template-columns:1fr 1fr;gap:6px;flex-shrink:0}
+.job-bar{background:#fff;border-bottom:1px solid var(--border);padding:6px 10px;display:grid;grid-template-columns:1fr 1fr;gap:5px;flex-shrink:0}
 .jf{display:flex;flex-direction:column;gap:2px}
 .jf label{font-size:10px;color:var(--lbl);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-.jf input{border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:13px;outline:none}
+.jf input{border:1px solid var(--border);border-radius:6px;padding:5px 6px;font-size:13px;outline:none;width:100%;min-width:0}
 .jf input:focus{border-color:var(--teal)}
 
 /* ── PALLET GRID ── */
@@ -51,26 +53,26 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .vp-hint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:rgba(100,150,170,.4);pointer-events:none}
 
 /* ── DIM PANEL ── */
-.dim-panel{background:#fff;border-top-left-radius:16px;border-top-right-radius:16px;box-shadow:0 -3px 20px rgba(0,0,0,.15);flex-shrink:0;max-height:46vh;display:flex;flex-direction:column;overflow:hidden}
+.dim-panel{background:#fff;border-top-left-radius:16px;border-top-right-radius:16px;box-shadow:0 -3px 20px rgba(0,0,0,.15);flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
 .dim-panel-handle{width:36px;height:4px;background:#ddd;border-radius:2px;margin:8px auto 2px;flex-shrink:0}
-.vtabs-row{display:flex;gap:8px;padding:4px 12px 6px;flex-shrink:0;flex-wrap:wrap}
-.vt-btn{background:#f0f0f0;border:none;border-radius:20px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--sub)}
+.vtabs-row{display:flex;gap:6px;padding:4px 10px 4px;flex-shrink:0;flex-wrap:wrap}
+.vt-btn{background:#f0f0f0;border:none;border-radius:20px;padding:5px 10px;font-size:11px;cursor:pointer;color:var(--sub)}
 .vt-btn.on{background:var(--teal);color:#fff;font-weight:600}
-.dim-scroll{overflow-y:auto;flex:1;padding:0 10px 6px;-webkit-overflow-scrolling:touch}
-.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.dim-scroll{overflow-y:auto;flex:1;padding:0 10px 4px;-webkit-overflow-scrolling:touch;max-height:30vh}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
 .df{display:flex;flex-direction:column;gap:2px}
 .df label{font-size:10px;color:var(--lbl);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
-.df input,.df select{padding:7px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;background:#fff}
+.df input,.df select{padding:6px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;background:#fff;width:100%}
 .df input:focus,.df select:focus{border-color:var(--teal)}
-.add-row{display:flex;gap:8px;padding:8px 10px;border-top:1px solid #eee;flex-shrink:0;align-items:center}
+.add-row{display:flex;gap:8px;padding:6px 10px;border-top:1px solid #eee;flex-shrink:0;align-items:center}
 .qty-wrap{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
 .qty-wrap label{font-size:10px;color:var(--lbl);font-weight:600;text-transform:uppercase}
-.qty-wrap input{width:54px;padding:8px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;text-align:center;outline:none}
+.qty-wrap input{width:50px;padding:7px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;text-align:center;outline:none}
 .qty-wrap input:focus{border-color:var(--teal)}
-.btn-add{flex:1;padding:12px;background:var(--teal);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer}
+.btn-add{flex:1;padding:11px;background:var(--teal);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer}
 .btn-add:active{background:var(--teal-dk)}
-.notes-wrap{padding:0 10px 6px;flex-shrink:0}
-.notes-wrap input{width:100%;padding:7px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none}
+.notes-wrap{padding:0 10px 4px;flex-shrink:0}
+.notes-wrap input{width:100%;padding:6px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none}
 .notes-wrap input:focus{border-color:var(--teal)}
 
 /* ── SLIDE-UP LIST PANEL ── */
@@ -148,10 +150,10 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .run-stats{padding:6px 10px;font-size:11px;color:#888;flex-shrink:0}
 .send-btn.sending{background:#888;pointer-events:none}
 .send-btn.sent{background:#1a6e52;pointer-events:none}
-.attach-list-btn{background:var(--teal);color:#fff;border:none;border-radius:9px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.attach-list-btn{background:var(--teal);color:#fff;border:none;border-radius:9px;padding:7px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
 /* ── MODE TOGGLE ── */
-.mode-toggle{display:flex;background:rgba(0,0,0,.25);border-radius:20px;padding:3px;gap:0;flex-shrink:0}
-.mode-btn{background:none;border:none;color:rgba(255,255,255,.7);border-radius:16px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.mode-toggle{display:flex;background:rgba(0,0,0,.25);border-radius:20px;padding:3px;gap:0;flex:1}
+.mode-btn{background:none;border:none;color:rgba(255,255,255,.7);border-radius:16px;padding:5px 0;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;flex:1;text-align:center}
 .mode-btn.active{background:#fff;color:var(--teal)}
 </style>
 </head>
@@ -160,13 +162,17 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 <!-- ══ PALLET SCREEN ══ -->
 <div class="screen" id="palletScreen">
   <div class="hdr">
-    <h1>Brookstone Industries</h1>
-    <button class="attach-list-btn" onclick="openSend()">📤 Send</button>
-    <button class="attach-list-btn" style="background:#1a6e52" onclick="openImport()">📥 Import</button>
-    <button class="list-btn" onclick="openList()">📋 List <span class="list-count" id="lCount">0</span></button>
-    <div class="mode-toggle">
-      <button class="mode-btn active" id="btnSingle" onclick="setMode('single')">📋 Single</button>
-      <button class="mode-btn" id="btnRun" onclick="setMode('run')">🔧 Run</button>
+    <div class="hdr-row1">
+      <h1>Brookstone Industries</h1>
+      <button class="list-btn" onclick="openList()">📋 <span class="list-count" id="lCount">0</span></button>
+    </div>
+    <div class="hdr-row2">
+      <button class="attach-list-btn" onclick="openSend()">📤 Send</button>
+      <button class="attach-list-btn" style="background:#1a6e52" onclick="openImport()">📥 Import</button>
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="btnSingle" onclick="setMode('single')">📋 Single</button>
+        <button class="mode-btn" id="btnRun" onclick="setMode('run')">🔧 Run</button>
+      </div>
     </div>
   </div>
   <div class="job-bar">

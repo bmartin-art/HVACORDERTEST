@@ -6,155 +6,186 @@
 <title>Brookstone Industries HVAC Takeoff</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{--teal:#2BA87E;--teal-dk:#1a8060;--bg:#1c2b3a;--card:#fff;--border:#e0e0e0;--txt:#222;--sub:#666;--lbl:#888}
-html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5}
+:root{
+  --teal:#2BA87E;--teal-dk:#1a8060;--teal-lt:rgba(43,168,126,.08);
+  --hdr:#1a2630;--hdr2:#243040;
+  --bg:#f5f6f8;--card:#fff;--border:#e8eaed;--border2:#d0d3d8;
+  --txt:#1a1d23;--sub:#64697a;--lbl:#8890a0;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 4px 12px rgba(0,0,0,.1),0 2px 4px rgba(0,0,0,.06);
+}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;background:var(--bg);-webkit-font-smoothing:antialiased}
 
 /* ── SCREENS ── */
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;transition:transform .28s cubic-bezier(.4,0,.2,1);will-change:transform;background:#f0f2f5}
-#palletScreen{transform:translateX(0);background:#f0f2f5}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;transition:transform .26s cubic-bezier(.4,0,.2,1);will-change:transform;background:var(--bg)}
+#palletScreen{transform:translateX(0)}
 #detailScreen{transform:translateX(100%)}
 .screen.slide-in{transform:translateX(0)!important}
-.screen.slide-out{transform:translateX(-40%)!important}
+.screen.slide-out{transform:translateX(-30%)!important}
 
 /* ── HEADER ── */
-.hdr{background:var(--teal);color:#fff;display:flex;flex-direction:column;padding:8px 10px;flex-shrink:0;gap:6px}
-.hdr-row1{display:flex;align-items:center;gap:6px;width:100%}
+.hdr{background:var(--hdr);color:#fff;display:flex;flex-direction:column;padding:10px 14px 8px;flex-shrink:0;gap:8px}
+.hdr-row1{display:flex;align-items:center;gap:8px;width:100%}
 .hdr-row2{display:flex;align-items:center;gap:6px;width:100%}
-.hdr h1{font-size:15px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hdr .back-btn{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0}
-.hdr .list-btn{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:8px;padding:6px 8px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;flex-shrink:0}
-.hdr .list-count{background:#fff;color:var(--teal);border-radius:10px;padding:1px 6px;font-size:11px;font-weight:700}
+.hdr h1{font-size:15px;font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em;color:#fff}
+.hdr .brand{font-size:13px;font-weight:700;flex:1;color:#fff;letter-spacing:-.02em}
+.hdr .brand span{color:var(--teal)}
+
+/* Back button — chevron style */
+.back-btn{display:flex;align-items:center;gap:4px;background:none;border:none;color:rgba(255,255,255,.8);padding:4px 0;font-size:13px;font-weight:500;cursor:pointer;flex-shrink:0;letter-spacing:-.01em}
+.back-btn svg{width:16px;height:16px;flex-shrink:0}
+.back-btn:active{color:#fff}
+
+/* List button */
+.list-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:5px 9px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;letter-spacing:-.01em}
+.list-btn:active{background:rgba(255,255,255,.18)}
+.list-count{background:var(--teal);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;min-width:16px;text-align:center}
+
+/* Header action buttons */
+.hdr-action{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.9);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:5px;letter-spacing:-.01em}
+.hdr-action:active{background:rgba(255,255,255,.18)}
+.hdr-action svg{width:13px;height:13px;flex-shrink:0}
+
+/* Mode toggle */
+.mode-toggle{display:flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:2px;gap:2px;flex:1}
+.mode-btn{background:none;border:none;color:rgba(255,255,255,.55);border-radius:7px;padding:5px 0;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;flex:1;text-align:center;letter-spacing:-.01em}
+.mode-btn.active{background:#fff;color:var(--txt);font-weight:700}
 
 /* ── JOB INFO BAR ── */
-.job-bar{background:#fff;border-bottom:1px solid var(--border);padding:6px 10px;display:grid;grid-template-columns:1fr 1fr;gap:5px;flex-shrink:0}
+.job-bar{background:#fff;border-bottom:1px solid var(--border);padding:7px 14px;display:grid;grid-template-columns:1fr 1fr;gap:5px;flex-shrink:0}
 .jf{display:flex;flex-direction:column;gap:2px}
-.jf label{font-size:10px;color:var(--lbl);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-.jf input{border:1px solid var(--border);border-radius:6px;padding:5px 6px;font-size:13px;outline:none;width:100%;min-width:0}
-.jf input:focus{border-color:var(--teal)}
+.jf label{font-size:9px;color:var(--lbl);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.jf input{border:1px solid var(--border);border-radius:6px;padding:5px 7px;font-size:13px;outline:none;width:100%;min-width:0;color:var(--txt);background:#fff}
+.jf input:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(43,168,126,.12)}
 
 /* ── PALLET GRID ── */
-.pallet-scroll{flex:1;overflow-y:auto;padding:10px;-webkit-overflow-scrolling:touch;background:#f0f2f5}
-.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.pi{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:8px 4px 6px;text-align:center;cursor:pointer;active-scale:.95;transition:border-color .12s,transform .1s}
-.pi:active{transform:scale(.94)}
-.pi.on{border-color:var(--teal);background:rgba(43,168,126,.07)}
-.pi img{width:44px;height:44px;display:block;margin:0 auto 4px;image-rendering:pixelated}
-#runPalletGrid .pi{padding:4px 2px}#runPalletGrid .pi img{width:28px;height:28px;margin:0 auto 2px}#runPalletGrid .pi .pname{font-size:7px}
-.pi .pname{font-size:9px;color:var(--sub);line-height:1.2;font-weight:500}
-.pi .pimg-placeholder{width:44px;height:44px;background:#eee;border-radius:5px;margin:0 auto 4px}
+.pallet-scroll{flex:1;overflow-y:auto;padding:10px 12px;-webkit-overflow-scrolling:touch;background:var(--bg)}
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.pi{background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px 2px 6px;text-align:center;cursor:pointer;transition:border-color .12s,transform .1s,box-shadow .12s;box-shadow:var(--shadow)}
+.pi:active{transform:scale(.93);box-shadow:none}
+.pi.on{border-color:var(--teal);background:rgba(43,168,126,.05);box-shadow:0 0 0 1px var(--teal)}
+.pi img{width:60px;height:60px;display:block;margin:0 auto 4px;image-rendering:pixelated}
+.pi .pname{font-size:8.5px;color:var(--sub);line-height:1.2;font-weight:500;letter-spacing:-.01em}
+.pi .pimg-placeholder{width:60px;height:60px;background:#eee;border-radius:5px;margin:0 auto 4px}
 
 /* ── DETAIL SCREEN ── */
-#detailScreen{background:var(--bg)}
+#detailScreen{background:#1a2630}
 .vp-wrap{flex:1;position:relative;min-height:0}
 #cv3d{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
 #cv3d:active{cursor:grabbing}
 #lv{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
-.vp-name{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:12px;font-weight:600;color:rgba(190,225,240,.9);pointer-events:none}
-.vp-hint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:rgba(100,150,170,.4);pointer-events:none}
+.vp-name{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:11px;font-weight:600;color:rgba(180,210,230,.8);pointer-events:none;letter-spacing:.01em}
+.vp-hint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:9px;color:rgba(100,140,160,.35);pointer-events:none;letter-spacing:.01em}
 
 /* ── DIM PANEL ── */
-.dim-panel{background:#fff;border-top-left-radius:16px;border-top-right-radius:16px;box-shadow:0 -3px 20px rgba(0,0,0,.15);flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
-.dim-panel-handle{width:36px;height:4px;background:#ddd;border-radius:2px;margin:8px auto 2px;flex-shrink:0}
-.vtabs-row{display:flex;gap:6px;padding:4px 10px 4px;flex-shrink:0;flex-wrap:wrap}
-.vt-btn{background:#f0f0f0;border:none;border-radius:20px;padding:5px 10px;font-size:11px;cursor:pointer;color:var(--sub)}
-.vt-btn.on{background:var(--teal);color:#fff;font-weight:600}
-.dim-scroll{overflow-y:auto;flex:1;padding:0 10px 4px;-webkit-overflow-scrolling:touch;max-height:30vh}
-.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.dim-panel{background:#fff;border-top-left-radius:18px;border-top-right-radius:18px;box-shadow:0 -2px 16px rgba(0,0,0,.12);flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
+.dim-panel-handle{width:32px;height:3px;background:#d8dbe0;border-radius:2px;margin:8px auto 2px;flex-shrink:0}
+.vtabs-row{display:flex;gap:5px;padding:5px 12px 4px;flex-shrink:0;flex-wrap:wrap}
+.vt-btn{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:600;cursor:pointer;color:var(--sub);letter-spacing:-.01em}
+.vt-btn.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.dim-scroll{overflow-y:auto;flex:1;padding:0 12px 4px;-webkit-overflow-scrolling:touch;max-height:30vh}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .df{display:flex;flex-direction:column;gap:2px}
-.df label{font-size:10px;color:var(--lbl);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
-.df input,.df select{padding:6px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;background:#fff;width:100%}
-.df input:focus,.df select:focus{border-color:var(--teal)}
-.add-row{display:flex;gap:8px;padding:6px 10px;border-top:1px solid #eee;flex-shrink:0;align-items:center}
+.df label{font-size:9px;color:var(--lbl);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.df input,.df select{padding:7px 8px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;background:#fff;width:100%;color:var(--txt)}
+.df input:focus,.df select:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(43,168,126,.12)}
+.add-row{display:flex;gap:8px;padding:7px 12px;border-top:1px solid var(--border);flex-shrink:0;align-items:center}
 .qty-wrap{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
-.qty-wrap label{font-size:10px;color:var(--lbl);font-weight:600;text-transform:uppercase}
-.qty-wrap input{width:50px;padding:7px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;text-align:center;outline:none}
-.qty-wrap input:focus{border-color:var(--teal)}
-.btn-add{flex:1;padding:11px;background:var(--teal);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer}
+.qty-wrap label{font-size:9px;color:var(--lbl);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.qty-wrap input{width:48px;padding:7px;border:1px solid var(--border);border-radius:8px;font-size:15px;text-align:center;outline:none;color:var(--txt)}
+.qty-wrap input:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(43,168,126,.12)}
+.btn-add{flex:1;padding:11px;background:var(--teal);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:-.01em}
 .btn-add:active{background:var(--teal-dk)}
-.notes-wrap{padding:0 10px 4px;flex-shrink:0}
-.notes-wrap input{width:100%;padding:6px 8px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none}
-.notes-wrap input:focus{border-color:var(--teal)}
+.notes-wrap{padding:0 12px 5px;flex-shrink:0}
+.notes-wrap input{width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;outline:none;color:var(--txt)}
+.notes-wrap input:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(43,168,126,.12)}
 
-/* ── SLIDE-UP LIST PANEL ── */
-#listOverlay{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end}
+/* ── LIST OVERLAY ── */
+#listOverlay{position:absolute;inset:0;background:rgba(0,0,0,.4);z-index:50;display:none;align-items:flex-end}
 #listOverlay.open{display:flex}
-#listSheet{background:#fff;border-top-left-radius:20px;border-top-right-radius:20px;width:100%;max-height:82vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
-.sheet-handle{width:36px;height:4px;background:#ddd;border-radius:2px;margin:10px auto 6px}
-.sheet-hdr{display:flex;align-items:center;padding:0 14px 10px;border-bottom:1px solid #eee;gap:8px}
-.sheet-hdr h2{flex:1;font-size:16px;font-weight:700}
-.sheet-hdr .close-btn{background:none;border:none;font-size:20px;cursor:pointer;color:#999}
-.list-scroll{overflow-y:auto;flex:1;padding:8px 12px;-webkit-overflow-scrolling:touch}
-.li{background:#f8f8f8;border:1px solid #eee;border-radius:10px;padding:10px 38px 10px 12px;margin-bottom:8px;position:relative}
-.li .ln{font-size:13px;font-weight:600;color:#222}
-.li .ld{font-size:11px;color:#888;margin-top:3px;word-break:break-all}
-.li .lr{position:absolute;top:8px;right:10px;background:none;border:none;color:#ccc;font-size:18px;cursor:pointer}
+#listSheet{background:#fff;border-top-left-radius:22px;border-top-right-radius:22px;width:100%;max-height:82vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 24px rgba(0,0,0,.15)}
+.sheet-handle{width:32px;height:3px;background:#d8dbe0;border-radius:2px;margin:10px auto 6px}
+.sheet-hdr{display:flex;align-items:center;padding:0 16px 10px;border-bottom:1px solid var(--border);gap:8px}
+.sheet-hdr h2{flex:1;font-size:15px;font-weight:700;color:var(--txt);letter-spacing:-.02em}
+.sheet-hdr .close-btn{background:var(--bg);border:none;color:var(--sub);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+.list-scroll{overflow-y:auto;flex:1;padding:8px 14px;-webkit-overflow-scrolling:touch}
+.li{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 40px 10px 12px;margin-bottom:7px;position:relative;cursor:pointer;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow)}
+.li .ln{font-size:13px;font-weight:600;color:var(--txt);letter-spacing:-.01em}
+.li .ld{font-size:11px;color:var(--sub);margin-top:2px;word-break:break-all}
+.li .lr{position:absolute;top:50%;right:10px;transform:translateY(-50%);background:none;border:none;color:#c8cdd6;font-size:16px;cursor:pointer;line-height:1;padding:4px}
 .li .lr:active{color:#c22}
-.li{cursor:pointer;display:flex;align-items:center;gap:10px}
-.li-thumb{width:54px;height:54px;object-fit:cover;border-radius:8px;flex-shrink:0;background:#1c2b3a}
-.li-thumb-ph{width:54px;height:54px;border-radius:8px;background:#e8e8e8;flex-shrink:0}
+.li-thumb{width:50px;height:50px;object-fit:cover;border-radius:8px;flex-shrink:0;background:#1a2630}
+.li-thumb-ph{width:50px;height:50px;border-radius:8px;background:#eef0f3;flex-shrink:0}
 .li-body{flex:1;min-width:0}
-.empty-msg{text-align:center;color:#bbb;font-size:13px;padding:24px}
-.sheet-btm{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #eee;flex-shrink:0}
-.sheet-btm button{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:#fff}
+.empty-msg{text-align:center;color:#b8bcc8;font-size:13px;padding:28px}
+.sheet-btm{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--border);flex-shrink:0}
+.sheet-btm button{flex:1;padding:10px;border:1px solid var(--border);border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;background:#fff;color:var(--txt);display:flex;align-items:center;justify-content:center;gap:5px;letter-spacing:-.01em}
+.sheet-btm button svg{width:13px;height:13px;flex-shrink:0}
 .sheet-btm .bp{background:var(--teal);color:#fff;border-color:var(--teal)}
+
 /* ── SEND MODAL ── */
-#sendModal{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:60;display:none;align-items:flex-end}
+#sendModal{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:60;display:none;align-items:flex-end}
 #sendModal.open{display:flex}
-#sendSheet{background:#fff;border-top-left-radius:20px;border-top-right-radius:20px;width:100%;max-height:90vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
-.send-body{overflow-y:auto;flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:12px}
-.send-field{display:flex;flex-direction:column;gap:4px}
-.send-field label{font-size:11px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.04em}
-.send-field input{padding:9px 10px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;outline:none}
-.send-field input:focus{border-color:var(--teal)}
-.photo-attach-area{border:2px dashed var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;color:var(--sub);font-size:13px;position:relative;transition:border-color .15s}
-.photo-attach-area.has-photo{border-color:var(--teal);background:rgba(43,168,126,.05)}
+#sendSheet{background:#fff;border-top-left-radius:22px;border-top-right-radius:22px;width:100%;max-height:90vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+.send-body{overflow-y:auto;flex:1;padding:12px 16px;display:flex;flex-direction:column;gap:11px}
+.send-field{display:flex;flex-direction:column;gap:3px}
+.send-field label{font-size:9px;font-weight:700;color:var(--lbl);text-transform:uppercase;letter-spacing:.06em}
+.send-field input{padding:9px 10px;border:1px solid var(--border);border-radius:9px;font-size:14px;outline:none;color:var(--txt)}
+.send-field input:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(43,168,126,.12)}
+.photo-attach-area{border:1.5px dashed var(--border2);border-radius:12px;padding:16px;text-align:center;cursor:pointer;color:var(--sub);font-size:12px;position:relative;transition:border-color .15s}
+.photo-attach-area.has-photo{border-color:var(--teal);background:rgba(43,168,126,.04)}
 .photo-attach-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
 .photo-thumb-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.photo-thumb{width:72px;height:72px;object-fit:cover;border-radius:8px;border:1.5px solid var(--border)}
+.photo-thumb{width:68px;height:68px;object-fit:cover;border-radius:8px;border:1px solid var(--border)}
 .photo-rm{position:relative;display:inline-block}
-.photo-rm-btn{position:absolute;top:-5px;right:-5px;background:#c22;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
-.send-actions{display:flex;gap:8px;padding:10px 14px;border-top:1px solid #eee;flex-shrink:0}
-.send-actions button{flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:#fff}
+.photo-rm-btn{position:absolute;top:-5px;right:-5px;background:#c22;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.send-actions{display:flex;gap:8px;padding:10px 16px;border-top:1px solid var(--border);flex-shrink:0}
+.send-actions button{flex:1;padding:12px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--txt);letter-spacing:-.01em}
 .send-actions .send-btn{background:var(--teal);color:#fff;border-color:var(--teal)}
 .send-actions .send-btn:active{background:var(--teal-dk)}
+.send-btn.sending{background:#8890a0!important;pointer-events:none}
+.send-btn.sent{background:#1a6e52!important;pointer-events:none}
+
 /* ── RUN BUILDER ── */
-#runScreen{background:var(--bg);transform:translateX(100%)}
-.run-toolbar{background:#1a2d3e;display:flex;align-items:center;gap:6px;padding:6px 10px;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.run-tool-btn{background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
-.run-tool-btn.active{background:var(--teal)}
-.run-tool-btn.danger{background:rgba(255,80,80,.3)}
-.run-canvas-wrap{flex:none;height:42vh;position:relative;min-height:120px}
+#runScreen{background:#1a2630;transform:translateX(100%)}
+.run-canvas-wrap{flex:none;height:35vh;position:relative;min-height:140px}
 #runCv{display:block;width:100%;height:100%;touch-action:none}
-.run-bottom{background:#fff;border-top:1px solid #eee;flex-shrink:0;max-height:38vh;display:flex;flex-direction:column}
-.run-pieces{overflow-x:auto;display:flex;gap:8px;padding:8px 10px;-webkit-overflow-scrolling:touch;flex-shrink:0;border-bottom:1px solid #eee}
-.run-piece{flex-shrink:0;background:#f5f5f5;border:2px solid #eee;border-radius:8px;padding:6px 10px;text-align:center;cursor:pointer;min-width:70px}
-.run-piece.active-piece{border-color:var(--teal);background:rgba(43,168,126,.08)}
-.run-piece.err{border-color:#ff5050;background:rgba(255,80,80,.08)}
-.run-piece .rp-name{font-size:10px;font-weight:700;color:#333}
-.run-piece .rp-dims{font-size:9px;color:#888;margin-top:2px}
-.run-piece .rp-conn{font-size:9px;margin-top:2px}
-.run-piece{position:relative}
-.run-piece .rp-del{position:absolute;top:-8px;right:-8px;width:18px;height:18px;border-radius:50%;background:#e55;color:#fff;border:2px solid #fff;font-size:11px;font-weight:700;line-height:14px;text-align:center;cursor:pointer;z-index:2;box-shadow:0 1px 4px rgba(0,0,0,.25);display:none}
+.run-piece-strip{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-shrink:0}
+.run-pieces{overflow-x:auto;display:flex;gap:7px;padding:8px 12px 6px;-webkit-overflow-scrolling:touch;flex-shrink:0}
+.run-piece{flex-shrink:0;background:#fff;border:1px solid var(--border);border-radius:10px;padding:6px 8px;text-align:center;cursor:pointer;min-width:66px;position:relative;box-shadow:var(--shadow);transition:border-color .12s,box-shadow .12s}
+.run-piece:active{transform:scale(.95)}
+.run-piece.active-piece{border-color:var(--teal);background:rgba(43,168,126,.05);box-shadow:0 0 0 1.5px var(--teal)}
+.run-piece.err{border-color:#f55;background:rgba(255,80,80,.05)}
+.run-piece .rp-name{font-size:9.5px;font-weight:700;color:var(--txt);letter-spacing:-.02em}
+.run-piece .rp-dims{font-size:8.5px;color:var(--lbl);margin-top:1px}
+.run-piece .rp-del{position:absolute;top:-7px;right:-7px;width:17px;height:17px;border-radius:50%;background:#e44;color:#fff;border:2px solid #fff;font-size:10px;font-weight:700;line-height:13px;text-align:center;cursor:pointer;z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.2);display:none}
 .run-piece:hover .rp-del,.run-piece.active-piece .rp-del{display:block}
-.run-piece.active-piece{border-color:var(--teal);background:rgba(43,168,126,.1);box-shadow:0 0 0 2px rgba(43,168,126,.3)}
-.run-piece .rp-connrow{display:flex;gap:3px;margin-top:3px;justify-content:center;flex-wrap:wrap}
-.run-piece .rp-badge{font-size:8px;font-weight:700;padding:1px 4px;border-radius:3px;white-space:nowrap}
-.run-piece .rp-badge.c1{background:rgba(43,168,126,.15);color:#1a8060;border:1px solid rgba(43,168,126,.3)}
-.run-piece .rp-badge.c2{background:rgba(80,150,255,.12);color:#2255aa;border:1px solid rgba(80,150,255,.3)}
-.run-dir-picker{display:none;padding:8px 10px;border-bottom:1px solid #eee;flex-shrink:0}
-.run-dir-picker.show{display:block}
-.run-dir-picker p{font-size:12px;color:#666;margin-bottom:6px;font-weight:600}
-.run-dir-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.run-dir-btn{padding:8px;background:#f0f0f0;border:1.5px solid #ddd;border-radius:8px;font-size:12px;cursor:pointer;text-align:center}
-.run-dir-btn:active{background:var(--teal);color:#fff}
-.run-stats{padding:6px 10px;font-size:11px;color:#888;flex-shrink:0}
-.send-btn.sending{background:#888;pointer-events:none}
-.send-btn.sent{background:#1a6e52;pointer-events:none}
-.attach-list-btn{background:var(--teal);color:#fff;border:none;border-radius:9px;padding:7px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
-/* ── MODE TOGGLE ── */
-.mode-toggle{display:flex;background:rgba(0,0,0,.25);border-radius:20px;padding:3px;gap:0;flex:1}
-.mode-btn{background:none;border:none;color:rgba(255,255,255,.7);border-radius:16px;padding:5px 0;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;flex:1;text-align:center}
-.mode-btn.active{background:#fff;color:var(--teal)}
+.run-piece .rp-connrow{display:flex;gap:2px;margin-top:3px;justify-content:center;flex-wrap:wrap}
+.run-piece .rp-badge{font-size:7.5px;font-weight:700;padding:1px 3px;border-radius:3px;white-space:nowrap;letter-spacing:-.01em}
+.run-piece .rp-badge.c1{background:rgba(43,168,126,.1);color:#1a7a5e;border:1px solid rgba(43,168,126,.2)}
+.run-piece .rp-badge.c2{background:rgba(60,130,255,.08);color:#2050a0;border:1px solid rgba(60,130,255,.15)}
+.run-stats-bar{padding:4px 12px 6px;font-size:10px;color:var(--sub);font-weight:600;letter-spacing:-.01em}
+
+/* Run pallet — same look as single mode */
+.run-pallet-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+.run-pallet-hint{padding:6px 14px 4px;flex-shrink:0;font-size:10px;color:var(--lbl);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+#runPalletGrid{padding:8px 12px;overflow-y:auto;flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+#runPalletGrid .pi .pname{font-size:8.5px}
+
+/* Dir picker buttons */
+.run-dir-btn{padding:9px 6px;background:#fff;border:1px solid var(--border);border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;text-align:center;color:var(--txt);letter-spacing:-.01em;box-shadow:var(--shadow)}
+.run-dir-btn:active{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* Sheet shared */
+.sheet-handle2{width:32px;height:3px;background:#d8dbe0;border-radius:2px;margin:10px auto 0}
+.sheet-title-row{display:flex;align-items:center;padding:8px 16px 7px;border-bottom:1px solid var(--border);gap:8px}
+.sheet-title{flex:1;font-size:14px;font-weight:700;color:var(--txt);letter-spacing:-.02em}
+.sheet-close{background:none;border:none;color:var(--lbl);cursor:pointer;padding:2px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.sheet-close svg{width:18px;height:18px}
+
+/* Import modal */
+#importModal{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:60;display:none;align-items:flex-end}
+#importModal.open{display:flex}
 </style>
 </head>
 <body>
@@ -163,15 +194,24 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 <div class="screen" id="palletScreen">
   <div class="hdr">
     <div class="hdr-row1">
-      <h1>Brookstone Industries</h1>
-      <button class="list-btn" onclick="openList()">📋 <span class="list-count" id="lCount">0</span></button>
+      <h1 class="brand">Brookstone <span>Industries</span></h1>
+      <button class="list-btn" onclick="openList()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
+        List <span class="list-count" id="lCount">0</span>
+      </button>
     </div>
     <div class="hdr-row2">
-      <button class="attach-list-btn" onclick="openSend()">📤 Send</button>
-      <button class="attach-list-btn" style="background:#1a6e52" onclick="openImport()">📥 Import</button>
+      <button class="hdr-action" onclick="openSend()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 8 L14 2 L10 8 L14 14 Z"/></svg>
+        Send
+      </button>
+      <button class="hdr-action" onclick="openImport()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 2v8M5 7l3 3 3-3M3 12h10"/></svg>
+        Import
+      </button>
       <div class="mode-toggle">
-        <button class="mode-btn active" id="btnSingle" onclick="setMode('single')">📋 Single</button>
-        <button class="mode-btn" id="btnRun" onclick="setMode('run')">🔧 Run</button>
+        <button class="mode-btn active" id="btnSingle" onclick="setMode('single')">Single</button>
+        <button class="mode-btn" id="btnRun" onclick="setMode('run')">Run</button>
       </div>
     </div>
   </div>
@@ -189,10 +229,16 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 
 <!-- ══ DETAIL SCREEN ══ -->
 <div class="screen" id="detailScreen">
-  <div class="hdr">
-    <button class="back-btn" onclick="goBack()">← Back</button>
-    <h1 id="vpName" style="font-size:15px">Select fitting</h1>
-    <button class="list-btn" onclick="openList()">📋 <span class="list-count" id="lCount2">0</span></button>
+  <div class="hdr" style="flex-direction:row;align-items:center;padding:10px 14px">
+    <button class="back-btn" onclick="goBack()">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
+      Back
+    </button>
+    <h1 id="vpName" style="font-size:14px;flex:1;text-align:center;margin:0 8px">Select fitting</h1>
+    <button class="list-btn" onclick="openList()">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
+      <span class="list-count" id="lCount2">0</span>
+    </button>
   </div>
   <div class="vp-wrap" id="vp">
     <canvas id="cv3d"></canvas>
@@ -223,19 +269,22 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     </div>
     <div class="list-scroll" id="listArea"></div>
     <div class="sheet-btm">
-      <button onclick="copyList()">📋 Copy</button>
-      <button onclick="exportPDF()">⬇ PDF</button>
-      <button class="bp" onclick="openSend()">📤 Send</button>
+      <button onclick="copyList()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><rect x="5" y="5" width="9" height="9" rx="2"/><path d="M3 11V3a2 2 0 012-2h8"/></svg>Copy</button>
+      <button onclick="exportPDF()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>PDF</button>
+      <button class="bp" onclick="openSend()">Send</button>
     </div>
   </div>
 </div>
 
 <!-- ══ RUN BUILDER SCREEN ══ -->
 <div class="screen" id="runScreen" style="display:flex;flex-direction:column;overflow:hidden">
-  <div class="hdr">
-    <button class="back-btn" onclick="closeRunBuilder()">← Back</button>
-    <h1 style="font-size:13px">🔧 Run Builder</h1>
-    <button onclick="clearRun()" style="background:rgba(255,80,80,.3);border:none;color:#fff;border-radius:7px;padding:4px 10px;font-size:11px;cursor:pointer">Clear</button>
+  <div class="hdr" style="flex-direction:row;align-items:center;padding:10px 14px">
+    <button class="back-btn" onclick="closeRunBuilder()">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
+      Back
+    </button>
+    <h1 style="font-size:14px;flex:1;text-align:center;margin:0;font-weight:600;letter-spacing:-.01em">Run Builder</h1>
+    <button onclick="clearRun()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:-.01em">Clear</button>
   </div>
 
   <!-- 3D viewport -->
@@ -246,13 +295,11 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
   </div>
 
   <!-- Run piece strip -->
-  <div style="background:#0d1b27;border-top:1px solid #1a3040;border-bottom:1px solid #1a3040;flex-shrink:0">
-    <div class="run-pieces" id="runPieces" style="padding:4px 6px">
-      <div style="font-size:11px;color:#556;padding:6px 8px;align-self:center;white-space:nowrap;font-style:italic">Add fittings below ↓</div>
+  <div class="run-piece-strip">
+    <div class="run-pieces" id="runPieces">
+      <div style="font-size:11px;color:var(--lbl);padding:6px 4px;align-self:center;white-space:nowrap;">Add fittings below</div>
     </div>
-    <div style="display:flex;align-items:center;padding:2px 8px 4px;gap:6px">
-      <div id="runStats" style="flex:1;font-size:10px;color:#5a8aaa;font-weight:600"></div>
-    </div>
+    <div id="runStats" class="run-stats-bar"></div>
   </div>
 
   <!-- Fitting grid — full remaining height, tap a tile to open dim sheet -->
@@ -260,7 +307,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     <div style="padding:6px 10px 4px;flex-shrink:0;border-bottom:1px solid #eee">
       <p style="font-size:11px;color:#999;margin:0;text-align:center">Tap a fitting to set dimensions</p>
     </div>
-    <div id="runPalletGrid" class="pgrid" style="padding:6px;overflow-y:auto;flex:1;grid-template-columns:repeat(4,1fr);gap:6px"></div>
+    <div id="runPalletGrid"></div>
   </div>
 </div>
 
@@ -272,7 +319,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
       <div style="width:36px;height:4px;background:#ddd;border-radius:2px;margin:10px auto 0"></div>
       <div style="display:flex;align-items:center;padding:8px 14px 6px;border-bottom:1px solid #eee;gap:8px">
         <span id="runDimSheetTitle" style="flex:1;font-size:14px;font-weight:700;color:#222">Dimensions</span>
-        <button onclick="closeRunDimSheet()" style="background:none;border:none;font-size:20px;color:#bbb;cursor:pointer;line-height:1;padding:0">⌄</button>
+        <button onclick="closeRunDimSheet()" style="background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;color:var(--lbl)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 8l5 5 5-5"/></svg></button>
       </div>
     </div>
     <!-- Dim inputs -->
@@ -283,15 +330,15 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     <div id="runDirPicker" style="display:none;padding:8px 12px;border-top:1px solid #eee;flex-shrink:0;background:#fff">
       <p style="font-size:12px;font-weight:700;color:#333;margin:0 0 8px">Which way does it turn?</p>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
-        <button class="run-dir-btn" onclick="setElbowDir('right')">↱ Right</button>
-        <button class="run-dir-btn" onclick="setElbowDir('left')">↰ Left</button>
-        <button class="run-dir-btn" onclick="setElbowDir('up')">↑ Up</button>
-        <button class="run-dir-btn" onclick="setElbowDir('down')">↓ Down</button>
+        <button class="run-dir-btn" onclick="setElbowDir('right')">Right</button>
+        <button class="run-dir-btn" onclick="setElbowDir('left')">Left</button>
+        <button class="run-dir-btn" onclick="setElbowDir('up')">Up</button>
+        <button class="run-dir-btn" onclick="setElbowDir('down')">Down</button>
       </div>
     </div>
     <!-- Action bar -->
     <div style="display:flex;gap:8px;padding:8px 12px;border-top:1px solid #eee;flex-shrink:0;background:#fff">
-      <button onclick="rotateRunFit()" id="runRotateBtn" style="flex:1;padding:11px;border-radius:9px;border:1.5px solid #ddd;background:#f5f5f5;font-size:13px;cursor:pointer">↻ Rotate</button>
+      <button onclick="rotateRunFit()" id="runRotateBtn" style="flex:1;padding:11px;border-radius:9px;border:1.5px solid #ddd;background:#f5f5f5;font-size:13px;cursor:pointer">Rotate</button>
       <button id="runAddBtn" onclick="confirmRunAdd()" style="flex:3;padding:11px;border-radius:9px;border:none;background:var(--teal);color:#fff;font-size:15px;font-weight:700;cursor:pointer">Add to Run</button>
     </div>
   </div>
@@ -314,16 +361,16 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     <div id="runDirPicker" style="display:none;padding:8px 12px;border-top:1px solid #eee;flex-shrink:0">
       <p style="font-size:12px;font-weight:700;color:#333;margin-bottom:8px">Which way does it turn?</p>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
-        <button class="run-dir-btn" onclick="setElbowDir('right')">↱ Turn Right</button>
-        <button class="run-dir-btn" onclick="setElbowDir('left')">↰ Turn Left</button>
-        <button class="run-dir-btn" onclick="setElbowDir('up')">↑ Turn Up</button>
-        <button class="run-dir-btn" onclick="setElbowDir('down')">↓ Turn Down</button>
+        <button class="run-dir-btn" onclick="setElbowDir('right')">Right</button>
+        <button class="run-dir-btn" onclick="setElbowDir('left')">Left</button>
+        <button class="run-dir-btn" onclick="setElbowDir('up')">Up</button>
+        <button class="run-dir-btn" onclick="setElbowDir('down')">Down</button>
       </div>
     </div>
 
     <div style="display:flex;gap:8px;padding:8px 12px;border-top:1px solid #eee;flex-shrink:0">
       <button onclick="closeRunPicker()" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid #ddd;background:#fff;font-size:14px;cursor:pointer">Cancel</button>
-      <button onclick="rotateRunFit()" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid #ddd;background:#f5f5f5;font-size:13px;cursor:pointer" title="Rotate 90°">↻ Rotate</button>
+      <button onclick="rotateRunFit()" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid #ddd;background:#f5f5f5;font-size:13px;cursor:pointer" title="Rotate 90°">Rotate</button>
       <button id="runAddBtn" onclick="confirmRunAdd()" style="flex:2;padding:11px;border-radius:10px;border:none;background:var(--teal);color:#fff;font-size:14px;font-weight:700;cursor:pointer">Add to Run</button>
     </div>
   </div>
@@ -334,7 +381,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
   <div id="sendSheet">
     <div class="sheet-handle"></div>
     <div class="sheet-hdr">
-      <h2>📤 Send to Brookstone</h2>
+      <h2>Send to Brookstone</h2>
       <button class="close-btn" onclick="closeSend()">×</button>
     </div>
     <div class="send-body">
@@ -371,7 +418,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
   <div style="background:#fff;border-top-left-radius:20px;border-top-right-radius:20px;width:100%;padding-bottom:env(safe-area-inset-bottom);display:flex;flex-direction:column">
     <div style="width:36px;height:4px;background:#ddd;border-radius:2px;margin:10px auto 6px"></div>
     <div style="display:flex;align-items:center;padding:0 14px 10px;border-bottom:1px solid #eee;gap:8px">
-      <h2 style="flex:1;font-size:16px;font-weight:700">📥 Import Order</h2>
+      <h2 style="flex:1;font-size:15px;font-weight:700;letter-spacing:-.02em">Import Order</h2>
       <button onclick="closeImport()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#999">×</button>
     </div>
     <div style="padding:14px">
@@ -400,7 +447,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
     }, 600);
     // Wire up Run buttons directly to avoid any onclick interference
     document.querySelectorAll('button').forEach(function(btn){
-      if(btn.textContent.trim()==='🔧 Run'){
+      if(btn.textContent.trim()==='Run'||btn.classList.contains('mode-btn')){
         btn.addEventListener('click', function(e){
           e.stopPropagation();
           if(typeof openRunBuilder === 'function') openRunBuilder();
@@ -1937,7 +1984,7 @@ function buildHTMLReport(){
     +'<p style="margin:12px 0 0;color:#aaa;font-size:12px">Total: '+listItems.length+' items</p></div>'
     +photoSection
     +'<div style="margin-top:32px;border-top:2px solid #eee;padding-top:16px">'
-    +'<details><summary style="cursor:pointer;font-size:12px;color:#aaa;user-select:none">📋 Order Data (click to expand, copy to reimport)</summary>'
+    +'<details><summary style="cursor:pointer;font-size:12px;color:#aaa;user-select:none">Order Data (click to expand, copy to reimport)</summary>'
     +'<textarea onclick="this.select()" readonly style="width:100%;margin-top:8px;padding:10px;font-size:11px;font-family:monospace;border:1px solid #ddd;border-radius:6px;background:#f8f8f8;height:120px;resize:none">'
     +JSON.stringify(listItems.map(function(it){ return {id:it.id,'var':it['var'],n:it.n,d:it.d,qty:it.qty,notes:it.notes}; }))
     +'</textarea></details></div>'
@@ -3341,7 +3388,7 @@ function showRunError(msg){
 function renderRunPieces(){
   const el=document.getElementById('runPieces');
   if(!runState.pieces.length){
-    el.innerHTML='<div style="font-size:12px;color:#bbb;padding:8px;align-self:center">Tap items from your list → 🔧 Run</div>';
+    el.innerHTML='<div style="font-size:12px;color:#bbb;padding:8px;align-self:center">Tap items from your list to add to run</div>';
     renderRunStats(); return;
   }
   const connLabels=['S+D','TDC','F1','F1.5','F2','RAW'];

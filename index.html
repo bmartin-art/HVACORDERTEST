@@ -862,21 +862,22 @@ function buildFitting(id,variant,dv){
     v=obox(-cs/2,cs/2,-bs/2,bs/2,-as/2,as/2,['left','right']);
   }
   else if(id==='tr'){
-    // Transition: flows along +Y (inlet y=0, outlet y=lE)
-    // Width A spans ±X, depth B spans ±Z
-    // getFittingOutlet applies rotate90 + rx(PI) to align with run cursor
+    // Transition: flows natively along +X axis — no rotation needed
+    // inlet at x=-lE/2 (large end A×B), outlet at x=+lE/2 (small end C×Dp)
+    // width in ±Y (A→C), depth in ±Z (B→Dp)
     const hA=as/2, hB2=bs/2;
     const hC=(dv.C||20)*S/2, hDp=(dv.Dp||10)*S/2;
     const lE=(dv.E||16)*S;
-    // Right wall (x=+A)
-    qd(v,[hA,0,-hB2],[hA,0,hB2],[hC,lE,hDp],[hC,lE,-hDp]);
-    // Left wall (x=-A)
-    qd(v,[-hA,0,hB2],[-hA,0,-hB2],[-hC,lE,-hDp],[-hC,lE,hDp]);
-    // Front wall (z=+B)
-    qd(v,[-hA,0,hB2],[hA,0,hB2],[hC,lE,hDp],[-hC,lE,hDp]);
-    // Back wall (z=-B)
-    qd(v,[hA,0,-hB2],[-hA,0,-hB2],[-hC,lE,-hDp],[hC,lE,-hDp]);
-    // Inlet (y=0) OPEN, outlet (y=lE) OPEN
+    const x0=-lE/2, x1=lE/2;
+    // Top wall (y=+ side)
+    qd(v,[x0,hA,-hB2],[x0,hA,hB2],[x1,hC,hDp],[x1,hC,-hDp]);
+    // Bottom wall (y=- side)
+    qd(v,[x0,-hA,hB2],[x0,-hA,-hB2],[x1,-hC,-hDp],[x1,-hC,hDp]);
+    // Front wall (z=+ side)
+    qd(v,[x0,-hA,hB2],[x0,hA,hB2],[x1,hC,hDp],[x1,-hC,hDp]);
+    // Back wall (z=- side)
+    qd(v,[x0,hA,-hB2],[x0,-hA,-hB2],[x1,-hC,-hDp],[x1,hC,-hDp]);
+    // Inlet (x0) and outlet (x1) OPEN
   }
   else if(id==='ro'){
     // Vertical S-curve radius offset
@@ -2730,12 +2731,12 @@ function getFittingOutlet(item){
   }
 
   // ── TRANSITION ─────────────────────────────────────────────────────
-  // Geometry flows +Y. We apply rotate90:'tr' (rz(-90)+rx(180)) in buildRunGeometry.
-  // up=[1,0,0] local → [0,1,0] world after that rotation.
+  // Geometry flows natively along +X — no rotation needed.
+  // inlet at x=-lE/2, outlet at x=+lE/2, width A in ±Y, depth B in ±Z.
   if(id==='tr'){
     const lE=(dv.E||16)*S;
-    return {inlet:[0,0,0], pos:[0,lE,0], fwd:[0,1,0], up:[1,0,0],
-            w:A, d:B, outW:dv.C||20, outD:dv.Dp||10, rotate90:'tr'};
+    return {inlet:[-lE/2,0,0], pos:[lE/2,0,0], fwd:[1,0,0], up:[0,1,0],
+            w:A, d:B, outW:dv.C||20, outD:dv.Dp||10};
   }
 
   // ── RECT OFFSET (reo) ──────────────────────────────────────────────

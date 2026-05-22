@@ -3481,9 +3481,9 @@ window.addEventListener('load', () => {
 
 <!-- ══ AI DUCT ASSISTANT ══ -->
 <div id="aiOverlay" onclick="closeAIIfBg(event)" style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10000;display:none;align-items:flex-end">
-  <div style="background:#fff;border-top-left-radius:22px;border-top-right-radius:22px;width:100%;height:82vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 32px rgba(0,0,0,.2)">
+  <div id="aiSheet" style="background:#fff;border-top-left-radius:22px;border-top-right-radius:22px;width:100%;height:82vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 32px rgba(0,0,0,.2);transition:transform .25s ease;touch-action:none">
     <div style="flex-shrink:0">
-      <div style="width:32px;height:3px;background:#d8dbe0;border-radius:2px;margin:10px auto 0"></div>
+      <div id="aiDragHandle" style="width:32px;height:3px;background:#d8dbe0;border-radius:2px;margin:10px auto 0;cursor:grab"></div>
       <div style="display:flex;align-items:center;padding:10px 16px 8px;border-bottom:1px solid #eee;gap:10px">
         <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#2BA87E,#1a5c8a);display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.8"><circle cx="8" cy="8" r="6"/><path d="M5.5 9.5c.5 1 3.5 1 4.5 0M6 6.5h.01M10 6.5h.01"/></svg>
@@ -3612,6 +3612,46 @@ async function sendAIMessage(){if(aiTyping)return;var input=document.getElementB
       fetchHeaders["anthropic-dangerous-direct-browser-calls"]="true";
     }
     var resp=await fetch(fetchUrl,{method:"POST",headers:fetchHeaders,body:JSON.stringify({model:AI_MODEL,max_tokens:3000,system:AI_SYS,messages:apiMsgs})});if(!resp.ok){var errText=await resp.text();removeAITyping();addAIBubble("assistant","HTTP "+resp.status+": "+errText.slice(0,200));document.getElementById("aiStatus").textContent="Error";aiTyping=false;document.getElementById("aiSendBtn").style.background="#2BA87E";return;}var data=await resp.json();removeAITyping();if(data.error){addAIBubble("assistant","API error "+data.error.type+": "+(data.error.message||"Check your API key."));document.getElementById("aiStatus").textContent="Error";}else{var raw=data.content&&data.content[0]?data.content[0].text:"";console.log("AI raw response:",raw);executeAITools(raw);addAIBubble("assistant",cleanAIText(raw));aiMsgs.push({role:"assistant",content:raw});document.getElementById("aiStatus").textContent="Ready";}}catch(e){removeAITyping();var msg="Error: "+e.message;if(e instanceof TypeError){msg="CORS error - Anthropic blocks direct browser calls from most websites. Tap the Key button and set up a proxy worker. Error: "+e.message;}addAIBubble("assistant",msg);console.error("AI fetch error:",e);document.getElementById("aiStatus").textContent="Error";}aiTyping=false;document.getElementById("aiSendBtn").style.background="#2BA87E";}
+
+// ── Swipe down to close AI sheet ─────────────────────────────────────
+(function(){
+  var sheet, startY, startT, dragging=false;
+  document.addEventListener('touchstart',function(e){
+    var handle=document.getElementById('aiDragHandle');
+    if(!handle) return;
+    // Allow drag from handle or top 60px of sheet
+    sheet=document.getElementById('aiSheet');
+    if(!sheet) return;
+    var rect=sheet.getBoundingClientRect();
+    var ty=e.touches[0].clientY;
+    if(ty > rect.top+60) return; // only drag from top area
+    startY=ty; startT=Date.now(); dragging=true;
+    sheet.style.transition='none';
+  },{passive:true});
+  document.addEventListener('touchmove',function(e){
+    if(!dragging||!sheet) return;
+    var dy=e.touches[0].clientY-startY;
+    if(dy<0) dy=0; // don't allow dragging up
+    sheet.style.transform='translateY('+dy+'px)';
+  },{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(!dragging||!sheet) return;
+    dragging=false;
+    sheet.style.transition='transform .25s ease';
+    var dy=e.changedTouches[0].clientY-startY;
+    var dt=Date.now()-startT;
+    // Close if dragged down 120px or flicked fast
+    if(dy>120||(dy>40&&dt<200)){
+      sheet.style.transform='translateY(100%)';
+      setTimeout(function(){
+        closeAI();
+        sheet.style.transform='';
+      },250);
+    } else {
+      sheet.style.transform='';
+    }
+  },{passive:true});
+})();
 </script>
 </body>
 </html>

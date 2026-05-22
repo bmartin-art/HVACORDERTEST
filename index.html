@@ -862,62 +862,23 @@ function buildFitting(id,variant,dv){
     v=obox(-cs/2,cs/2,-bs/2,bs/2,-as/2,as/2,['left','right']);
   }
   else if(id==='tr'){
-    // Transition: bottom rect (A×B) → top rect (C×Dp) over length E
-    // H param controls horizontal (left/right) alignment: 0=central,1=flat right,2=flat left
-    // I param controls depth (top/down) alignment: 0=central,1=flat top,2=flat bottom
-    // F=bottom straight extension, G=top straight extension
+    // Transition: flows along +X axis (inlet at x=-lE/2, outlet at x=+lE/2)
+    // Large end (A×B) at x=-lE/2, small end (C×Dp) at x=+lE/2
     const hA=as/2, hB2=bs/2;
     const hC=(dv.C||20)*S/2, hDp=(dv.Dp||10)*S/2;
-    const lE=(dv.E||16)*S, lF=(dv.F||0)*S, lG=(dv.G||0)*S;
-    // H=Left In alignment (horizontal/X): Central, Flat Right, Flat Left
-    // For our DB variant: no variant stored, use H dim directly
-    // Default: Central (both centered on X=0)
-    // Flat Right: bottom left = top left → top shifts right
-    // Flat Left:  bottom right = top right → top shifts left
-    const Hmode = Math.round(dv.H||0); // 0=Central,1=FlatRight,2=FlatLeft
-    const Imode = Math.round(dv.I||0); // 0=Central,1=FlatTop,2=FlatBottom
-    const hOff=(dv.HV||0)*S; // manual horizontal offset of top rect
-    const iOff=(dv.IV||0)*S; // manual vertical/depth offset of top rect
-    // Bottom corners (centered on origin)
-    let bx0=-hA, bx1=hA, bz0=-hB2, bz1=hB2;
-    // Top corners: start centered, then apply alignment + manual offset
-    let tx0=-hC+hOff, tx1=hC+hOff, tz0=-hDp+iOff, tz1=hDp+iOff;
-    // Apply H alignment (overrides centering for that axis)
-    if(Hmode===1){tx0=bx0; tx1=bx0+hC*2;}       // Flat Right: left edges align
-    if(Hmode===2){tx1=bx1; tx0=bx1-hC*2;}       // Flat Left: right edges align
-    // Apply I alignment
-    if(Imode===1){tz1=bz1; tz0=bz1-hDp*2;}      // Flat Top: top(front) edges align
-    if(Imode===2){tz0=bz0; tz1=bz0+hDp*2;}      // Flat Bottom: bottom(back) edges align
-    const y0=0, y1=lE;
-    // Bottom straight (F)
-    if(lF>0){
-      qd(v,[bx0,y0,bz1],[bx1,y0,bz1],[bx1,y0-lF,bz1],[bx0,y0-lF,bz1]); // front
-      qd(v,[bx0,y0-lF,bz0],[bx1,y0-lF,bz0],[bx1,y0,bz0],[bx0,y0,bz0]); // back
-      qd(v,[bx0,y0-lF,bz0],[bx0,y0-lF,bz1],[bx0,y0,bz1],[bx0,y0,bz0]); // left
-      qd(v,[bx1,y0,bz0],[bx1,y0,bz1],[bx1,y0-lF,bz1],[bx1,y0-lF,bz0]); // right
-      // bottom cap OPEN — inlet
-    }
-    // Transition body — 4 trapezoidal walls + caps
-    // Front wall (z=top)
-    qd(v,[bx0,y0,bz1],[bx1,y0,bz1],[tx1,y1,tz1],[tx0,y1,tz1]);
-    // Back wall (z=bottom)
-    qd(v,[bx1,y0,bz0],[bx0,y0,bz0],[tx0,y1,tz0],[tx1,y1,tz0]);
-    // Left wall
-    qd(v,[bx0,y0,bz0],[bx0,y0,bz1],[tx0,y1,tz1],[tx0,y1,tz0]);
-    // Right wall
-    qd(v,[bx1,y0,bz1],[bx1,y0,bz0],[tx1,y1,tz0],[tx1,y1,tz1]);
-    // Bottom cap (open — inlet face)
-    // bottom inlet OPEN
-    // Top cap (open — outlet face)
-    // top outlet OPEN
-    // Top straight (G)
-    if(lG>0){
-      qd(v,[tx0,y1,tz1],[tx1,y1,tz1],[tx1,y1+lG,tz1],[tx0,y1+lG,tz1]); // front
-      qd(v,[tx0,y1+lG,tz0],[tx1,y1+lG,tz0],[tx1,y1,tz0],[tx0,y1,tz0]); // back
-      qd(v,[tx0,y1,tz0],[tx0,y1,tz1],[tx0,y1+lG,tz1],[tx0,y1+lG,tz0]); // left
-      qd(v,[tx1,y1+lG,tz0],[tx1,y1+lG,tz1],[tx1,y1,tz1],[tx1,y1,tz0]); // right
-      // top cap OPEN — outlet
-    }
+    const lE=(dv.E||16)*S;
+    const x0=-lE/2, x1=lE/2;
+    // Inlet corners at x0: ±hA wide, ±hB2 deep
+    // Outlet corners at x1: ±hC wide, ±hDp deep
+    // Top wall (y=+)
+    qd(v,[x0,hA,-hB2],[x0,hA,hB2],[x1,hC,hDp],[x1,hC,-hDp]);
+    // Bottom wall (y=-)
+    qd(v,[x0,-hA,hB2],[x0,-hA,-hB2],[x1,-hC,-hDp],[x1,-hC,hDp]);
+    // Front wall (z=+)
+    qd(v,[x0,-hA,hB2],[x0,hA,hB2],[x1,hC,hDp],[x1,-hC,hDp]);
+    // Back wall (z=-)
+    qd(v,[x0,hA,-hB2],[x0,-hA,-hB2],[x1,-hC,-hDp],[x1,hC,-hDp]);
+    // Inlet cap OPEN, outlet cap OPEN
   }
   else if(id==='ro'){
     // Vertical S-curve radius offset
@@ -2423,19 +2384,19 @@ function selectRunFit(id){
   // Build dims using DOM to avoid template literal issues
   dg.innerHTML='';
   const dWrap=document.createElement('div');
-  dWrap.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px 0';
+  dWrap.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px 0';
   f.dims.forEach(function(d){
     const val=prefill[d.id]!==undefined?prefill[d.id]:d.v;
     const cell=document.createElement('div');
-    cell.style.cssText='display:flex;flex-direction:column;gap:2px';
+    cell.style.cssText='display:flex;flex-direction:column;gap:4px';
     const lbl=document.createElement('label');
     lbl.textContent=d.l;
-    lbl.style.cssText='font-size:10px;color:#888;font-weight:600;text-transform:uppercase';
+    lbl.style.cssText='font-size:10px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.04em';
     cell.appendChild(lbl);
     if(d.sel){
       const sel=document.createElement('select');
       sel.id='rp_'+d.id;
-      sel.style.cssText='padding:7px;border:1.5px solid #ddd;border-radius:8px;font-size:14px';
+      sel.style.cssText='padding:11px 8px;border:1.5px solid #ddd;border-radius:10px;font-size:16px;min-height:44px';
       sel.onchange = liveUpdateRunPiece;
       d.sel.forEach(function(o,i){
         const opt=document.createElement('option');
@@ -2459,7 +2420,7 @@ function selectRunFit(id){
       const inp=document.createElement('input');
       inp.type='number'; inp.id='rp_'+d.id;
       inp.value=val; inp.min=0; inp.step=0.5;
-      inp.style.cssText='padding:7px;border:1.5px solid #ddd;border-radius:8px;font-size:14px';
+      inp.style.cssText='padding:11px 8px;border:1.5px solid #ddd;border-radius:10px;font-size:16px;min-height:44px';
       inp.oninput = liveUpdateRunPiece;
       cell.appendChild(inp);
     }
@@ -2753,12 +2714,12 @@ function getFittingOutlet(item){
     return {inlet:[-dt,as/2,0], pos:[cw/2,-(de),0], fwd:[0,-1,0], up:[0,0,1], w:dv.C||A, d:B};
   }
   if(id==='tr'){
-    // Transition flows along +X after rotate90
-    // inlet at x=0, outlet at x=lE
-    // up stays [0,1,0] so downstream pieces don't roll
+    // Transition flows along +X natively (same as straight duct)
+    // inlet at x=-lE/2, outlet at x=+lE/2
+    // No rotate90 needed — works correctly with dir:null from AI
     const lE=(dv.E||16)*S;
-    return {inlet:[0,0,0], pos:[0,lE,0], fwd:[0,1,0], up:[0,0,-1],
-            w:A, d:B, outW:dv.C||20, outD:dv.Dp||10, rotate90:true};
+    return {inlet:[-lE/2,0,0], pos:[lE/2,0,0], fwd:[1,0,0], up:[0,1,0],
+            w:A, d:B, outW:dv.C||20, outD:dv.Dp||10};
   }
   if(id==='reo'){
     // Rect offset: parallelogram, flows along +X
@@ -2888,9 +2849,11 @@ function buildRunGeometry(){
 
 
     // Draw seam line — rectangular outline at each piece outlet face
-    // This shows where pieces connect
+    // Use outlet dims (C×D) for transitions, A×B for everything else
     {
-      const hW=(item.d.A||24)/(12*2), hD=(item.d.B||12)/(12*2);
+      const outW = outlet.outW || (item.d.A||24);
+      const outD = outlet.outD || (item.d.B||12);
+      const hW=outW/(12*2), hD=outD/(12*2);
       const fwdV=[worldMat[0],worldMat[1],worldMat[2]];
       const upV=[worldMat[4],worldMat[5],worldMat[6]];
       const rtV=[worldMat[8],worldMat[9],worldMat[10]];
@@ -3566,12 +3529,12 @@ var AI_SYS="You are an HVAC duct design assistant for Brookstone Industries."
   +" sqt=SqTee, sp=SqPants, ec=EndCap, bc=BaseCan, fc=FlexConn, stap=StraightTap, s2r=SqToRound, rd=RectDamper."
   +" SMACNA low-pressure: trunk 800-1200 FPM, branch 500-800 FPM. Area(sq-in)=CFM/FPM*144. Round to 2in."
   +" TRANSITIONS: after every tee where trunk steps down, add a tr piece."
-  +" tr dims: A=large width, B=large depth, C=small width, D=small depth, E=12."
-  +" Dims: A=width B=depth E=length(st only,1ft=12in,max 120) C=topW D=topD CN1=CN2=0."
+  +" tr dims: A=large width, B=large depth, C=small width, Dp=small depth, E=length. IMPORTANT: use Dp not D for small depth."
+  +" Dims: A=width B=depth E=length(st only,1ft=12in,max 120) C=topW Dp=topDepth CN1=CN2=0."
   +" OUTPUT: each piece gets its own ##ADD## ... ##END## block, one per line:"
   +" ##ADD## {\"id\":\"st\",\"A\":24,\"B\":12,\"E\":120,\"CN1\":0,\"CN2\":0} ##END##"
   +" ##ADD## {\"id\":\"sqt\",\"A\":24,\"B\":12,\"C\":12,\"D\":8,\"CN1\":0,\"CN2\":0} ##END##"
-  +" ##ADD## {\"id\":\"tr\",\"A\":24,\"B\":12,\"C\":20,\"D\":12,\"E\":12,\"CN1\":0,\"CN2\":0} ##END##"
+  +" ##ADD## {\"id\":\"tr\",\"A\":24,\"B\":12,\"C\":20,\"Dp\":12,\"E\":12,\"CN1\":0,\"CN2\":0} ##END##"
   +" ##ADD## {\"id\":\"e90\",\"A\":20,\"B\":12,\"CN1\":0,\"CN2\":0} ##END##"
   +" RULES: Output EVERY piece — a 40ft run needs four st blocks each E=120. Never skip pieces."
   +" Add tr after every tee to step trunk down. To clear run first: ##CLEAR##"

@@ -1018,7 +1018,8 @@ function buildFitting(id,variant,dv){
   }
   
   else if(id==='ec'){
-    v=obox(-as/2,as/2,-bs/2,bs/2,-.02,.02,[]);
+    // End cap: face plate perpendicular to +X flow axis. A=width(±Y), B=depth(±Z)
+    v=obox(-.02,.02,-as/2,as/2,-bs/2,bs/2,[]);
   }
   else if(id==='bc'){
     v=obox(-as/2,as/2,-C*S/2,C*S/2,-bs/2,bs/2,['top']); // top open (inlet), bot capped
@@ -1029,7 +1030,8 @@ function buildFitting(id,variant,dv){
     v = obox(-3*S, 3*S, -bs/2, bs/2, -cs/2, cs/2, ['left','right']);
   }
   else if(id==='stap'){
-    v=obox(-cs/2,cs/2,-bs/2,bs/2,-as/2,as/2,['left','right','top']);
+    // Straight tap: A=width(±Y), B=depth(±Z), C=length(±X). Top face open for branch.
+    v=obox(-cs/2,cs/2,-as/2,as/2,-bs/2,bs/2,['left','right','top']);
   }
   else if(id==='s2r'){
     // Square to Round: rect base (A×B) at y=0, tapers to circle (C dia) at y=lD
@@ -1133,7 +1135,8 @@ function buildFitting(id,variant,dv){
     // Base is open (hollow rule). Collar top is open.
   }
   else if(id==='rd'){
-    v=obox(-as/2,as/2,-bs/2,bs/2,-.01,.01,[]);
+    // Rect damper: flat plate perpendicular to +X flow. A=width(±Y), B=depth(±Z)
+    v=obox(-.01,.01,-as/2,as/2,-bs/2,bs/2,[]);
   }
   else{
     v=obox(-as/2,as/2,-bs/2,bs/2,-.5*S,.5*S,[]);
@@ -2685,57 +2688,123 @@ function getFittingOutlet(item){
   const A=dv.A||24, B=dv.B||12;
   const as=A*S, bs=B*S;
 
-  // inlet = local coords of inlet face center (cursor attaches here)
-  // pos   = local coords of outlet face center
-  // fwd   = local flow direction out of outlet (unit vec)
-  // up    = local up vector for building next cursor basis
-  // rotate90 = fitting flows along Y, needs rotation to align with +X flow
-
+  // ── STRAIGHT DUCT ──────────────────────────────────────────────────
   if(id==='st'){
     const cs=(dv.C||48)*S;
-    // obox(-cs/2,cs/2,...): open left(x=-cs/2) and right(x=+cs/2)
     return {inlet:[-cs/2,0,0], pos:[cs/2,0,0], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
   }
+
+  // ── RADIUS ELBOWS (e90, e45, ev) ───────────────────────────────────
+  // Arc sweeps in XY plane. Inlet at (-Rmid, 0, 0). Z = depth axis.
   if(id==='e90'||id==='e45'||id==='ev'){
-    // Arc center at origin, inlet at (-Rmid,0,0) in XY plane
     const Dang=(dv.D||90)*Math.PI/180;
     const Ri=(dv.G||A*0.5)*S, Ro=Ri+as, Rmid=(Ri+Ro)/2;
-    const a1r=Math.PI+Dang; // outlet angle
+    const a1r=Math.PI+Dang;
     const ox=Rmid*Math.cos(a1r), oy=Rmid*Math.sin(a1r);
-    // Tangent at outlet (perpendicular to radius, pointing away)
     const fx=-Math.sin(a1r), fy=Math.cos(a1r);
     return {inlet:[-Rmid,0,0], pos:[ox,oy,0], fwd:[fx,fy,0], up:[0,0,1], w:A, d:B};
   }
-  if(id==='sqe'||id==='me'){
-    // L-shape: inlet on left face, outlet on bottom
-    const dt=(dv.D||6)*S, de=(dv.E||6)*S, cw=(dv.C||A)*S;
-    return {inlet:[-dt,as/2,0], pos:[cw/2,-(de),0], fwd:[0,-1,0], up:[0,0,1], w:dv.C||A, d:B};
+
+  // ── GOOSENECK ──────────────────────────────────────────────────────
+  if(id==='rgn'){
+    // Gooseneck is two elbows, net outlet direction same as inlet (+X)
+    // Approximate: flows +X, rises then falls, net displacement in Y
+    const Ri=(dv.G||A*0.5)*S, Ro=Ri+as, Rmid=(Ri+Ro)/2;
+    const lH=(dv.D||12)*S; // height of goose
+    return {inlet:[-Rmid,0,0], pos:[Rmid,0,0], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
   }
+
+  // ── SQUARE / MITERED ELBOW ─────────────────────────────────────────
+  // L-shaped: inlet flows +X, outlet flows -Y (turns 90° down into the page)
+  // After elbowDirMatrix this becomes the correct turn direction
+  if(id==='sqe'||id==='me'){
+    const dt=(dv.D||6)*S;  // top throat (inlet extension)
+    const de=(dv.E||6)*S;  // btm throat (outlet extension)
+    const cw=(dv.C||A)*S;  // outlet width
+    // Inlet face center: (-dt, 0, 0) — centered on Y=0
+    // Outlet face center: (0, -(as+de), 0) ... but that's in original geometry
+    // The sqe geometry has: inlet at x=xInlet=-(dt), centered in Y
+    // outlet at y=yOutlet=-(de), centered in X from 0..cw
+    // We'll use the existing geometry as-is and correct the inlet center
+    return {inlet:[-dt, as/2, 0], pos:[cw/2, -(de), 0], fwd:[0,-1,0], up:[0,0,1], w:dv.C||A, d:B};
+  }
+
+  // ── TRANSITION ─────────────────────────────────────────────────────
+  // Geometry flows +Y. We apply rotate90:'tr' (rz(-90)+rx(180)) in buildRunGeometry.
+  // up=[1,0,0] local → [0,1,0] world after that rotation.
   if(id==='tr'){
-    // Transition flows along +X natively (same as straight duct)
-    // flows along Y: inlet y=0, outlet y=lE
-    // Apply m4rz(-PI/2) then m4rx(PI) to align with run cursor
-    // Combined: local X->[0,1,0] world +Y (width correct), local Y->[1,0,0] world +X (flow correct)
-    // up=[0,0,-1] local -> [0,0,-1] after rz then [0,0,1] after rx -> Gram-Schmidt gives [0,1,0] ✓
     const lE=(dv.E||16)*S;
-    return {inlet:[0,0,0], pos:[0,lE,0], fwd:[0,1,0], up:[0,0,-1],
+    return {inlet:[0,0,0], pos:[0,lE,0], fwd:[0,1,0], up:[1,0,0],
             w:A, d:B, outW:dv.C||20, outD:dv.Dp||10, rotate90:'tr'};
   }
+
+  // ── RECT OFFSET (reo) ──────────────────────────────────────────────
+  // Parallelogram: flows +X. Inlet face at x=0, centered at (0, as/2, 0).
+  // Outlet face at x=lC, centered at (lC, as/2-lF, 0).
   if(id==='reo'){
-    // Rect offset: parallelogram, flows along +X
-    // Inlet face center: (0, as/2, 0)
-    // Outlet face center: (lC, as/2 - lF, 0)
-    // We treat inlet at origin for cursor alignment, offset baked into geometry
     const lC=(dv.C||40)*S, lF=(dv.F||8)*S;
     return {inlet:[0,as/2,0], pos:[lC,as/2-lF,0], fwd:[1,0,0], up:[0,0,1], w:A, d:B};
   }
+
+  // ── RADIUS OFFSET (ro) ─────────────────────────────────────────────
+  // S-curve. Geometry flows +Y, offset in X. Apply rotate90 to align with +X run.
   if(id==='ro'){
-    // S-curve flows along Z, offset along X by H, up stays Y
     const lE2=(dv.E||32)*S, H22=(dv.H||8)*S;
-    return {inlet:[0,0,0], pos:[H22,0,lE2], fwd:[0,0,1], up:[0,1,0], w:A, d:B, rotate90:false};
+    // After rotate90 (rz(-90)): Y→+X flow, X offset→-Y offset
+    return {inlet:[0,0,0], pos:[0,lE2,0], fwd:[0,1,0], up:[0,0,1], w:A, d:B, rotate90:true};
   }
-  // Default: flows along Y
-  return {inlet:[0,0,0], pos:[0,as,0], fwd:[0,1,0], up:[0,0,1], w:A, d:B};
+
+  // ── SQUARE TEE (sqt) ───────────────────────────────────────────────
+  // Flows +X through main run. Branch exits +Y.
+  if(id==='sqt'){
+    const lC=(dv.C||12)*S, lD=(dv.D||12)*S;
+    return {inlet:[-(as/2+lC),0,0], pos:[as/2+lD,0,0], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
+  }
+
+  // ── SQUARE PANTS (sp) ──────────────────────────────────────────────
+  // Single inlet, two outlets. For run purposes treat as straight pass-through.
+  if(id==='sp'){
+    const lF=(dv.F||28)*S;
+    return {inlet:[0,0,0], pos:[0,lF,0], fwd:[0,1,0], up:[0,0,1], w:A, d:B, rotate90:true};
+  }
+
+  // ── END CAP (ec) ───────────────────────────────────────────────────
+  if(id==='ec'){
+    return {inlet:[-as/2,0,0], pos:[as/2,0,0], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
+  }
+
+  // ── BASE CAN (bc) ──────────────────────────────────────────────────
+  if(id==='bc'){
+    return {inlet:[0,0,0], pos:[0,as,0], fwd:[0,1,0], up:[0,0,1], w:A, d:B, rotate90:true};
+  }
+
+  // ── FLEX CONNECTOR (fc) ────────────────────────────────────────────
+  // fc: A=size(preset), B=width, C=depth. Fixed 6" length.
+  if(id==='fc'){
+    return {inlet:[-3*S,0,0], pos:[3*S,0,0], fwd:[1,0,0], up:[0,1,0], w:dv.B||16, d:dv.C||16};
+  }
+
+  // ── STRAIGHT TAP (stap) ────────────────────────────────────────────
+  // A=width, B=depth, C=length. Top open for branch.
+  if(id==='stap'){
+    const cs3=(dv.C||48)*S;
+    return {inlet:[-cs3/2,0,0], pos:[cs3/2,0,0], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
+  }
+
+  // ── SQUARE TO ROUND (s2r) ──────────────────────────────────────────
+  // Geometry flows +Y. Apply rotate90.
+  if(id==='s2r'){
+    const lD=(dv.D||12)*S, lG=(dv.G||4)*S;
+    return {inlet:[0,0,0], pos:[0,lD+lG,0], fwd:[0,1,0], up:[0,0,1], w:A, d:B, rotate90:true};
+  }
+
+  // ── RECT DAMPER (rd) ───────────────────────────────────────────────
+  if(id==='rd'){
+    return {inlet:[-as/2,0,0], pos:[as/2,0,0], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
+  }
+
+  // ── DEFAULT (flows +Y, apply rotate90) ─────────────────────────────
+  return {inlet:[0,0,0], pos:[0,as,0], fwd:[0,1,0], up:[0,0,1], w:A, d:B, rotate90:true};
 }
 
 function getFittingInletDims(item){
@@ -3538,14 +3607,18 @@ var AI_SYS="You are an HVAC duct design assistant for Brookstone Industries."
   +" sqt=SqTee, sp=SqPants, ec=EndCap, bc=BaseCan, fc=FlexConn, stap=StraightTap, s2r=SqToRound, rd=RectDamper."
   +" SMACNA low-pressure: trunk 800-1200 FPM, branch 500-800 FPM. Area(sq-in)=CFM/FPM*144. Round to 2in."
   +" TRANSITIONS: after every tee where trunk steps down, add a tr piece."
-  +" tr dims: A=large width, B=large depth, C=small width, Dp=small depth, E=length. IMPORTANT: use Dp not D for small depth."
-  +" Dims: A=width B=depth E=length(st only,1ft=12in,max 120) C=topW Dp=topDepth CN1=CN2=0."
+  +" DIM KEYS BY FITTING TYPE:"
+  +" st(straight): A=width B=depth C=length(inches, 1ft=12, use C NOT E). Example 10ft: C=120"
+  +" tr(transition): A=bigWidth B=bigDepth C=smallWidth Dp=smallDepth E=length(typ 12). Use Dp NOT D for small depth."
+  +" e90/e45/sqe/me(elbows): A=width B=depth only."
+  +" sqt(tee): A=width B=depth C=leftArmLen D=rightArmLen."
+  +" All fittings: CN1=CN2=0 for S+D connectors."
   +" OUTPUT: each piece gets its own ##ADD## ... ##END## block, one per line:"
-  +" ##ADD## {\"id\":\"st\",\"A\":24,\"B\":12,\"E\":120,\"CN1\":0,\"CN2\":0} ##END##"
+  +" ##ADD## {\"id\":\"st\",\"A\":24,\"B\":12,\"C\":120,\"CN1\":0,\"CN2\":0} ##END##"
   +" ##ADD## {\"id\":\"sqt\",\"A\":24,\"B\":12,\"C\":12,\"D\":8,\"CN1\":0,\"CN2\":0} ##END##"
-  +" ##ADD## {\"id\":\"tr\",\"A\":24,\"B\":12,\"C\":20,\"Dp\":12,\"E\":12,\"CN1\":0,\"CN2\":0} ##END##"
+  +" ##ADD## {\"id\":\"tr\",\"A\":24,\"B\":12,\"C\":20,\"Dp\":10,\"E\":12,\"CN1\":0,\"CN2\":0} ##END##"
   +" ##ADD## {\"id\":\"e90\",\"A\":20,\"B\":12,\"CN1\":0,\"CN2\":0} ##END##"
-  +" RULES: Output EVERY piece — a 40ft run needs four st blocks each E=120. Never skip pieces."
+  +" RULES: Output EVERY piece. A 40ft run = four st blocks each C=120. NEVER use E for st length, always use C."
   +" Add tr after every tee to step trunk down. To clear run first: ##CLEAR##"
   +" Brief sizing calcs first, then ALL ##ADD## blocks.";
 var aiMsgs=[],aiTyping=false;

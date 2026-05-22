@@ -862,23 +862,21 @@ function buildFitting(id,variant,dv){
     v=obox(-cs/2,cs/2,-bs/2,bs/2,-as/2,as/2,['left','right']);
   }
   else if(id==='tr'){
-    // Transition: flows along +X axis (inlet at x=-lE/2, outlet at x=+lE/2)
-    // Large end (A×B) at x=-lE/2, small end (C×Dp) at x=+lE/2
+    // Transition: flows along +Y (inlet y=0, outlet y=lE)
+    // Width A spans ±X, depth B spans ±Z
+    // getFittingOutlet applies rotate90 + rx(PI) to align with run cursor
     const hA=as/2, hB2=bs/2;
     const hC=(dv.C||20)*S/2, hDp=(dv.Dp||10)*S/2;
     const lE=(dv.E||16)*S;
-    const x0=-lE/2, x1=lE/2;
-    // Inlet corners at x0: ±hA wide, ±hB2 deep
-    // Outlet corners at x1: ±hC wide, ±hDp deep
-    // Top wall (y=+)
-    qd(v,[x0,hA,-hB2],[x0,hA,hB2],[x1,hC,hDp],[x1,hC,-hDp]);
-    // Bottom wall (y=-)
-    qd(v,[x0,-hA,hB2],[x0,-hA,-hB2],[x1,-hC,-hDp],[x1,-hC,hDp]);
-    // Front wall (z=+)
-    qd(v,[x0,-hA,hB2],[x0,hA,hB2],[x1,hC,hDp],[x1,-hC,hDp]);
-    // Back wall (z=-)
-    qd(v,[x0,hA,-hB2],[x0,-hA,-hB2],[x1,-hC,-hDp],[x1,hC,-hDp]);
-    // Inlet cap OPEN, outlet cap OPEN
+    // Right wall (x=+A)
+    qd(v,[hA,0,-hB2],[hA,0,hB2],[hC,lE,hDp],[hC,lE,-hDp]);
+    // Left wall (x=-A)
+    qd(v,[-hA,0,hB2],[-hA,0,-hB2],[-hC,lE,-hDp],[-hC,lE,hDp]);
+    // Front wall (z=+B)
+    qd(v,[-hA,0,hB2],[hA,0,hB2],[hC,lE,hDp],[-hC,lE,hDp]);
+    // Back wall (z=-B)
+    qd(v,[hA,0,-hB2],[-hA,0,-hB2],[-hC,lE,-hDp],[hC,lE,-hDp]);
+    // Inlet (y=0) OPEN, outlet (y=lE) OPEN
   }
   else if(id==='ro'){
     // Vertical S-curve radius offset
@@ -2715,11 +2713,13 @@ function getFittingOutlet(item){
   }
   if(id==='tr'){
     // Transition flows along +X natively (same as straight duct)
-    // inlet at x=-lE/2, outlet at x=+lE/2
-    // No rotate90 needed — works correctly with dir:null from AI
+    // flows along Y: inlet y=0, outlet y=lE
+    // Apply m4rz(-PI/2) then m4rx(PI) to align with run cursor
+    // Combined: local X->[0,1,0] world +Y (width correct), local Y->[1,0,0] world +X (flow correct)
+    // up=[0,0,-1] local -> [0,0,-1] after rz then [0,0,1] after rx -> Gram-Schmidt gives [0,1,0] ✓
     const lE=(dv.E||16)*S;
-    return {inlet:[-lE/2,0,0], pos:[lE/2,0,0], fwd:[1,0,0], up:[0,1,0],
-            w:A, d:B, outW:dv.C||20, outD:dv.Dp||10};
+    return {inlet:[0,0,0], pos:[0,lE,0], fwd:[0,1,0], up:[0,0,-1],
+            w:A, d:B, outW:dv.C||20, outD:dv.Dp||10, rotate90:'tr'};
   }
   if(id==='reo'){
     // Rect offset: parallelogram, flows along +X
@@ -2781,7 +2781,12 @@ function buildRunGeometry(){
     if(isElbow && dir) localMat = m4mul2(elbowDirMatrix(dir), rollMat);
     else if((item.id==='reo'||item.id==='ro') && dir) localMat = m4mul2(elbowDirMatrix(dir), rollMat);
     // Fittings with Y-axis flow need 90° rotation to align inlet with +X
-    if(outlet.rotate90) localMat = m4mul2(m4rz(-Math.PI/2), localMat);
+    if(outlet.rotate90 === 'tr'){
+      // Transition: rz(-90) then rx(180) — aligns Y-flow with +X and keeps width in +Y
+      localMat = m4mul2(m4rx(Math.PI), m4mul2(m4rz(-Math.PI/2), localMat));
+    } else if(outlet.rotate90){
+      localMat = m4mul2(m4rz(-Math.PI/2), localMat);
+    }
 
     const worldMat = m4mul2(cursor.mat, localMat);
 
@@ -3055,7 +3060,11 @@ function drawRunLabels(){
     const isElbow=['e90','e45','ev','sqe','me'].includes(item.id);
     if(isElbow&&dir) localMat=m4mul2(elbowDirMatrix(dir),rollMat);
     else if((item.id==='reo'||item.id==='ro')&&dir) localMat=m4mul2(elbowDirMatrix(dir),rollMat);
-    if(outlet.rotate90) localMat=m4mul2(m4rz(-Math.PI/2),localMat);
+    if(outlet.rotate90==='tr'){
+      localMat=m4mul2(m4rx(Math.PI),m4mul2(m4rz(-Math.PI/2),localMat));
+    } else if(outlet.rotate90){
+      localMat=m4mul2(m4rz(-Math.PI/2),localMat);
+    }
 
     const worldMat=m4mul2(cursor.mat,localMat);
     const inlet=outlet.inlet||[0,0,0];
@@ -3525,7 +3534,7 @@ var AI_SYS="You are an HVAC duct design assistant for Brookstone Industries."
   +" CRITICAL: The ONLY correct ID for straight rectangular duct is: st — never sd, never duct, never straight."
   +" Complete fitting ID list (use ONLY these exact strings):"
   +" st=Straight, e90=90Elbow, e45=45Elbow, ev=VarElbow, rgn=Gooseneck,"
-  +" sqe=SqElbow, me=MiteredElbow, tr=Transition, ro=RadOffset, reo=RectOffset,"
+  +" sqe=RectangularSquareElbow(rec elbow/square elbow), me=MiteredElbow, tr=Transition, ro=RadiusOffset, reo=RectangularOffset(NOT an elbow - this offsets parallel),"
   +" sqt=SqTee, sp=SqPants, ec=EndCap, bc=BaseCan, fc=FlexConn, stap=StraightTap, s2r=SqToRound, rd=RectDamper."
   +" SMACNA low-pressure: trunk 800-1200 FPM, branch 500-800 FPM. Area(sq-in)=CFM/FPM*144. Round to 2in."
   +" TRANSITIONS: after every tee where trunk steps down, add a tr piece."

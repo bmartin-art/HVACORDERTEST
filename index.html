@@ -3514,13 +3514,38 @@ window.addEventListener('load', () => {
   <div style="background:#fff;border-radius:16px;width:100%;max-width:360px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,.2)">
     <div style="font-size:15px;font-weight:700;color:#1a1d23;margin-bottom:4px">Anthropic API Key</div>
     <div style="font-size:11px;color:#8890a0;margin-bottom:12px">Get a key at <b>console.anthropic.com</b>. Stored locally on this device only.</div>
-    <input id="aiKeyInput2" type="password" placeholder="sk-ant-api03-..." style="width:100%;padding:9px 11px;border:1px solid #e8eaed;border-radius:9px;font-size:13px;outline:none;font-family:monospace;margin-bottom:10px">
+    <input id="aiKeyInput2" type="password" placeholder="sk-ant-api03-..." style="width:100%;padding:9px 11px;border:1px solid #e8eaed;border-radius:9px;font-size:13px;outline:none;font-family:monospace;margin-bottom:8px">
+    <div style="font-size:9px;font-weight:700;color:#8890a0;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Proxy URL (required for GitHub Pages)</div>
+    <input id="aiProxyInput" type="text" placeholder="https://your-worker.workers.dev" style="width:100%;padding:9px 11px;border:1px solid #e8eaed;border-radius:9px;font-size:13px;outline:none;font-family:monospace;margin-bottom:4px">
+    <div style="font-size:10px;color:#aaa;margin-bottom:10px">Free Cloudflare Worker — see setup instructions below</div>
     <div style="display:flex;gap:8px">
       <button onclick="closeAISettings()" style="flex:1;padding:10px;border:1px solid #e8eaed;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;background:#fff;color:#64697a">Cancel</button>
-      <button onclick="saveAIKey2()" style="flex:2;padding:10px;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;background:#2BA87E;color:#fff">Save Key</button>
+      <button onclick="saveAIKey2()" style="flex:2;padding:10px;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;background:#2BA87E;color:#fff">Save</button>
     </div>
-    <div id="aiKeyStatus" style="margin-top:8px;font-size:11px;color:#2BA87E;text-align:center;display:none">Key saved</div>
-    <button onclick="clearAIKey()" style="margin-top:8px;width:100%;padding:8px;background:none;border:none;color:#c44;font-size:11px;cursor:pointer">Remove saved key</button>
+    <div id="aiKeyStatus" style="margin-top:8px;font-size:11px;color:#2BA87E;text-align:center;display:none">Saved</div>
+    <details style="margin-top:10px">
+      <summary style="font-size:11px;color:#8890a0;cursor:pointer;font-weight:600">Proxy setup instructions</summary>
+      <div style="font-size:10px;color:#666;margin-top:6px;line-height:1.5">
+        1. Go to <b>workers.cloudflare.com</b> → free account<br>
+        2. Create Worker → paste the code below → Deploy<br>
+        3. Copy the worker URL and paste it above<br><br>
+        <code style="background:#f0f0f0;padding:4px 6px;border-radius:4px;display:block;font-size:9px;white-space:pre-wrap">export default {
+  async fetch(req) {
+    if(req.method==="OPTIONS") return new Response(null,{headers:{"Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"*","Access-Control-Allow-Methods":"POST"}});
+    const body = await req.text();
+    const apiKey = req.headers.get("x-api-key");
+    const resp = await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},
+      body
+    });
+    const data = await resp.text();
+    return new Response(data,{headers:{"Access-Control-Allow-Origin":"*","Content-Type":"application/json"}});
+  }
+}</code>
+      </div>
+    </details>
+    <button onclick="clearAIKey()" style="margin-top:8px;width:100%;padding:8px;background:none;border:none;color:#c44;font-size:11px;cursor:pointer">Remove saved key &amp; proxy</button>
   </div>
 </div>
 <script>
@@ -3540,19 +3565,31 @@ var AI_SYS="You are an expert HVAC duct design assistant in the Brookstone Indus
 var aiMsgs=[],aiTyping=false;
 function getAIKey(){return localStorage.getItem("brookstone_ai_key")||"";}
 function saveAIKey(){var k=document.getElementById("aiKeyInput").value.trim();if(!k){alert("Paste your API key first");return;}localStorage.setItem("brookstone_ai_key",k);document.getElementById("aiKeyBanner").style.display="none";addAIBubble("assistant","Key saved! Ask me to design a duct run and I will build it in the 3D view.");}
-function saveAIKey2(){var k=document.getElementById("aiKeyInput2").value.trim();if(!k){alert("Paste your API key first");return;}localStorage.setItem("brookstone_ai_key",k);var st=document.getElementById("aiKeyStatus");st.style.display="block";st.textContent="Key saved";document.getElementById("aiKeyBanner").style.display="none";setTimeout(closeAISettings,900);}
-function clearAIKey(){localStorage.removeItem("brookstone_ai_key");var st=document.getElementById("aiKeyStatus");st.textContent="Key removed";st.style.display="block";st.style.color="#c44";}
+function saveAIKey2(){var k=document.getElementById("aiKeyInput2").value.trim();if(!k){alert("Paste your API key first");return;}localStorage.setItem("brookstone_ai_key",k);var p=document.getElementById("aiProxyInput").value.trim();if(p)localStorage.setItem("brookstone_ai_proxy",p);else localStorage.removeItem("brookstone_ai_proxy");var st=document.getElementById("aiKeyStatus");st.style.display="block";st.textContent="Saved";document.getElementById("aiKeyBanner").style.display="none";setTimeout(closeAISettings,900);}
+function clearAIKey(){localStorage.removeItem("brookstone_ai_key");localStorage.removeItem("brookstone_ai_proxy");var st=document.getElementById("aiKeyStatus");st.textContent="Key &amp; proxy removed";st.style.display="block";st.style.color="#c44";}
 function openAI(){document.getElementById("aiOverlay").style.display="flex";document.getElementById("aiKeyBanner").style.display=getAIKey()?"none":"block";var msgs=document.getElementById("aiMessages");if(msgs.children.length===0){addAIBubble("assistant","Hi! I am your AI duct design assistant.\n\nTry:\n  Design a 40ft main at 1800 CFM with 3 branches\n  What size duct for 500 CFM at 800 FPM?\n  Add a 90 elbow turning right\n\nI can answer questions or build the run in the 3D view.");}setTimeout(function(){document.getElementById("aiInput").focus();},300);}
 function closeAI(){document.getElementById("aiOverlay").style.display="none";}
 function closeAIIfBg(e){if(e.target===document.getElementById("aiOverlay"))closeAI();}
-function openAISettings(){var k=getAIKey();if(k)document.getElementById("aiKeyInput2").value=k;document.getElementById("aiSettingsOverlay").style.display="flex";document.getElementById("aiKeyStatus").style.display="none";}
+function openAISettings(){var k=getAIKey();if(k)document.getElementById("aiKeyInput2").value=k;var p=localStorage.getItem("brookstone_ai_proxy")||"";if(p)document.getElementById("aiProxyInput").value=p;document.getElementById("aiSettingsOverlay").style.display="flex";document.getElementById("aiKeyStatus").style.display="none";}
 function closeAISettings(){document.getElementById("aiSettingsOverlay").style.display="none";}
 function addAIBubble(role,text){var msgs=document.getElementById("aiMessages");var isUser=(role==="user");var wrap=document.createElement("div");wrap.style.cssText="display:flex;justify-content:"+(isUser?"flex-end":"flex-start");var b=document.createElement("div");b.style.cssText="max-width:82%;padding:9px 12px;border-radius:"+(isUser?"14px 14px 4px 14px":"14px 14px 14px 4px")+";background:"+(isUser?"#2BA87E":"#f5f6f8")+";color:"+(isUser?"#fff":"#1a1d23")+";font-size:13px;line-height:1.45;white-space:pre-wrap";b.textContent=text;wrap.appendChild(b);msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;return b;}
 function addAITyping(){if(!document.getElementById("aiDotStyle")){var s=document.createElement("style");s.id="aiDotStyle";s.textContent="@keyframes aiDot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}";document.head.appendChild(s);}var msgs=document.getElementById("aiMessages");var wrap=document.createElement("div");wrap.id="aiTypingBubble";wrap.style.cssText="display:flex;justify-content:flex-start";wrap.innerHTML='<div style="padding:10px 14px;background:#f5f6f8;border-radius:14px 14px 14px 4px;display:flex;gap:4px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:#bbb;animation:aiDot 1s infinite 0s both;display:block"></span><span style="width:6px;height:6px;border-radius:50%;background:#bbb;animation:aiDot 1s infinite .2s both;display:block"></span><span style="width:6px;height:6px;border-radius:50%;background:#bbb;animation:aiDot 1s infinite .4s both;display:block"></span></div>';msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;}
 function removeAITyping(){var b=document.getElementById("aiTypingBubble");if(b)b.remove();}
 function executeAITools(text){var acted=false;if(text.indexOf("<<<clear_run>>>")>=0){if(typeof clearRun==="function")clearRun();acted=true;}var re=/<<<add_piece>>>([\s\S]*?)<<<\/add_piece>>>/g,m;while((m=re.exec(text))!==null){try{var dims=JSON.parse(m[1].trim());var f=typeof DB!=="undefined"?DB.find(function(x){return x.id===dims.id;}):null;if(!f){console.warn("AI: unknown fitting",dims.id);continue;}var d={};f.dims.forEach(function(dim){d[dim.id]=(dims[dim.id]!==undefined)?dims[dim.id]:(dim.def!==undefined?dim.def:(dim.opts&&dim.opts[0]?dim.opts[0].v:0));});if(typeof setMode==="function"&&typeof appMode!=="undefined"&&appMode!=="run")setMode("run");var item={id:dims.id,"var":null,n:f.n,d:d,qty:1,notes:""};if(typeof runState!=="undefined")runState.pieces.push({item:item,dir:null,rot:0,worldPos:null});acted=true;}catch(e){console.warn("AI piece error",e);}}if(acted){if(typeof runUpload==="function")runUpload();if(typeof renderRunPieces==="function")renderRunPieces();if(typeof renderRunStats==="function")renderRunStats();}return acted;}
 function cleanAIText(text){text=text.replace(/<<<clear_run>>>/g,"[Cleared run]");text=text.replace(/<<<add_piece>>>([\s\S]*?)<<<\/add_piece>>>/g,function(_,json){try{var d=JSON.parse(json.trim());var f=typeof DB!=="undefined"?DB.find(function(x){return x.id===d.id;}):null;return "[Added "+(f?f.n:d.id)+" "+(d.A||"")+"x"+(d.B||"")+'"]';}catch(e){return "[Added piece]";}});return text.trim();}
-async function sendAIMessage(){if(aiTyping)return;var input=document.getElementById("aiInput");var text=input.value.trim();if(!text)return;var key=getAIKey();if(!key){document.getElementById("aiKeyBanner").style.display="block";return;}addAIBubble("user",text);aiMsgs.push({role:"user",content:text});input.value="";input.style.height="auto";var ctx="";if(typeof runState!=="undefined"&&runState.pieces&&runState.pieces.length){var sum=runState.pieces.map(function(p){return p.item.n+" "+(p.item.d.A||"?")+"x"+(p.item.d.B||"?")+(p.item.d.E?" L="+p.item.d.E:"");}).join(", ");ctx="\n\n[Current run: "+runState.pieces.length+" pieces: "+sum+"]";}var apiMsgs=aiMsgs.map(function(msg,i){return(i===aiMsgs.length-1&&ctx)?{role:msg.role,content:msg.content+ctx}:msg;});aiTyping=true;document.getElementById("aiSendBtn").style.background="#999";document.getElementById("aiStatus").textContent="Thinking...";addAITyping();try{var resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-calls":"true"},body:JSON.stringify({model:AI_MODEL,max_tokens:1024,system:AI_SYS,messages:apiMsgs})});if(!resp.ok){var errText=await resp.text();removeAITyping();addAIBubble("assistant","HTTP "+resp.status+": "+errText.slice(0,200));document.getElementById("aiStatus").textContent="Error";aiTyping=false;document.getElementById("aiSendBtn").style.background="#2BA87E";return;}var data=await resp.json();removeAITyping();if(data.error){addAIBubble("assistant","API error "+data.error.type+": "+(data.error.message||"Check your API key."));document.getElementById("aiStatus").textContent="Error";}else{var raw=data.content&&data.content[0]?data.content[0].text:"";executeAITools(raw);addAIBubble("assistant",cleanAIText(raw));aiMsgs.push({role:"assistant",content:raw});document.getElementById("aiStatus").textContent="Ready";}}catch(e){removeAITyping();var msg="Error: "+e.message;if(e instanceof TypeError&&e.message.indexOf("fetch")>=0){msg="Network error - if testing locally, open this file via a local server (not file://) or use Claude.ai. Error: "+e.message;}addAIBubble("assistant",msg);console.error("AI fetch error:",e);document.getElementById("aiStatus").textContent="Error";}aiTyping=false;document.getElementById("aiSendBtn").style.background="#2BA87E";}
+async function sendAIMessage(){if(aiTyping)return;var input=document.getElementById("aiInput");var text=input.value.trim();if(!text)return;var key=getAIKey();if(!key){document.getElementById("aiKeyBanner").style.display="block";return;}addAIBubble("user",text);aiMsgs.push({role:"user",content:text});input.value="";input.style.height="auto";var ctx="";if(typeof runState!=="undefined"&&runState.pieces&&runState.pieces.length){var sum=runState.pieces.map(function(p){return p.item.n+" "+(p.item.d.A||"?")+"x"+(p.item.d.B||"?")+(p.item.d.E?" L="+p.item.d.E:"");}).join(", ");ctx="\n\n[Current run: "+runState.pieces.length+" pieces: "+sum+"]";}var apiMsgs=aiMsgs.map(function(msg,i){return(i===aiMsgs.length-1&&ctx)?{role:msg.role,content:msg.content+ctx}:msg;});aiTyping=true;document.getElementById("aiSendBtn").style.background="#999";document.getElementById("aiStatus").textContent="Thinking...";addAITyping();try{
+    // Try direct first (works in some browsers/contexts), fall back to proxy if set
+    var proxyUrl=localStorage.getItem("brookstone_ai_proxy")||"";
+    var fetchUrl=proxyUrl||"https://api.anthropic.com/v1/messages";
+    var fetchHeaders={"Content-Type":"application/json","anthropic-version":"2023-06-01"};
+    if(proxyUrl){
+      // Proxy mode: key goes in body wrapper so proxy can forward it
+      fetchHeaders["x-api-key"]=key;
+    } else {
+      fetchHeaders["x-api-key"]=key;
+      fetchHeaders["anthropic-dangerous-direct-browser-calls"]="true";
+    }
+    var resp=await fetch(fetchUrl,{method:"POST",headers:fetchHeaders,body:JSON.stringify({model:AI_MODEL,max_tokens:1024,system:AI_SYS,messages:apiMsgs})});if(!resp.ok){var errText=await resp.text();removeAITyping();addAIBubble("assistant","HTTP "+resp.status+": "+errText.slice(0,200));document.getElementById("aiStatus").textContent="Error";aiTyping=false;document.getElementById("aiSendBtn").style.background="#2BA87E";return;}var data=await resp.json();removeAITyping();if(data.error){addAIBubble("assistant","API error "+data.error.type+": "+(data.error.message||"Check your API key."));document.getElementById("aiStatus").textContent="Error";}else{var raw=data.content&&data.content[0]?data.content[0].text:"";executeAITools(raw);addAIBubble("assistant",cleanAIText(raw));aiMsgs.push({role:"assistant",content:raw});document.getElementById("aiStatus").textContent="Ready";}}catch(e){removeAITyping();var msg="Error: "+e.message;if(e instanceof TypeError){msg="CORS error - Anthropic blocks direct browser calls from most websites. Tap the Key button and set up a proxy worker. Error: "+e.message;}addAIBubble("assistant",msg);console.error("AI fetch error:",e);document.getElementById("aiStatus").textContent="Error";}aiTyping=false;document.getElementById("aiSendBtn").style.background="#2BA87E";}
 </script>
 </body>
 </html>

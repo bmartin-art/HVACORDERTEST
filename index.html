@@ -2545,6 +2545,9 @@ Add anyway?`);
 
   runState.pieces.push({item, dir:null, rot:runPickerRotation});
   runPickerRotation=0;
+  // Also add to the order list
+  listItems.push({id:item.id, var:null, n:item.n, d:item.d, qty:1, notes:'', thumb:null});
+  renderList();
   // Keep selection, just update
   runUpload();
   renderRunPieces();
@@ -3262,6 +3265,8 @@ function runUpload(){
 function addToRun(item){
   // Used when adding from list view — just push directly
   runState.pieces.push({item, dir:null});
+  listItems.push({id:item.id, var:null, n:item.n, d:item.d, qty:1, notes:'', thumb:null});
+  renderList();
   runUpload();
   renderRunPieces();
 }
@@ -3269,6 +3274,8 @@ function addToRun(item){
 function setElbowDir(dir){
   if(!runState.pendingElbow) return;
   runState.pieces.push({item:runState.pendingElbow, dir});
+  listItems.push({id:runState.pendingElbow.id, var:null, n:runState.pendingElbow.n, d:runState.pendingElbow.d, qty:1, notes:'', thumb:null});
+  renderList();
   runState.pendingElbow = null;
   document.getElementById('runDirPicker').style.display='none';
   document.getElementById('runAddBtn').style.display='';
@@ -3575,7 +3582,7 @@ function closeAISettings(){document.getElementById("aiSettingsOverlay").style.di
 function addAIBubble(role,text){var msgs=document.getElementById("aiMessages");var isUser=(role==="user");var wrap=document.createElement("div");wrap.style.cssText="display:flex;justify-content:"+(isUser?"flex-end":"flex-start");var b=document.createElement("div");b.style.cssText="max-width:82%;padding:9px 12px;border-radius:"+(isUser?"14px 14px 4px 14px":"14px 14px 14px 4px")+";background:"+(isUser?"#2BA87E":"#f5f6f8")+";color:"+(isUser?"#fff":"#1a1d23")+";font-size:13px;line-height:1.45;white-space:pre-wrap";b.textContent=text;wrap.appendChild(b);msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;return b;}
 function addAITyping(){if(!document.getElementById("aiDotStyle")){var s=document.createElement("style");s.id="aiDotStyle";s.textContent="@keyframes aiDot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}";document.head.appendChild(s);}var msgs=document.getElementById("aiMessages");var wrap=document.createElement("div");wrap.id="aiTypingBubble";wrap.style.cssText="display:flex;justify-content:flex-start";wrap.innerHTML='<div style="padding:10px 14px;background:#f5f6f8;border-radius:14px 14px 14px 4px;display:flex;gap:4px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:#bbb;animation:aiDot 1s infinite 0s both;display:block"></span><span style="width:6px;height:6px;border-radius:50%;background:#bbb;animation:aiDot 1s infinite .2s both;display:block"></span><span style="width:6px;height:6px;border-radius:50%;background:#bbb;animation:aiDot 1s infinite .4s both;display:block"></span></div>';msgs.appendChild(wrap);msgs.scrollTop=msgs.scrollHeight;}
 function removeAITyping(){var b=document.getElementById("aiTypingBubble");if(b)b.remove();}
-function executeAITools(text){var acted=false;if(text.indexOf("<<<clear_run>>>")>=0){if(typeof clearRun==="function")clearRun();acted=true;}var re=/<<<add_piece>>>([\s\S]*?)<<<\/add_piece>>>/g,m;while((m=re.exec(text))!==null){try{var dims=JSON.parse(m[1].trim());var f=typeof DB!=="undefined"?DB.find(function(x){return x.id===dims.id;}):null;if(!f){console.warn("AI: unknown fitting",dims.id);continue;}var d={};f.dims.forEach(function(dim){d[dim.id]=(dims[dim.id]!==undefined)?dims[dim.id]:(dim.def!==undefined?dim.def:(dim.opts&&dim.opts[0]?dim.opts[0].v:0));});if(typeof setMode==="function"&&typeof appMode!=="undefined"&&appMode!=="run")setMode("run");var item={id:dims.id,"var":null,n:f.n,d:d,qty:1,notes:""};if(typeof runState!=="undefined")runState.pieces.push({item:item,dir:null,rot:0,worldPos:null});acted=true;}catch(e){console.warn("AI piece error",e);}}if(acted){if(typeof runUpload==="function")runUpload();if(typeof renderRunPieces==="function")renderRunPieces();if(typeof renderRunStats==="function")renderRunStats();}return acted;}
+function executeAITools(text){var acted=false;if(text.indexOf("<<<clear_run>>>")>=0){if(typeof clearRun==="function")clearRun();acted=true;}var re=/<<<add_piece>>>([\s\S]*?)<<<\/add_piece>>>/g,m;while((m=re.exec(text))!==null){try{var dims=JSON.parse(m[1].trim());var f=typeof DB!=="undefined"?DB.find(function(x){return x.id===dims.id;}):null;if(!f){console.warn("AI: unknown fitting",dims.id);continue;}var d={};f.dims.forEach(function(dim){d[dim.id]=(dims[dim.id]!==undefined)?dims[dim.id]:(dim.def!==undefined?dim.def:(dim.opts&&dim.opts[0]?dim.opts[0].v:0));});if(typeof setMode==="function"&&typeof appMode!=="undefined"&&appMode!=="run")setMode("run");var item={id:dims.id,"var":null,n:f.n,d:d,qty:1,notes:""};if(typeof runState!=="undefined")runState.pieces.push({item:item,dir:null,rot:0,worldPos:null});if(typeof listItems!=="undefined"){listItems.push({id:item.id,"var":null,n:item.n,d:item.d,qty:1,notes:"",thumb:null});}acted=true;}catch(e){console.warn("AI piece error",e);}}if(acted){if(typeof renderList==="function")renderList();if(typeof initRunGL==="function"&&typeof runState!=="undefined"&&!runState.prog){initRunGL();}setTimeout(function(){if(typeof runUpload==="function")runUpload();if(typeof renderRunPieces==="function")renderRunPieces();if(typeof renderRunStats==="function")renderRunStats();},400);}return acted;}
 function cleanAIText(text){text=text.replace(/<<<clear_run>>>/g,"[Cleared run]");text=text.replace(/<<<add_piece>>>([\s\S]*?)<<<\/add_piece>>>/g,function(_,json){try{var d=JSON.parse(json.trim());var f=typeof DB!=="undefined"?DB.find(function(x){return x.id===d.id;}):null;return "[Added "+(f?f.n:d.id)+" "+(d.A||"")+"x"+(d.B||"")+'"]';}catch(e){return "[Added piece]";}});return text.trim();}
 async function sendAIMessage(){if(aiTyping)return;var input=document.getElementById("aiInput");var text=input.value.trim();if(!text)return;var key=getAIKey();if(!key){document.getElementById("aiKeyBanner").style.display="block";return;}addAIBubble("user",text);aiMsgs.push({role:"user",content:text});input.value="";input.style.height="auto";var ctx="";if(typeof runState!=="undefined"&&runState.pieces&&runState.pieces.length){var sum=runState.pieces.map(function(p){return p.item.n+" "+(p.item.d.A||"?")+"x"+(p.item.d.B||"?")+(p.item.d.E?" L="+p.item.d.E:"");}).join(", ");ctx="\n\n[Current run: "+runState.pieces.length+" pieces: "+sum+"]";}var apiMsgs=aiMsgs.map(function(msg,i){return(i===aiMsgs.length-1&&ctx)?{role:msg.role,content:msg.content+ctx}:msg;});aiTyping=true;document.getElementById("aiSendBtn").style.background="#999";document.getElementById("aiStatus").textContent="Thinking...";addAITyping();try{
     // Try direct first (works in some browsers/contexts), fall back to proxy if set

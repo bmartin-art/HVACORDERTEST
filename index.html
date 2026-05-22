@@ -2753,27 +2753,25 @@ function getFittingOutlet(item){
     return {inlet:[-dt,as/2,0], pos:[cw/2,-(de),0], fwd:[0,-1,0], up:[0,0,1], w:dv.C||A, d:B};
   }
   if(id==='tr'){
-    // Transition: y=0=inlet(large A×B), y=lE=outlet(small C×D)
-    // rotate90 (-PI/2 around Z) aligns Y-flow with X-cursor
-    // After rotation: inlet(y=0)->x=0, outlet(y=lE)->x=lE, fwd->+X
+    // Transition flows along +X after rotate90
+    // inlet at x=0, outlet at x=lE
+    // up stays [0,1,0] so downstream pieces don't roll
     const lE=(dv.E||16)*S;
-    return {inlet:[0,0,0], pos:[0,lE,0], fwd:[0,1,0], up:[0,0,1],
+    return {inlet:[0,0,0], pos:[0,lE,0], fwd:[0,1,0], up:[0,0,-1],
             w:A, d:B, outW:dv.C||20, outD:dv.Dp||10, rotate90:true};
   }
   if(id==='reo'){
-    // Rect offset: inlet x=0 face center at (0, lA/2, 0)
-    // outlet x=lC face center at (lC, lA/2-lF, 0) where lF is the shift
-    const lC=(dv.C||40)*S, lF=(dv.F||0)*S, lA=as;
-    // Offset direction: user picks via piece.elbowDir (reuse dir field)
-    // Default: offset goes in +Y (upward in local space)
-    // inlet center: (0, lA/2, 0) — midpoint of inlet face
-    // outlet center: (lC, lA/2-lF, 0)
-    return {inlet:[0,lA/2,0], pos:[lC,lA/2-lF,0], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
+    // Rect offset: parallelogram, flows along +X
+    // Inlet face center: (0, as/2, 0)
+    // Outlet face center: (lC, as/2 - lF, 0)
+    // We treat inlet at origin for cursor alignment, offset baked into geometry
+    const lC=(dv.C||40)*S, lF=(dv.F||8)*S;
+    return {inlet:[0,as/2,0], pos:[lC,as/2-lF,0], fwd:[1,0,0], up:[0,0,1], w:A, d:B};
   }
   if(id==='ro'){
-    // S-curve flows along Z, offset along X by H
+    // S-curve flows along Z, offset along X by H, up stays Y
     const lE2=(dv.E||32)*S, H22=(dv.H||8)*S;
-    return {inlet:[0,0,0], pos:[H22,0,lE2], fwd:[0,0,1], up:[0,1,0], w:A, d:B};
+    return {inlet:[0,0,0], pos:[H22,0,lE2], fwd:[0,0,1], up:[0,1,0], w:A, d:B, rotate90:false};
   }
   // Default: flows along Y
   return {inlet:[0,0,0], pos:[0,as,0], fwd:[0,1,0], up:[0,0,1], w:A, d:B};
@@ -2871,7 +2869,10 @@ function buildRunGeometry(){
     // Build new rotation matrix so that the next fitting's inlet (+X axis)
     // aligns with the current outlet's forward direction
     const fw = normalize3(outWorldFwd);
-    const up = normalize3(outWorldUp);
+    let up = normalize3(outWorldUp);
+    // If up is nearly parallel to fw (degenerate), use world Y as fallback
+    const parallelTest = Math.abs(fw[0]*up[0]+fw[1]*up[1]+fw[2]*up[2]);
+    if(parallelTest > 0.99) up = [0,1,0];
     // Gram-Schmidt: make up orthogonal to fw
     const dot = fw[0]*up[0]+fw[1]*up[1]+fw[2]*up[2];
     const up2 = normalize3([up[0]-dot*fw[0], up[1]-dot*fw[1], up[2]-dot*fw[2]]);

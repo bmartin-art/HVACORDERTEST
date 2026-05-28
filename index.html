@@ -163,7 +163,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 <div class="screen" id="palletScreen">
   <div class="hdr">
     <div class="hdr-row1">
-      <h1 style="font-size:15px;font-weight:700;flex:1;letter-spacing:-.02em">Brookstone <span style="color:var(--teal)">Industries</span> <span style="font-size:9px;font-weight:500;opacity:.5;letter-spacing:0">v59</span></h1>
+      <h1 style="font-size:15px;font-weight:700;flex:1;letter-spacing:-.02em">Brookstone <span style="color:var(--teal)">Industries</span> <span style="font-size:9px;font-weight:500;opacity:.5;letter-spacing:0">v76</span></h1>
       <button class="list-btn" onclick="openAI()" style="background:rgba(43,168,126,.25);border-color:rgba(43,168,126,.4)">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><circle cx="8" cy="8" r="6"/><path d="M5.5 9.5c.5 1 3.5 1 4.5 0M6 6.5h.01M10 6.5h.01"/></svg>AI
       </button>
@@ -425,9 +425,9 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
   });
 </script>
 <script>
-console.log("HVAC Takeoff v59 loaded - branch-aware labels + AI sizing rules");
+console.log("HVAC Takeoff v76 loaded - Stage D: direction editable on existing pieces");
 window.__debugRun = true;
-const DB=[{"id":"e90","n":"90° Elbow","group":"Elbows","icon":"Radius Elbow 90o SR","vars":[{"id":"lr","l":"LR 1.5x"},{"id":"sr","l":"SR Half Width"}],"autoG":true,"dims":[{"id":"A","l":"A) Top Width","v":24},{"id":"B","l":"B) Depth","v":12},{"id":"D","l":"D) Angle","v":90},{"id":"E","l":"E) Bottom Extension","v":0},{"id":"F","l":"F) Top Extension","v":0},{"id":"G","l":"G) Inner Radius","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"e45","n":"45° Elbow","group":"Elbows","icon":"Radius Elbow 45o SR","vars":[{"id":"lr","l":"LR 1.5x"},{"id":"sr","l":"SR Half Width"}],"autoG":true,"dims":[{"id":"A","l":"A) Top Width","v":24},{"id":"B","l":"B) Depth","v":12},{"id":"D","l":"D) Angle","v":45},{"id":"E","l":"E) Bottom Extension","v":0},{"id":"F","l":"F) Top Extension","v":0},{"id":"G","l":"G) Inner Radius","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAWkSURBVHhe7Zs9LCxRFMev9xqi8FGJEHQUPhMJlY+GRCSoJCRIFDokIlGhkyh8dRpEI9HQ6Xw0dEgUOiQKHSqJSPbN7745k2vezuwuds1480tu9tw7s7Puf8459+ydlXV6ehpTEZpf9muERSSGwbswaWpqsq3/h7OzM9uKPOMdvp5xcXGh5ufn1dLSkiovL9djt7e3amtrS9uQl5enJiYmtH10dKSOj4+13dLSolpbW7UdZJL2jOXlZXV4eOgIAYgxNzenbm5uVCwWU/n5+Xp8b29PtbW1qcfHR3V+fq5txAwTnmKIB8hdd9PT06Pb8PCw7iMc3sArwpSVlanNzU19LCx4isHdlxDA/REH8ATGmXR9fb0aGRnR427wJnlPWIgrhukVTB6Xl7tcV1ennp6etECzs7POOJO/u7vTNsfJHWHIGSZxxZAJkjyzsrIcGwEEJnx5eam9BPAkckhFRYVutbW1TgiFBlYTaV5Yp8UsL9D2xsZGzJpkzPKYmCWE7ptYCTdmJVC7F3zM+fuuJgLhYLo8yZHllnBy333OI5TCiGedIfUCsEqkCkKRQ3gv9uTk5Lt6JSgkVWdwh6WRN5hMKpB3xJvILyy3Qa87fMOE8LDCSt9RltKPToaw4TrUJUEmqZwhSLXJpPAWWkFBgVNP4A30GWf1EViFGJPVCJvVB8xjXIeViM8hnLwKvnThKwa1BpMjRMbHx514x0u405TehACT4FXO4xhelSqEEteSxudkEl8xSH6sHKwY5h9GcqUQ6+3ttUf+fqlDEMkTHwGP4/O4AVS3iJNJfMXAE/iDcH8Rgz7icOf5EucFwiQDHiDwefS5LqKYYmeChDmDP5CJkwPEfeH5+dnJC4yRJKlGGSO8/O4qE93f31crKytO7gCuw5jkIqluM8Xv0dFR568pKSmxrb/g8ohhFlG48sPDgzo4ONB2UVGRrk8qKyt1Y93mPWNjYzoRdnZ26vdhcz15lbBCDDmPPol0Z2dHjy0sLOhrpZP7+3vbirb9om0/LzzFwJVZMaTJN1nG49k/AU8xWD6pF1heaRK7jEsSNe2fgG+YcOdJcDRsL1h22fEyy3USISsLhZhUnhyXFchtc16yy3G68BWDJZIQ8SuLWQrxDjaIOVdWBGwqVLwLW5ZahBVxTBtBM11kufEVg/CgxvDbsRoaGtITYWIIwV0mj1BLME7jOrxKLYIAslybNsvpd+IrBnmC8DDrDDfxJoCneNUHXA8BxCN4FY/wC8VM4CtGKki+QASKMfZH8RQamzwiDhMm8eI97JNiIwYe9t2e4bkHah161yxXd8at0HFsaeZ+qJUr9PnW5HSzJq3HgP1ROV9smpVz9PFMY84/5QrUHQLi7vFcXLzFHWa8By9g3LS/A7MCjcrxqByPTySGwY8Q4+3tTVVVVX16z/RHiEFRuLi4qBoaGtTAwIA9mjqhFgOPGBwc1GJkZ2er4uJi1d/fr9bW1uwzUiPUYlRXV+vJm+Tk5OjdN/d4MoRWDL7l4gF4hBv2TxsbG1PeXgidGJIsu7q67JH4UOq3t7erl5cXeyQxoRNDkmUyrK+vq5mZGbuXmNCI4U6WyfL6+mpbiQmNGPGSZTJ0dHSompoau+dPKMTwS5aJyM3N1fXH9fW1PeJNoMVINlkmgseU7K8kItBipJIs/cA7VldX7Z43gRTjo8nSD3biE20rBlKMjybLzxI4MT6TLBPR3d3tW5UGRoyvSpafITBifFWy9IO92+npabv3L4ERY2pqSv9rRjrhAdbJyYnd+5fAiMHuOM9rt7e37ZHME6gEyi+H+GFbOunr69O/OopHoMQA9jF5IpcuQiXGdxJIMZqbm/WvCTNNIMXY3d1VV1dXdi9zBPLxIk/u+aZZWlpqj3wthYWF+vciED1rNYietXoQiWHwLkz+dyLPMIjEcFDqD60Ik/NKNZo4AAAAAElFTkSuQmCC"},{"id":"ev","n":"Var Elbow","group":"Elbows","icon":"Radius Elbow Variable Degree","vars":[],"dims":[{"id":"A","l":"A) Top Width","v":24},{"id":"B","l":"B) Depth","v":12},{"id":"D","l":"D) Angle","v":90},{"id":"E","l":"E) Bottom Extension","v":0},{"id":"F","l":"F) Top Extension","v":0},{"id":"G","l":"G) Inner Radius","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAATUSURBVHhe7Zo7LHxPFMfH/98QhUclQtBReCYSKo+GRCSoJCRIFDokIlGhkyi8Og2ikWjodB4N3ZIodEgUOlQSkfjv5/xnbsb+7t2Hx7rrN59kcs+cvXt353vPnDm7d7JOT0/flEP4Rx8dUZwYFu+mSVNTk7b+Hs7OzrTlIuMdTgwLXzGOj4+99hFubm6892L39vbKMez4itHa2uq1rKwsNTk5qV9Jjs3NTXkvPD4+qr29PXV+fi79MBM4TWZnZ9Xb25taWlpSy8vLHx5MXV2dXKenp0d7wkvSOSM/P1+ODIpooRUUFHjhTzTQxz8/Py8+ODo6Eh9HwJ6bmxPbfo3rVFRUyOeUl5eriYkJOSedBIqxtbUlg2OKjI+PyxcEooQ7/fDwIFOAQXA05/EaUZUqTCWuZRqfk24CxWhpaVFlZWVqeHj43RcjMba1tUlSNDCFEMTkiY9AxPF53ID6+noRJ90EikEk8IUIfyMGfcThzh8eHorPD4RJBiLAwOfR57qIYoudLuLmDL4gAycHmPCFp6cnLy/gI0nm5eWJj+kV764y0P39fbWysuLlDuA6+Ewu4nrp5t/R0VHvG5WUlGjr/+UVMRiogVC+v79XBwcHYhcVFUkJX1lZKY3SlveMjY1JIuzs7JT3YXM9czTTCjHMefRJpDs7O+JbWFiQa303d3d32nK/TdxvkyB8xSCUWTFMI4kav5/9W/AVg+WTeoHllWbmLn6TRG37txA4TbjzJDgadhAsuyMjI+/KdRIhKwuFmKk8ed2sQLE25yW7HH8ngWKwRDJF4pXFLIVEx/X1tZxrVgRsKlSiC9sstQhrxLFtBP2JIiuWQDGYHtQYFFlBDA0NyUAYGEJwl8kj1BL4aVyHo6lFEMAs17bNcvrTBIpBnmB62HVGLH4DIFKC6gOuhwAmIjiaiIg3FdNFoBipYPIFIlCMXVxcSKTQbm9vPXEYMImX6KmtrRUbMYiwMESGougyzRB1v2vRUPf80anj2aZFw/9tY2ND/NFcIedHByctOmjxQSQS8c43Ni2ac+T1n8Aef0oVaOwUMOHuF+ImWmKnGe8hCvDb9k9hV6CuHHfluD9ODAsnhoUTw8KJYeHEsHBiWDgxLJwYFr9CjNfXV1VVVfXpR5K/Qgz+c1lcXFQNDQ1qYGBAe1Mno8UgIgYHB0WM7OxsVVxcrPr7+9Xa2po+IzUyWozq6moZvE1OTo483Ir1J0PGisGfyEQAERELjycbGxtT/vc+48QwybKrq0t7/OGftPb2dvX8/Kw9ick4MUyyTIb19XU1MzOje4nJGDFik2WyvLy8aCsxGSOGX7JMho6ODlVTU6N78ckIMeIly0Tk5uZK/XF1daU9wYRajGSTZSLYBcTji0SEWoxUkmU8iI7V1VXdCyaUYnw0WcaDB92JntqFUoyPJsvPEjoxPpMsE9Hd3R23Kg2NGF+VLD9DaMT4qmQZDx6NTk9P696fhEaMqakpFYlEdO97YH/IycmJ7v1JaMTg4TPboba3t7Un/YQqgbIpl33j30lfX59s6vUjVGIA/2Oy4eW7yCgxfpJQitHc3Cyb9dNNKMXY3d1Vl5eXupc+Qrlzh41x/NIsLS3Vnq+lsLBQtmOC28Zk4bYxBeDEsHg3Tf52XGRYODE8lPoPnYYP9c1Cgb8AAAAASUVORK5CYII="},{"id":"rgn","n":"Gooseneck","group":"Elbows","icon":"Radius Gooseneck","vars":[],"dims":[{"id":"A","l":"A) Top Width","v":24},{"id":"B","l":"B) Depth","v":12},{"id":"D","l":"D) Angle","v":135},{"id":"E","l":"E) Bottom Extension","v":0},{"id":"F","l":"F) Top Extension","v":0},{"id":"G","l":"G) Inner Radius","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAUySURBVHhe7ZrLK31dGMeXa0JhIknhD3AbKEq5DJRSKAOl3IopMjBQLhMjuZSBicvAnDAQCiXMkIwMMFMUMpHI+36ed6/zLqdzHAfnnP3zW59a7b2etc8+e33Xs579rL131MHBwZuyCNHO1vIvVgyDd9OkpKTE2ft7ODw8dPasZ7wjoBi7u7tSLi8vHcvvxa8YCwsLKi0tTdXV1anu7m6Vm5urhoeHndbfiU8x7u/vVW9vryovL5f94+NjdXd3p3p6epwjfic+xaDziGB2PjU1VQrQVllZqaKioqSwjw20R2FnSx12dnaknpOTI+fRdv4Lr9PniqT3+fUMEy58ZGREiq4fHR2Jt1DY153Ao1pbW9Xb25saGhpS7e3tcj7EQARiD/W2tjY5nvaCggI5fn5+Xv4DgSKBTzG0B5hsb297Ory8vKwKCws93sI+HaDDdLS+vl6Oww60YUM4Rr+hocHTYbYnJyfiXVNTU2KLVLD+UAw6B4xiRUWF7AOu/vDw4NT+g99gB2/PAoShk4h6cXEhgmiITXjRxMSEtGsRw02ss30HF8MFMlJ0mo5ye9UgDiOJS+u2paUlEYPfYdfznymAkAh7dXUlxxA7NNyt8Az+BxHxHlP4cOLTM4CLZ7QYRUYrOztb5jRwsXSeWEEb+3pqMIUQhFFmq72LjnIs50QgjgPiDzGGc3OeSGLTcZuO+8avGEwFbnsm2HR+ECz8jjjjZvyKQVCkA3rOw3fWKPzOPJcb+XCaEDS9vcMEsUiyuHuYIrGPjbbJyUnH+j8EUx1A3cSHYnALTUlJ8Zkik6pTaOcuUVRUJJ0kiSK95k5Dm85ZNLQzXXyJFGkCBlAumuKdSOEVJE50jK0WAjsiMPKIqNNuDcdza3XjlAkoBkGT4r1iJUnSeQP5ATmFFuSjDJJjOJ8bCSgG4Bnec5zRp1OMMIV2Ei9sZqD19iiSMeLQHxczNKTQ3p7BdKBDxAeKHm2OYxroZTmptykI7WScCIIXuYlvZ6C6Q95TA7ubp4TGzEBtOm7Tcd9YMQysGAZWDAMrhoEVw8CKYWDFMLBiGFgxDKwYBq5cm5hP1p6entT19bXs6zd2Gl9P4ILFdQs1vcTPysqS7drammwDUVtbK89Vzs7OVGxsrEpOTnZaPo+rxFhdXZXXi1BWVibbYHh5eZEOPT4+qr6+PpWenu60fA5XrFp5OlZVVaW2trZEhK8IAXgEv62pqVFNTU3yldFXiYgYXV1dEgcGBgbevY3/LoODg6q6ulpiy8bGhmP9PGEXgwtmJDMyMlRMTIxj/TmSkpLkkeTe3p5sgyHsYszOzqrMzEynFjqYgsSR09NTxxKYsIvBU/PFxUWnFlry8vLU+vq6DMBnCLsYcXFx4r7T09Pq+fnZsYaO4uJiebv3GSISQAHv6O/vd2qhhTtNfn6+U/NPxMRISEiQEVtZWXEsoYOgOjo6GvDFVcTE0IyPj6vm5mZJnkIJ2enY2JhT803ExYBwBtWPcNVCrbGxURKy+Ph49fr6KrfF29tbyRnA+/vSr8DizvwCwHULNQ0r1NLSUnk53dnZqTY3NyW2kKCBfpnd0dEhydtX2N/fVy0tLZ5FoSvWJr7QQZWROz8/l7RaCwHUKXNzcx4vCZbExES/8clVYmgCPadAEJb9MzMzjuVncKUYn+Ur05pPJfzlN3+0GHzrwQOeYOBhkPnpt8kfLcZPY8UwsGIYWDEMrBgGrnxvEgzR0dFBPxG/ubmRdB9cm45HAtem45HmnWf87VjPMLBieFDqH6ldqxG3UeY3AAAAAElFTkSuQmCC","autoG":true},{"id":"sqe","n":"Sq Elbow","group":"Elbows","icon":"Square Elbow","vars":[{"id":"vanes","l":"Turning Vanes"}],"dims":[{"id":"A","l":"A) Top Width","v":24},{"id":"B","l":"B) Depth","v":12},{"id":"C","l":"C) Btm Width","v":24},{"id":"D","l":"D) Top Throat","v":6},{"id":"E","l":"E) Btm Throat","v":6},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAPkSURBVHhe7Zo/MzRBEIfn3jeRIRNQSC5FdhlyAYmSoU6OTMZll+ET4BsIiRCRIZOhSiA7PsG9nn63r/q2btcWd3t39FM1tbPT+2fmN90zfUvh+vq6HhzhT3R0PnAxDE1hUiqVotrv4ebmJqqleMbl5WVYWloK8/Pzcjw9PY0sP5eWYiAEIgwODobd3d0wOzsb3t7eIuvPpWWYHBwchO3t7fD4+BgmJiakzfL09BROTk6isyBizc3NhePjYzlfW1uTY6VSadgQ+OrqStqHhobC6uqqHPE4hOY92Dc3N6Wd5/Me4NpW/WgHn4bJ4uKieMXMzExYX19vGjgdpP329jbU6/Wwt7cnAwXEUEHA2rivVqvJPVtbWyI4cEQ02i4uLkQI7kMUrqWN9+XhmS3FYBbu7u6kQwyamaZDwGARihml01nhGRTCLw6DRjQVDvG5jsJkIITaOkniAoogDBZR9vf35UiHmOGvuCxi4nHMdByeh0covINJYL06OjrKbc1KFKPVy+kwHSe2sSOQBfv7+7vUbbggoopJOHzG1NRUY52h4IW6DnWSxN1keHg4TE5OSmExJWSmp6elU4QJ7fGBYWPQ3MszFATkHrZoBjk+Pp4603gkAuBNWvIgNenSASGCdWP1CgZWKBTEnXX9wMWxc48NKb2HdupZQk3fz3s6hd1Nvp2BxsXoNzKJwawwUAXXZjZp56j119dXuS/LTPcimdJxtjXcU4suiLTb+sPDQ98KESdRDMD9yQE0uUqD9eE7pC2oeZEqxvPzs2yj8S3Ucn9/39h5SJCAgeE1hBmFOm3sEJwjXLzOM9LekwepYpAg4R02Z4jD7xcKiRnXMSCOrCek3xTseJbuCtiS6t0kVQzyBjqovyNaQVbJtsuWCeoBZI20a6KGSNRJqOygqWuIqCjdIlWMr8LgNRONw4AJPfU26ojHbqWCdotUMegovygpSaGi15ClahqtmSjth4eHco2m09hZJ2gntLTeC3nK342NjUYvRkdHo9p/7JapoUDnCQ21cU5ZWVmRcBoYGBAb156dnYmtWq2KHUZGRmRvx76zsyN1rueabvDy8hLV2pCB9juZkq7fiIthcDEMLobBxTC4GAYXw+BiGFwMg4thcDEMPfPbpFgs5vL3kfPz86ZPjJm+jufNwsJC47NhJymXy4lieJgYXAyDi2FwMQwuhsHFMLgYBhfD4GIYXAyDi2FwMQwuhsHFMLgYBhfD4GIYXAxDz38DXV5ejmrtIe2zX0//swr/CTQ2NhadtQf/BpoRF8PgYhh6fs346F901h764o9I3cIX0ARcDENTmPx23DMMLkaDEP4BKl9a1NCwI3gAAAAASUVORK5CYII="},{"id":"me","n":"Mitered Elbow","group":"Elbows","icon":"Mitered Elbow","vars":[],"dims":[{"id":"A","l":"A) Width","v":12},{"id":"B","l":"B) Depth","v":12},{"id":"C","l":"C) Btm Width","v":12},{"id":"D","l":"D) Top Throat","v":6},{"id":"E","l":"E) Btm Throat","v":6},{"id":"F","l":"F) Miter Angle","v":20},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAT3SURBVHhe7ZrPKz1fGMeP79fCQmFnIT8WdoQdpfAfUBbKArEVdnYoCzuUbFFWUn6sLBRKEQs/yk6hlKUfpSh1v/N6vue5nXs/c6+L687wmVed5jk/5txz3vOcZ86dmbyDg4OYiRD+sccIj0gMh4Rl0tjYaK2/h8PDQ2tlwTNOT0+t9fNJKcbi4qKZmJhImOz19bWUUaf5hoYGMzw8LPlcwZja2tqyfyFYJppcKisrWT6xoaEhWxITmzLqlOnp6djJyYnYHFtbW+P572JnZ0fGwfGruPNP6Rlc9aKiIrOxsWFLjNnb25My6pTHx0fz8PAg9uzsrNnd3ZUjHqTt1tfXJZ/saZqnvXobfen5HF3om/KlpSVbkl18xdDJ4f5MSBMD1yWhEx0fH5dBgid0/Kg2QnR0dJj7+3vjeYwsK/dc3H1tbS0uEvmFhQU5f2xszPT29ko5/VBHP9p31nHdRHHdsKKiQpaCN0Cxk10U2xu02Ml10NLSIkvHEyzmTSihPXZPT4/YoOfPzMxIe08IyQP9aFu/3/ks7vzT3k2Ki4tNe3u7XHmujDcp48ULqVPveQ/aXV1dyVX2RDXepOJ9gGsreAbtOY/2cHZ25ts2m/iKoW5fX18vAhA3iBcIowPKNJLTvqqqSvrUpK6fDOKDLj1NUFdXF49fmf72R0nrGYAAwBVGGCCI+kE9dcQIBAAmxhUmT7zIy8uTcj8Q37tjyfnEh5KSEjkfiFWIQD8qhsaebJHRDlR/nMG+B6LRHo9w3Zoy6uhDPSAV2gft3N/UydMv9ZmM5z3cHWi0Hc9kO85aJU5o0qtCuZ/9G0gpBmuWGKBJN0WU+9m/gbQBlNubdyuWpIEsFV/1EOJE0KQV4+bmRpaIBlA/uP8T9YnyfX19UsbE8BruHCRsytirkEe4ZJs+0v1OLkgrhrfDE+9ItxS4bZLYUNGOCXEknrB1JlGPZ+mtmbpUdpCkFYPNEQP0tse25E/Yh7i3QPUAdo6Uk/RWiM3myZ00ti4RFSUo0orxWZg8/2b9YMIsPfU2bMTz/vdkZd/wFdKKwUD1r3eqpaJtRkZG5KozWTwKT9C/4bTRLTj1xAnKWVpqvxegc8G/AwMD8VGUlZVZ63/cHaQuBQbv/kchT+rq6pLlVFBQIHW03drakrqpqSmph9LSUtnoUD86Oio27WkTBLe3t9aKdqDZfSD8m4jEcIjEcIjEcIjEcIjEcIjEcIjEcIjEcIjEcIjEcIjEcIjEcMjpv9YwPPTNz883hYWFNhfgS6T+/v74a8eg2N7eTnjsGJgYq6ur5u7uztTW1tqS3MMTtVRi5DRmdHZ2ymO/4+NjWxIuch5Aq6ur5dVBGMm5GDwjnZ+fz/kXgpkQ2K2VYMoLpjARmBiDg4PyeiFMBCYG7O/vf9tnjJ8hUDF4T8OLp7AQqBhAIO3u7jZvb2+2JDgCFwMuLi4SNj9BEQoxeHX58vJiLi8vbUkwhEIMmJycNHNzczYXDKERA/g0YXl52eZyT6jE4G380dGReX19tSW5JVRiwPn5uew/giB0YgB7Dz528UupvgjKBqH9PoOPXJJ5enoym5ubprm52ZZ8nNA8z/gIxI/kVF5ebmu/h9CKEQSRGA4/6psugmdNTY3NfY6mpiazsrJicz/4my6+YSeIfiU9Pz/b3v7kR3nGd/BjPeO7SfCMv53IMxwiMeIY8x/uMIruF+BDTgAAAABJRU5ErkJggg=="},{"id":"st","n":"Straight","group":"Straight","icon":"Straight Duct","vars":[],"dims":[{"id":"A","l":"A) Width","v":16},{"id":"B","l":"B) Depth","v":16},{"id":"C","l":"C) Length","v":60},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"tr","n":"Transition","group":"Transitions","icon":"Transition","vars":[],"dims":[{"id":"A","l":"A) Btm Width","v":24},{"id":"B","l":"B) Btm Depth","v":12},{"id":"C","l":"C) Top Width","v":20},{"id":"Dp","l":"D) Top Depth","v":10},{"id":"E","l":"E) Total Length","v":16},{"id":"F","l":"F) Btm Straight","v":0},{"id":"G","l":"G) Top Straight","v":0},{"id":"H","l":"H) Left In","v":0,"sel":["Central","Flat Right","Flat Left"]},{"id":"I","l":"I) Top Down","v":0,"sel":["Central","Flat Top","Flat Bottom"]},{"id":"HV","l":"H) X Offset","v":0},{"id":"IV","l":"I) Z Offset","v":0},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAQiSURBVHhe7Zs9L2xBGMdnL4VGEAkKr4lCSYUKnwCNTiiUCj6BlWhUSEQoJOgUghKJlwoVgoSIt4ROgkSBRPbe/5OZvc/uPXusvefsTHh+ycmZZ+bM23+emT175pzI7u5uTAnEL30W/iBiMBKmSVNTkw79HPb29nTIUc84PDzUIW9ubm7U09OTtoLD0zO2t7fVzs4OhTktLS2qtbVVW+EQjUbV8PCwOjg4UPX19To2kaKiImrLysqKjsmctDwjFoup6+trahzOsLNBR0eHGhsbiwsxNzenBgYGKGwYGhpSvb292gqOnL6+vqgOq/LycjpXV1eTBxQWFqr5+Xk1Pj5OlSMe7jk6OkphpJ2dnVHDMUqLi4vkUUdHR3Evm5iYUK+vr+T6SEf+uro6SkP+1dVVyoO6ysrKqLzz83OqHx6K/Pv7++r5+ZmmB+rCNbgWbQC8bsShLIC8eXl5lLa2tkZxJo/h7u5OhzJcM+AtnZ2danl5OT530XB4z+PjI40kbIBRHBwcpBGG6yMfOgUbAhcUFNDBy0H5BpRpDgPymvIhBMpEvSi/oaGBygdoR1tbG8WjrbjOjy+LYVTHnEWDjAvDe1BxcoUYyaqqKmq0udY0Ftze3lIHvNYixOHAaEIgr6mBetvb2+mMOiAqxDL09PSQjXSk+S3OGf+aGFEAOldTU0NesLW1pWP/4rUQomNYGzBq6PBno+YHd33eLpBsGw/0IpCfVowIBOGekg5mOkFElJEKeE8q0Fnzy4eO4kheF9IlEDHMyMPd8WsAPrtXgOvCmzC1sNDBnb1AZ43neQmN6YP1Auk4MH1NG75KYHegaDAOuDzO6YyOyYNr/a6HsBhxiJ7s9gZ4GNK8pqQf/D5Dbsddvx23hYjBEDEYIgZDxGCIGAwRgyFiMEQMhojBEDEYIgZDxGCIGAwRgyFiMEQMhojBEDEYIgbDygNhPMp/eXnRVnbBtsLS0lL8abz1p+MQY319XVvZ5f39XV1dXanKykqyrYuBXfWRkZH/2lLMlIWFhfimNbC+VdDY2KguLi605Q6ygDKsiTE9Pa0eHh60lR0mJycTpkgy4hmMHyPG29ub6urq0pY31sTAbv3U1JS2wufj4yP+LlkqZJowrIqBl0+Oj4+1FS6bm5tuewbEODk50Va4OC+Ga1gXo7i4WIfCY2Njw/ctP4N1MVx6dUqmCcO6GFhE+/v7tRUOpaWlOuSPeAbj24txeXmpamtrteWPE2LgYc/p6am2gmVmZibtaeiEGBUVFfRHyjZOiBGJREL50gl/zvLz87X1OU6IgY9v7u/vtRUceLTo9clHKr79AvoVnHmRHtsHzc3N2gqGkpIS1d3drXJzc3XMvzj5VUEYG0uYfrOzsyk/ywBOimEL6/smriJiMBKmyU9HPIMhYsRR6jeswf/jY3D/EQAAAABJRU5ErkJggg=="},{"id":"ro","n":"Rad Offset","group":"Offsets","icon":"Radius Offset","vars":[],"dims":[{"id":"A","l":"A) Btm Width","v":24},{"id":"B","l":"B) Btm Depth","v":16},{"id":"C","l":"C) Top Width","v":16},{"id":"Dp","l":"D) Top Depth","v":8},{"id":"E","l":"E) Total Length","v":32},{"id":"F","l":"F) Btm Straight","v":0},{"id":"G","l":"G) Top Straight","v":0},{"id":"H","l":"H) Left In (Offset)","v":16},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"reo","n":"Rect Offset","group":"Offsets","icon":"Rect Offset","vars":[],"dims":[{"id":"A","l":"A) Width","v":12},{"id":"B","l":"B) Depth","v":12},{"id":"C","l":"C) Total Length","v":40},{"id":"D","l":"D) Left Extension","v":4},{"id":"E","l":"E) Right Extension","v":4},{"id":"F","l":"F) Offset Width","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"sqt","n":"Sq Tee","group":"Tees","icon":"Square Tee","vars":[],"dims":[{"id":"A","l":"A) Width","v":12},{"id":"B","l":"B) Depth","v":12},{"id":"C","l":"C) Left Throat","v":12},{"id":"D","l":"D) Right Throat","v":12},{"id":"E","l":"E) Left Arm Height","v":0,"sel":["Equal","Value"]},{"id":"EV","l":"E) Value","v":12},{"id":"F","l":"F) Right Arm Height","v":0,"sel":["Equal","Value"]},{"id":"FV","l":"F) Value","v":12},{"id":"G","l":"G) Btm Throat","v":20},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN3","l":"Connector 3","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAO+SURBVHhe7ZsxM2tBFMc3730A9ExojC5UdKRTmMEnwIyeVEp8AnyC0CkVGhUqOnRGgxmFwgw+QbzfeffkndzJTSKSvHs5v5mdvbube++e/57dPbk3yV1cXFSCI/yKcucPLoahZppMTU1FRz+Hy8vL6KiBZ5ydnYXFxcVQLBYlPzo6ilq+L3XFQAhE6OvrC5ubm2F6ejq8vb1Frd+XutNkd3c3lEqlcH9/H4aHh6XO8vDwEA4ODqJSELFmZmbC/v6+lJeXlyXf3t6utiHw+fm51Pf394elpSXJ8TiE5j60r62tST3X5z7AZ+v1oxM0nSYLCwviFRMTE2FlZaXGcDpI/dXVVahUKmFra0sMBcRQQcC2cd7r66ucs76+LoIDOaJRd3p6KkJwHqLwWeq4Xy88s64YjML19bV0CKMZaToEGItQjCidbhWuQWL6xcFoRFPhEJ/PkRgMhNC2bpK4gCIIxiLKzs6O5HSIEW7HZRETj2Ok43A9PELhHgwC61W5XO7ZmpUoRr2b02E6ztymHYEstL+/v8uxnS6IqGIyHZpRKBSq6wwJL9R1qJsk7iYDAwNhZGREEospU2Z8fFw6xTShPm4YbRjNuVxDQUDOYYvGyHw+33Ck8UgEwJs09YKGQZcahAjWjdUrMCyXy4k76/qBi9POOXZK6TnUc9zKVNP7c59uYXeTL0egcTGyRlMxGNHHx0c5tuDe8RFl9KhrZaTTSNM4g8UP14wnuygq1GdViDh1xcDlNeABcg2wvjOJW2sj2EVYK0jsKrrFklPWtqyJ92kxWCP29vYkKCK8ZstUo9laiRHwIoIlwmwVKgu0JQYQexA3EGTd3NxIHTmJMBrBgMU4K3xaDI032E41XCYphM7UE8Kz1hBXZIVPi8H3C2DkWRcIzVWg+fl58Qy8ha2ZKZKlneb36upqdZUbHByMjv6BoWyfarCWn5+fw+HhodSNjY2J0bOzs1ImlL69vZW6tD9KfHp6io46EIFmnZaegf5EXAyDi2FwMQwuhsHFMLgYBhfD4GIYXAyDi2FwMQyp+qI2Ojra9RdGd3d38pRO6eh7k04yNzcnL5q7yfHxcc3DKP/WmoCLYXAxDC6GwcUwuBgGF8PgYhhcDIOLYXAxDC6GwcUwuBgGF8PgYhhcDIOLYXAxDKl6Bqo/lVL4SeXQ0FBUao+Xl5ewsbERlf5i/9GQ2megdNIm/evWV0CI+HWT8GlicDEMqf61Hz+dnJycjErtcXJy0nBqpPYl0v/AXyIlUOMZPx33DIOLUSWED5o5Ds00uflnAAAAAElFTkSuQmCC"},{"id":"sp","n":"Sq Pants","group":"Tees","icon":"Square Pants","vars":[],"dims":[{"id":"A","l":"A) Btm Width","v":24},{"id":"B","l":"B) Btm Depth","v":16},{"id":"C","l":"C) Left Width","v":12},{"id":"D","l":"D) Right Width","v":12},{"id":"E","l":"E) Top Depth","v":10},{"id":"F","l":"F) Height","v":28},{"id":"G","l":"G) Throat Width","v":6},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN3","l":"Connector 3","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"ec","n":"End Cap","group":"Caps","icon":"End Cap - TDF Flat","vars":[],"dims":[{"id":"A","l":"A) Width","v":12},{"id":"B","l":"B) Depth","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"bc","n":"Base Can","group":"Caps","icon":"1 pc Can","vars":[],"dims":[{"id":"A","l":"A) Width","v":16},{"id":"B","l":"B) Depth","v":24},{"id":"C","l":"C) Height","v":24},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAASOSURBVHhe7ZrJSyNLHMe/eQfXiyCKoAd3ReegoCLxD3A9eJCnKPjEw8SLjCAjiiN4eKAQxeTgMgEFUcHtoAeTgwpeJoqKgoS4JKAiiuCCB/Xq66pXPVOOS9JOTHdm6gMx7a/Sif3Jr77dXahbXV19gIDyF3sWSAgZHI+mSX5+Ptv6c1hbW2NbojMeIWRwCBkcQgaHkMEhZHB4LcNm0EGnY48CM9ys/jvhhQw3zAU6lFj0MLke8PAgPb448Y/599PhWYZ7AdN2QG8axadkViv+im/0FxsMcrfwHeM2o0BXALPZ8GPMYCMjmsajDPfCNCQX+JAqm+Bwp+Az6RTysH4E7E0wfj9mO5qmM+CSxlwmPWD5F1pvpl8L0GQXjPI3X2JhxR/o/y4FUZic+kH6aYfTRcuaxaOM/w8EcBw8/VpthhJY8BFWuTMCHM+dUfwZpMvtTUYpIRgkE37KAPeBg20FLl5Mk2R8+uaShFhQIk+JFCe+fC2WPJmgl3qD1FOmpWnB9ghUxC28uIV/HiGDQ8jgEDI4hAwOIYNDyOAQMjiEDA4hg0PI4BAyOIQMDiGDQ8jgEDI4Ak5GVVUV2/I9ASGDrEZ1dHSgrKwMt7e39Lmzs5ON+g5Ny7i5uUFaWho98NjYWCpBfsTExCAsLAyTk5NUkC/Q5Bro3d0dampq6AFnZGQgKCiIjTzl8PAQFxcXuL6+xtzcHKt6j2bXQOXpQL6UoqIiZGVlvSqCkJCQgLy8PPr61NRUrKys4PLyko0qQzOdER8fT8MxKioK4eHhrKqcq6srLC4u0q4iU8gTfGeoKoP8IQsLC9je3qY54EuIFOnYkJOT82rYqj5NngtGXxMZGak4aP3eGV1dXTg+PvYYjL5GDtru7m5ER0ezqoqdQTpiYGAADocDR0dHrPr+HBwcYH19Hefn58jMzGTVp/h9mlRWVsJgMCAxMRHt7e2s+n6QzyBnnLq6OtTW1rLq86iSGWR6kLMG6ZLl5WXYbDYadr5ic3MTVqsVS0tL6O/vp58VHBzMRl9G9euMiooKVFdX005pbm7G/f09G1EO2Ze8BwlP8p7kvZWgugyZ9PR0jIyM4OzsDENDQzTwvEXe5/T0FMPDw8jOzmYjytCMDJnc3Fy0tbXB5XJhfHycht9LkLGpqSk6LVpbW+m+v4LmZMh4ClolwegtmpVBeC5o3xKM3qJpGTxy0LrdbsXB6C1+lzE/P8+2/M/JyQmMRiP77Sl+lREREUGDcXBwEFtbW/SK0B84nU7MzMzQsw3JmJdQZZqQNYfGxkZ6XdDS0sKq7wP5nPr6eoyNjcFkMrHq86iWGXFxcfQUur+/j93dXczOztIVLl9gt9tp2O7t7dGbM7JWQu5cPaF6gIaEhNBbedLG5JubmJh481UokdnQ0IDCwkKMjo4qXjRWXQbPzs4O+vr6EBoaip6eHlb1DAnG3t5eehlO7oxLS0vZiDI0JYOQlJREl/82NjY8Bi0fjOT15eXlbORtaE4Gz2tBqyQYvUXTMgg/By0RozQYvUX877jaC8Ja5VFn/OmIzuAQMr4D/Ae04/hQx9MCLwAAAABJRU5ErkJggg=="},{"id":"fc","n":"Flex Conn","group":"Caps","icon":"Flex Conn - Junior","vars":[],"dims":[{"id":"A","l":"A) Size","v":0,"sel":["3x3x3","4x4x4","Junior"]},{"id":"B","l":"B) Width","v":12},{"id":"C","l":"C) Depth","v":8},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]}],"iconData":"data:image/png;base64,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"},{"id":"stap","n":"Straight Tap","group":"Taps","icon":"Straight Tap","vars":[],"dims":[{"id":"A","l":"A) Width","v":16},{"id":"B","l":"B) Depth","v":16},{"id":"C","l":"C) Length","v":6},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["F1","TAP"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"s2r","n":"Sq to Round","group":"Misc","icon":"Square to Round - 2pc","vars":[],"dims":[{"id":"A","l":"A) Width","v":12},{"id":"B","l":"B) Depth","v":12},{"id":"C","l":"C) Diameter","v":10},{"id":"D","l":"D) Length","v":12},{"id":"G","l":"G) Collar","v":4},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"rd","n":"Rect Damper","group":"Misc","icon":"Rect Damper Loose","vars":[],"dims":[{"id":"A","l":"A) Width","v":24},{"id":"B","l":"B) Depth (12in max)","v":12},{"id":"C","l":"C) Liner","v":0}],"iconData":"data:image/png;base64,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"}];
+const DB=[{"id":"e90","n":"90° Elbow","group":"Elbows","icon":"Radius Elbow 90o SR","vars":[{"id":"lr","l":"LR 1.5x"},{"id":"sr","l":"SR Half Width"}],"autoG":true,"dims":[{"id":"A","l":"A) Top Width","v":24},{"id":"B","l":"B) Depth","v":12},{"id":"D","l":"D) Angle","v":90},{"id":"E","l":"E) Bottom Extension","v":0},{"id":"F","l":"F) Top Extension","v":0},{"id":"G","l":"G) Inner Radius","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAXTSURBVHhe7ZpPKG1fFMe335MM5F8GBgolSQoTGbzCjDKgDMyQ18tAYajk35uYPcocA2WGMjBDKX9KmGCgnlcGMvCnSBH3dz7bXrfjvnuOez3vuuc6n9qdfdY599y7v2ettdfZ5yZtbGwElI/mP7P1sfDFsPEiTKqrq03v87C5uWl6vme8wFGM1dVV1dzcrOrq6tTExISxPjM+Pq7tHR0d6uTkxFiVurq6UiMjI7rNzMwYq3cIK8be3p4ebH5+vmpra1NDQ0NqeHhYH2tvb9f98vJy9evXL1VZWRkUpKKiQs3Pz6tAIKB6enpUb2+vtnsGcoY0wRo8ecTsBQI1NTW6WYPX9pWVFXMkELBECVgD1zaOcQ6EXiNesY8/rGcUFBTordxx3B/sHiBkZmZqT6KBfNaLhBWjqalJWZ6gCgsLVVJSkhaBQdfW1qqMjAzV19enBSKv7O/v69DhGCwsLOgtnyHMPIXdTcKxu7ur3X1qaiq4bwmibTRCRKCPzfIcfY6VP8yR+MU+fsc6Y3p6Wv3+/VvPHCRLvMAO+4REaFjgETRCCW+KdyKuMyzhlOURfwgBhEW4/ICNY14QIhRHMcgXTK9ZWVnGEh14x9raWrBPzcI2nnEUg7srjSRK0owGwozPAsmWxCozTrziGiYUW4TKz58/de5462DIH1yHWSqecRUjFMkDDApvoRFG4v54A/vYKckFcg42yT30paK1H+M6hCffQ+6JdQXrKgbPFwyOEKG8loSJl3CnLy8vdQgwCLZyHsfwqmghlLiWNL4nlriKQeFF4URRZf9hJEaSK0lRIIQQRPLEW8Dj+D5uAM88UsDFClcx8AR+EO4vYrCPONx563lE28KBMJGABwh8H/tcF1HsYseCV3MGP5CBkwPEfeH6+jqYF7CRJCnV5fHd7a4y0MXFRb00ILkDuA42yUVcL5Z8+fbtW/DX5OXlmd4zuDxi2B/McOWzszO1vLys+7m5ubpyLSkp0Y2Kjs90dXXpRFhfX68/R5/ryVbCCjHkPPZJpHNzc9o2Njamr/UvOT09NT1/2c9f9nPCUQxcmRlDGklU7OH6iYCjGEyf1AtMrzSJXeySRO39RMA1TLjzJDgafSeYdlkctpfrJEJmFgoxqTw5LjNQaF8WjD4SVzGYIgkRt7KYqRDvYHGYc2VGoE+FinfRl6kWYUUcex9BY11kheIqBuFBjUGR5QSr5wyEgSEEd5k8Qi2BncZ12EotggAyXdv7TKcfiasY5AnCw15nhBJuAHiKU33A9RBAPIKteIRbKMYCVzGiQfIFIlCMsVCMp9BYPhRxGDCJF+9hOZE+YuBhH+0ZjgvC1qEXzXL1oN0KnWBfGgvAsmhs5Qp9vjU43Xi3gg1kgZnzpU+T9y2xxj7+qCvQ0BAQdw/n4uItoWHGZ/AC7Pb+R2CvQP1y3C/Hw+OLYSPuwqS0tFRVVVWZvWfS09NVdna27lPPvCdxnTNaWlpUd3e32fuTxsZGvWUd4j2mYk/njKWlJd0mJyd1PbO1tWWO/D2ezRlfv37Vz0yIgjfJFP83eD6BdnZ2qu/fv+ulyNHRUWN9Gwkxm6SkpOi12JycHJ1gj46OzJHoSKiplZmISpgEfHNzY6yRk1BiCAMDA+rHjx/q/PzcWCIjIcWAhoYG1draqo6Pj43ldRJWDBgcHNSzTaQktBhQXFysX0ZFQsKLQVItKyuLaH014cWA1NRUXwwhOTlZPT4+BhebnPgUYgCV6mv/BPo0YgAPdm5vAONOjIeHhzdVj5HAOqvbMkXcicFrytvbW11F0ngrFyvifkGYKpLf9Z6r58wsvOEDTy3u8C8eYp0E+K/xRALlPc3Ozo5aX183lr/j6enJ9F7imdmE9c7Dw0N1d3dnLG/H82LA7Oys6u/vN3vvj6fEgKKiInV/f2/23hfPicEq1sXFhdl7Xzz3rpVVcNYo0tLSjCV6Dg4O1Pb2tu77L55t+C+eHXjhGZ8d3zNs+GIEUep/L/JxnodQMe0AAAAASUVORK5CYII="},{"id":"e45","n":"45° Elbow","group":"Elbows","icon":"Radius Elbow 45o SR","vars":[{"id":"lr","l":"LR 1.5x"},{"id":"sr","l":"SR Half Width"}],"autoG":true,"dims":[{"id":"A","l":"A) Top Width","v":24},{"id":"B","l":"B) Depth","v":12},{"id":"D","l":"D) Angle","v":45},{"id":"E","l":"E) Bottom Extension","v":0},{"id":"F","l":"F) Top Extension","v":0},{"id":"G","l":"G) Inner Radius","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"ev","n":"Var Elbow","group":"Elbows","icon":"Radius Elbow Variable Degree","vars":[],"dims":[{"id":"A","l":"A) Top Width","v":24},{"id":"B","l":"B) Depth","v":12},{"id":"D","l":"D) Angle","v":90},{"id":"E","l":"E) Bottom Extension","v":0},{"id":"F","l":"F) Top Extension","v":0},{"id":"G","l":"G) Inner Radius","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAATUSURBVHhe7Zo7LHxPFMfH/98QhUclQtBReCYSKo+GRCSoJCRIFDokIlGhkyi8Og2ikWjodB4N3ZIodEgUOlQSkfjv5/xnbsb+7t2Hx7rrN59kcs+cvXt353vPnDm7d7JOT0/flEP4Rx8dUZwYFu+mSVNTk7b+Hs7OzrTlIuMdTgwLXzGOj4+99hFubm6892L39vbKMez4itHa2uq1rKwsNTk5qV9Jjs3NTXkvPD4+qr29PXV+fi79MBM4TWZnZ9Xb25taWlpSy8vLHx5MXV2dXKenp0d7wkvSOSM/P1+ODIpooRUUFHjhTzTQxz8/Py8+ODo6Eh9HwJ6bmxPbfo3rVFRUyOeUl5eriYkJOSedBIqxtbUlg2OKjI+PyxcEooQ7/fDwIFOAQXA05/EaUZUqTCWuZRqfk24CxWhpaVFlZWVqeHj43RcjMba1tUlSNDCFEMTkiY9AxPF53ID6+noRJ90EikEk8IUIfyMGfcThzh8eHorPD4RJBiLAwOfR57qIYoudLuLmDL4gAycHmPCFp6cnLy/gI0nm5eWJj+kV764y0P39fbWysuLlDuA6+Ewu4nrp5t/R0VHvG5WUlGjr/+UVMRiogVC+v79XBwcHYhcVFUkJX1lZKY3SlveMjY1JIuzs7JT3YXM9czTTCjHMefRJpDs7O+JbWFiQa303d3d32nK/TdxvkyB8xSCUWTFMI4kav5/9W/AVg+WTeoHllWbmLn6TRG37txA4TbjzJDgadhAsuyMjI+/KdRIhKwuFmKk8ed2sQLE25yW7HH8ngWKwRDJF4pXFLIVEx/X1tZxrVgRsKlSiC9sstQhrxLFtBP2JIiuWQDGYHtQYFFlBDA0NyUAYGEJwl8kj1BL4aVyHo6lFEMAs17bNcvrTBIpBnmB62HVGLH4DIFKC6gOuhwAmIjiaiIg3FdNFoBipYPIFIlCMXVxcSKTQbm9vPXEYMImX6KmtrRUbMYiwMESGougyzRB1v2vRUPf80anj2aZFw/9tY2ND/NFcIedHByctOmjxQSQS8c43Ni2ac+T1n8Aef0oVaOwUMOHuF+ImWmKnGe8hCvDb9k9hV6CuHHfluD9ODAsnhoUTw8KJYeHEsHBiWDgxLJwYFr9CjNfXV1VVVfXpR5K/Qgz+c1lcXFQNDQ1qYGBAe1Mno8UgIgYHB0WM7OxsVVxcrPr7+9Xa2po+IzUyWozq6moZvE1OTo483Ir1J0PGisGfyEQAERELjycbGxtT/vc+48QwybKrq0t7/OGftPb2dvX8/Kw9ick4MUyyTIb19XU1MzOje4nJGDFik2WyvLy8aCsxGSOGX7JMho6ODlVTU6N78ckIMeIly0Tk5uZK/XF1daU9wYRajGSTZSLYBcTji0SEWoxUkmU8iI7V1VXdCyaUYnw0WcaDB92JntqFUoyPJsvPEjoxPpMsE9Hd3R23Kg2NGF+VLD9DaMT4qmQZDx6NTk9P696fhEaMqakpFYlEdO97YH/IycmJ7v1JaMTg4TPboba3t7Un/YQqgbIpl33j30lfX59s6vUjVGIA/2Oy4eW7yCgxfpJQitHc3Cyb9dNNKMXY3d1Vl5eXupc+Qrlzh41x/NIsLS3Vnq+lsLBQtmOC28Zk4bYxBeDEsHg3Tf52XGRYODE8lPoPnYYP9c1Cgb8AAAAASUVORK5CYII="},{"id":"rgn","n":"Gooseneck","group":"Elbows","icon":"Radius Gooseneck","vars":[],"dims":[{"id":"A","l":"A) Top Width","v":24},{"id":"B","l":"B) Depth","v":12},{"id":"D","l":"D) Angle","v":135},{"id":"E","l":"E) Bottom Extension","v":0},{"id":"F","l":"F) Top Extension","v":0},{"id":"G","l":"G) Inner Radius","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAUySURBVHhe7ZrLK31dGMeXa0JhIknhD3AbKEq5DJRSKAOl3IopMjBQLhMjuZSBicvAnDAQCiXMkIwMMFMUMpHI+36ed6/zLqdzHAfnnP3zW59a7b2etc8+e33Xs579rL131MHBwZuyCNHO1vIvVgyDd9OkpKTE2ft7ODw8dPasZ7wjoBi7u7tSLi8vHcvvxa8YCwsLKi0tTdXV1anu7m6Vm5urhoeHndbfiU8x7u/vVW9vryovL5f94+NjdXd3p3p6epwjfic+xaDziGB2PjU1VQrQVllZqaKioqSwjw20R2FnSx12dnaknpOTI+fRdv4Lr9PniqT3+fUMEy58ZGREiq4fHR2Jt1DY153Ao1pbW9Xb25saGhpS7e3tcj7EQARiD/W2tjY5nvaCggI5fn5+Xv4DgSKBTzG0B5hsb297Ory8vKwKCws93sI+HaDDdLS+vl6Oww60YUM4Rr+hocHTYbYnJyfiXVNTU2KLVLD+UAw6B4xiRUWF7AOu/vDw4NT+g99gB2/PAoShk4h6cXEhgmiITXjRxMSEtGsRw02ss30HF8MFMlJ0mo5ye9UgDiOJS+u2paUlEYPfYdfznymAkAh7dXUlxxA7NNyt8Az+BxHxHlP4cOLTM4CLZ7QYRUYrOztb5jRwsXSeWEEb+3pqMIUQhFFmq72LjnIs50QgjgPiDzGGc3OeSGLTcZuO+8avGEwFbnsm2HR+ECz8jjjjZvyKQVCkA3rOw3fWKPzOPJcb+XCaEDS9vcMEsUiyuHuYIrGPjbbJyUnH+j8EUx1A3cSHYnALTUlJ8Zkik6pTaOcuUVRUJJ0kiSK95k5Dm85ZNLQzXXyJFGkCBlAumuKdSOEVJE50jK0WAjsiMPKIqNNuDcdza3XjlAkoBkGT4r1iJUnSeQP5ATmFFuSjDJJjOJ8bCSgG4Bnec5zRp1OMMIV2Ei9sZqD19iiSMeLQHxczNKTQ3p7BdKBDxAeKHm2OYxroZTmptykI7WScCIIXuYlvZ6C6Q95TA7ubp4TGzEBtOm7Tcd9YMQysGAZWDAMrhoEVw8CKYWDFMLBiGFgxDKwYBq5cm5hP1p6entT19bXs6zd2Gl9P4ILFdQs1vcTPysqS7drammwDUVtbK89Vzs7OVGxsrEpOTnZaPo+rxFhdXZXXi1BWVibbYHh5eZEOPT4+qr6+PpWenu60fA5XrFp5OlZVVaW2trZEhK8IAXgEv62pqVFNTU3yldFXiYgYXV1dEgcGBgbevY3/LoODg6q6ulpiy8bGhmP9PGEXgwtmJDMyMlRMTIxj/TmSkpLkkeTe3p5sgyHsYszOzqrMzEynFjqYgsSR09NTxxKYsIvBU/PFxUWnFlry8vLU+vq6DMBnCLsYcXFx4r7T09Pq+fnZsYaO4uJiebv3GSISQAHv6O/vd2qhhTtNfn6+U/NPxMRISEiQEVtZWXEsoYOgOjo6GvDFVcTE0IyPj6vm5mZJnkIJ2enY2JhT803ExYBwBtWPcNVCrbGxURKy+Ph49fr6KrfF29tbyRnA+/vSr8DizvwCwHULNQ0r1NLSUnk53dnZqTY3NyW2kKCBfpnd0dEhydtX2N/fVy0tLZ5FoSvWJr7QQZWROz8/l7RaCwHUKXNzcx4vCZbExES/8clVYmgCPadAEJb9MzMzjuVncKUYn+Ur05pPJfzlN3+0GHzrwQOeYOBhkPnpt8kfLcZPY8UwsGIYWDEMrBgGrnxvEgzR0dFBPxG/ubmRdB9cm45HAtem45HmnWf87VjPMLBieFDqH6ldqxG3UeY3AAAAAElFTkSuQmCC","autoG":true},{"id":"sqe","n":"Sq Elbow","group":"Elbows","icon":"Square Elbow","vars":[{"id":"vanes","l":"Turning Vanes"}],"dims":[{"id":"A","l":"A) Top Width","v":24},{"id":"B","l":"B) Depth","v":12},{"id":"C","l":"C) Btm Width","v":24},{"id":"D","l":"D) Top Throat","v":6},{"id":"E","l":"E) Btm Throat","v":6},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAPkSURBVHhe7Zo/MzRBEIfn3jeRIRNQSC5FdhlyAYmSoU6OTMZll+ET4BsIiRCRIZOhSiA7PsG9nn63r/q2btcWd3t39FM1tbPT+2fmN90zfUvh+vq6HhzhT3R0PnAxDE1hUiqVotrv4ebmJqqleMbl5WVYWloK8/Pzcjw9PY0sP5eWYiAEIgwODobd3d0wOzsb3t7eIuvPpWWYHBwchO3t7fD4+BgmJiakzfL09BROTk6isyBizc3NhePjYzlfW1uTY6VSadgQ+OrqStqHhobC6uqqHPE4hOY92Dc3N6Wd5/Me4NpW/WgHn4bJ4uKieMXMzExYX19vGjgdpP329jbU6/Wwt7cnAwXEUEHA2rivVqvJPVtbWyI4cEQ02i4uLkQI7kMUrqWN9+XhmS3FYBbu7u6kQwyamaZDwGARihml01nhGRTCLw6DRjQVDvG5jsJkIITaOkniAoogDBZR9vf35UiHmOGvuCxi4nHMdByeh0covINJYL06OjrKbc1KFKPVy+kwHSe2sSOQBfv7+7vUbbggoopJOHzG1NRUY52h4IW6DnWSxN1keHg4TE5OSmExJWSmp6elU4QJ7fGBYWPQ3MszFATkHrZoBjk+Pp4603gkAuBNWvIgNenSASGCdWP1CgZWKBTEnXX9wMWxc48NKb2HdupZQk3fz3s6hd1Nvp2BxsXoNzKJwawwUAXXZjZp56j119dXuS/LTPcimdJxtjXcU4suiLTb+sPDQ98KESdRDMD9yQE0uUqD9eE7pC2oeZEqxvPzs2yj8S3Ucn9/39h5SJCAgeE1hBmFOm3sEJwjXLzOM9LekwepYpAg4R02Z4jD7xcKiRnXMSCOrCek3xTseJbuCtiS6t0kVQzyBjqovyNaQVbJtsuWCeoBZI20a6KGSNRJqOygqWuIqCjdIlWMr8LgNRONw4AJPfU26ojHbqWCdotUMegovygpSaGi15ClahqtmSjth4eHco2m09hZJ2gntLTeC3nK342NjUYvRkdHo9p/7JapoUDnCQ21cU5ZWVmRcBoYGBAb156dnYmtWq2KHUZGRmRvx76zsyN1rueabvDy8hLV2pCB9juZkq7fiIthcDEMLobBxTC4GAYXw+BiGFwMg4thcDEMPfPbpFgs5vL3kfPz86ZPjJm+jufNwsJC47NhJymXy4lieJgYXAyDi2FwMQwuhsHFMLgYBhfD4GIYXAyDi2FwMQwuhsHFMLgYBhfD4GIYXAxDz38DXV5ejmrtIe2zX0//swr/CTQ2NhadtQf/BpoRF8PgYhh6fs346F901h764o9I3cIX0ARcDENTmPx23DMMLkaDEP4BKl9a1NCwI3gAAAAASUVORK5CYII="},{"id":"me","n":"Mitered Elbow","group":"Elbows","icon":"Mitered Elbow","vars":[],"dims":[{"id":"A","l":"A) Width","v":12},{"id":"B","l":"B) Depth","v":12},{"id":"C","l":"C) Btm Width","v":12},{"id":"D","l":"D) Top Throat","v":6},{"id":"E","l":"E) Btm Throat","v":6},{"id":"F","l":"F) Miter Angle","v":20},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAT3SURBVHhe7ZrPKz1fGMeP79fCQmFnIT8WdoQdpfAfUBbKArEVdnYoCzuUbFFWUn6sLBRKEQs/yk6hlKUfpSh1v/N6vue5nXs/c6+L687wmVed5jk/5txz3vOcZ86dmbyDg4OYiRD+sccIj0gMh4Rl0tjYaK2/h8PDQ2tlwTNOT0+t9fNJKcbi4qKZmJhImOz19bWUUaf5hoYGMzw8LPlcwZja2tqyfyFYJppcKisrWT6xoaEhWxITmzLqlOnp6djJyYnYHFtbW+P572JnZ0fGwfGruPNP6Rlc9aKiIrOxsWFLjNnb25My6pTHx0fz8PAg9uzsrNnd3ZUjHqTt1tfXJZ/saZqnvXobfen5HF3om/KlpSVbkl18xdDJ4f5MSBMD1yWhEx0fH5dBgid0/Kg2QnR0dJj7+3vjeYwsK/dc3H1tbS0uEvmFhQU5f2xszPT29ko5/VBHP9p31nHdRHHdsKKiQpaCN0Cxk10U2xu02Ml10NLSIkvHEyzmTSihPXZPT4/YoOfPzMxIe08IyQP9aFu/3/ks7vzT3k2Ki4tNe3u7XHmujDcp48ULqVPveQ/aXV1dyVX2RDXepOJ9gGsreAbtOY/2cHZ25ts2m/iKoW5fX18vAhA3iBcIowPKNJLTvqqqSvrUpK6fDOKDLj1NUFdXF49fmf72R0nrGYAAwBVGGCCI+kE9dcQIBAAmxhUmT7zIy8uTcj8Q37tjyfnEh5KSEjkfiFWIQD8qhsaebJHRDlR/nMG+B6LRHo9w3Zoy6uhDPSAV2gft3N/UydMv9ZmM5z3cHWi0Hc9kO85aJU5o0qtCuZ/9G0gpBmuWGKBJN0WU+9m/gbQBlNubdyuWpIEsFV/1EOJE0KQV4+bmRpaIBlA/uP8T9YnyfX19UsbE8BruHCRsytirkEe4ZJs+0v1OLkgrhrfDE+9ItxS4bZLYUNGOCXEknrB1JlGPZ+mtmbpUdpCkFYPNEQP0tse25E/Yh7i3QPUAdo6Uk/RWiM3myZ00ti4RFSUo0orxWZg8/2b9YMIsPfU2bMTz/vdkZd/wFdKKwUD1r3eqpaJtRkZG5KozWTwKT9C/4bTRLTj1xAnKWVpqvxegc8G/AwMD8VGUlZVZ63/cHaQuBQbv/kchT+rq6pLlVFBQIHW03drakrqpqSmph9LSUtnoUD86Oio27WkTBLe3t9aKdqDZfSD8m4jEcIjEcIjEcIjEcIjEcIjEcIjEcIjEcIjEcIjEcIjEcIjEcMjpv9YwPPTNz883hYWFNhfgS6T+/v74a8eg2N7eTnjsGJgYq6ur5u7uztTW1tqS3MMTtVRi5DRmdHZ2ymO/4+NjWxIuch5Aq6ur5dVBGMm5GDwjnZ+fz/kXgpkQ2K2VYMoLpjARmBiDg4PyeiFMBCYG7O/vf9tnjJ8hUDF4T8OLp7AQqBhAIO3u7jZvb2+2JDgCFwMuLi4SNj9BEQoxeHX58vJiLi8vbUkwhEIMmJycNHNzczYXDKERA/g0YXl52eZyT6jE4G380dGReX19tSW5JVRiwPn5uew/giB0YgB7Dz528UupvgjKBqH9PoOPXJJ5enoym5ubprm52ZZ8nNA8z/gIxI/kVF5ebmu/h9CKEQSRGA4/6psugmdNTY3NfY6mpiazsrJicz/4my6+YSeIfiU9Pz/b3v7kR3nGd/BjPeO7SfCMv53IMxwiMeIY8x/uMIruF+BDTgAAAABJRU5ErkJggg=="},{"id":"st","n":"Straight","group":"Straight","icon":"Straight Duct","vars":[],"dims":[{"id":"A","l":"A) Width","v":16},{"id":"B","l":"B) Depth","v":16},{"id":"C","l":"C) Length","v":60},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"tr","n":"Transition","group":"Transitions","icon":"Transition","vars":[],"dims":[{"id":"A","l":"A) Btm Width","v":24},{"id":"B","l":"B) Btm Depth","v":12},{"id":"C","l":"C) Top Width","v":20},{"id":"Dp","l":"D) Top Depth","v":10},{"id":"E","l":"E) Total Length","v":16},{"id":"F","l":"F) Btm Straight","v":0},{"id":"G","l":"G) Top Straight","v":0},{"id":"H","l":"H) Left In","v":0,"sel":["Central","Flat Right","Flat Left"]},{"id":"I","l":"I) Top Down","v":0,"sel":["Central","Flat Top","Flat Bottom"]},{"id":"HV","l":"H) X Offset","v":0},{"id":"IV","l":"I) Z Offset","v":0},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAQiSURBVHhe7Zs9L2xBGMdnL4VGEAkKr4lCSYUKnwCNTiiUCj6BlWhUSEQoJOgUghKJlwoVgoSIt4ROgkSBRPbe/5OZvc/uPXusvefsTHh+ycmZZ+bM23+emT175pzI7u5uTAnEL30W/iBiMBKmSVNTkw79HPb29nTIUc84PDzUIW9ubm7U09OTtoLD0zO2t7fVzs4OhTktLS2qtbVVW+EQjUbV8PCwOjg4UPX19To2kaKiImrLysqKjsmctDwjFoup6+trahzOsLNBR0eHGhsbiwsxNzenBgYGKGwYGhpSvb292gqOnL6+vqgOq/LycjpXV1eTBxQWFqr5+Xk1Pj5OlSMe7jk6OkphpJ2dnVHDMUqLi4vkUUdHR3Evm5iYUK+vr+T6SEf+uro6SkP+1dVVyoO6ysrKqLzz83OqHx6K/Pv7++r5+ZmmB+rCNbgWbQC8bsShLIC8eXl5lLa2tkZxJo/h7u5OhzJcM+AtnZ2danl5OT530XB4z+PjI40kbIBRHBwcpBGG6yMfOgUbAhcUFNDBy0H5BpRpDgPymvIhBMpEvSi/oaGBygdoR1tbG8WjrbjOjy+LYVTHnEWDjAvDe1BxcoUYyaqqKmq0udY0Ftze3lIHvNYixOHAaEIgr6mBetvb2+mMOiAqxDL09PSQjXSk+S3OGf+aGFEAOldTU0NesLW1pWP/4rUQomNYGzBq6PBno+YHd33eLpBsGw/0IpCfVowIBOGekg5mOkFElJEKeE8q0Fnzy4eO4kheF9IlEDHMyMPd8WsAPrtXgOvCmzC1sNDBnb1AZ43neQmN6YP1Auk4MH1NG75KYHegaDAOuDzO6YyOyYNr/a6HsBhxiJ7s9gZ4GNK8pqQf/D5Dbsddvx23hYjBEDEYIgZDxGCIGAwRgyFiMEQMhojBEDEYIgZDxGCIGAwRgyFiMEQMhojBEDEYIgbDygNhPMp/eXnRVnbBtsLS0lL8abz1p+MQY319XVvZ5f39XV1dXanKykqyrYuBXfWRkZH/2lLMlIWFhfimNbC+VdDY2KguLi605Q6ygDKsiTE9Pa0eHh60lR0mJycTpkgy4hmMHyPG29ub6urq0pY31sTAbv3U1JS2wufj4yP+LlkqZJowrIqBl0+Oj4+1FS6bm5tuewbEODk50Va4OC+Ga1gXo7i4WIfCY2Njw/ctP4N1MVx6dUqmCcO6GFhE+/v7tRUOpaWlOuSPeAbj24txeXmpamtrteWPE2LgYc/p6am2gmVmZibtaeiEGBUVFfRHyjZOiBGJREL50gl/zvLz87X1OU6IgY9v7u/vtRUceLTo9clHKr79AvoVnHmRHtsHzc3N2gqGkpIS1d3drXJzc3XMvzj5VUEYG0uYfrOzsyk/ywBOimEL6/smriJiMBKmyU9HPIMhYsRR6jeswf/jY3D/EQAAAABJRU5ErkJggg=="},{"id":"ro","n":"Rad Offset","group":"Offsets","icon":"Radius Offset","vars":[],"dims":[{"id":"A","l":"A) Btm Width","v":24},{"id":"B","l":"B) Btm Depth","v":16},{"id":"C","l":"C) Top Width","v":16},{"id":"Dp","l":"D) Top Depth","v":8},{"id":"E","l":"E) Total Length","v":32},{"id":"F","l":"F) Btm Straight","v":0},{"id":"G","l":"G) Top Straight","v":0},{"id":"H","l":"H) Left In (Offset)","v":16},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAYSSURBVHhe7ZtPSFRBHMfHLmIIpYe6SP45dfHfrUNiCoKeyujmwX9Et7RDlyBU1ENgpAiKCJZ48ZZCF7uoB7EQLaJDIKgdu5RGgQfx9T7j/LZx3be7b1fXt/U+MLw3v3mOO9/5zW9+81ZzVldXHRWiuWCuIS6hGBbHlsmNGzfM3f/Du3fvzF0GPePjx4/mLrh4itHX13es7OzsmJbkePXqlaqrq9P3S0tLqrq6WtuCjKcYvb29anFxUTmOo16/fq0Hs7u7a1oTg3iIAFVVVaqnp0fduXNH14NK3GVy69YtLcrw8LAWQlx9bm4u4jEjIyPaBjxDHfvy8rKxHtlzcnIiYtIuQiGa7XnT09ORvvk9mSSuGF+/ftUf7tGjR+rSpUt6hgFR8JgfP36o7u7uyMCam5vVixcvdBtFYKCIKgPm3hZD2lhGbW1t+ndRLl++rJ/JFHHFYJnw4YqLi7UA8uH48MQDBi/QzgDxItrxKr9I/0wCyzKVPtIhrhgIwUzbLs8MlpaW6hiAWIIsgXRmk5jy8uVL9eHDBy0EgmSSuGIAywDPaG9v13XWMYLgBbQJIoIsBVvAWIh4dswBJoC+ESXT23FCMQDXlyUgcYNZk92BNuy1tbVaNO4R0Iuuri4tAh5GbBAQGhtLkDh1+/Zt05IZUspAmX0Krsy1pKTEtPwVRvBaNhKDKHiJ9CF9U7f7PSvsDDRMx/2k46x9iqxxG2ZQ2rkXxEbJKvAMKTZuRHdcF3bcNe246x/vcdygZlodx80xdDttbqxw3Dig7e4uo5/FVllZqZ/zCz/jLreUftYv9vg9xWCgbgAzNcdxt1g9SEQCd1vVda42iEBJB6++zwJ7/DHF8Pow2Jh5abcLIIJt41lwA632MDyFIrjbaORZN+g629vb2m73QTlL7PEntbXaEBvYRVxBdJ2r26e+ZydxBdEFm6TdFFJtdhDJHahTSLBI610h9PMQq+9M4FsMv9sdwiEOqTu5CQcwQCC2VfIJ2jjI2UH4PIgphr3nC3Kfyt7PwPEAkihmH++gH8QgrafwmoCk7jzxFIMskVmT4zSz5653nXUiDKdZkCM34PYcsijYEAHINvf29lRBQYGugyRsbL94BVfEscFGn5nCc5kwSxzSmFHWbmtra8S1gXSbGeVqr2ueo4iN/IR4wLP0gweQoUrckTbihkAbfdCeyfNJmIGexwvhbCAUwyIUwyIUwyIUwyIUwyIUwyIUwyIUwyIUwyLr0/FUTtH2afyfejt+9epV1dDQYGpHcAr24suXL2ptbc3U/iExfv/+rerr6yOvEJKBU/PExISp/UMHtZaWFl9CJCJrxTg4OFD5+fmmdjpkrRi/fv1SZWVlpnY6ZK0YRUVFOsYdHh76eoOel5dn7k6SdWL8/PlTDQ0NqdnZ2YgIXEUUP8JEk1VifP78WQ0MDKjc3Fxdjx681BEmFryY7uzsNLWTZI0YCPHkyRNVU1OjEy0RIVoQIXr5EGOgvLxcX2ORFWKwNGZmZtT9+/eN5ThegmATL9na2lLj4+P63ovAi0FS9PDhQ+0R0ZmlLYAIEksUBNnc3DzxvUw0gRYDj3j+/Lm6d++esbgf+MLxj5yMIP39/WpycjJ7xSBGDA4O6r8Rsz2CgcbzELAF2d/fV3fv3tX3iQisGO6ZSVVUVOj7eAcvwUuQjo4O9fjxY2ONT2DFGB0dPfbdLMvDFiWWQNGCvH37Vn369MnUEhM4MXDrBw8eqGfPnhnLXxDAjhlegmCfn59XTU1N6tq1a6YlMYEUg3cUMvBYA04kyPr6unr69KlqbGw0luQInBhkiNevXze1o8FKsbGFkitCEnR5x+HHI4TAibGwsKAKCwtN7QgvQWzb9+/f9d+KkJfcvHlT2/wSKDGmpqbU2NiYqZ2EgccKpJSNjQ315s0bY02NQIlBknXlyhVT8yZaFLbP6D/IT4VAicHbKz8gBsnZ+/fvjSU9AiXGysqKuUsedo5kvCkZAhdA/fLt2zd18eJFU0uPwIkhAdEumSJQ35ukMnD+Y4n/XkqVwH5vIocrPyUdIaLJ+phxmhxbJv87oWdYhGJEUOoP78zdauR4gQEAAAAASUVORK5CYII="},{"id":"reo","n":"Rect Offset","group":"Offsets","icon":"Rect Offset","vars":[],"dims":[{"id":"A","l":"A) Width","v":12},{"id":"B","l":"B) Depth","v":12},{"id":"C","l":"C) Total Length","v":40},{"id":"D","l":"D) Left Extension","v":4},{"id":"E","l":"E) Right Extension","v":4},{"id":"F","l":"F) Offset Width","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"sqt","n":"Sq Tee","group":"Tees","icon":"Square Tee","vars":[],"dims":[{"id":"A","l":"A) Width","v":12},{"id":"B","l":"B) Depth","v":12},{"id":"C","l":"C) Left Throat","v":12},{"id":"D","l":"D) Right Throat","v":12},{"id":"E","l":"E) Left Arm Height","v":0,"sel":["Equal","Value"]},{"id":"EV","l":"E) Value","v":12},{"id":"F","l":"F) Right Arm Height","v":0,"sel":["Equal","Value"]},{"id":"FV","l":"F) Value","v":12},{"id":"G","l":"G) Btm Throat","v":20},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN3","l":"Connector 3","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAO+SURBVHhe7ZsxM2tBFMc3730A9ExojC5UdKRTmMEnwIyeVEp8AnyC0CkVGhUqOnRGgxmFwgw+QbzfeffkndzJTSKSvHs5v5mdvbube++e/57dPbk3yV1cXFSCI/yKcucPLoahZppMTU1FRz+Hy8vL6KiBZ5ydnYXFxcVQLBYlPzo6ilq+L3XFQAhE6OvrC5ubm2F6ejq8vb1Frd+XutNkd3c3lEqlcH9/H4aHh6XO8vDwEA4ODqJSELFmZmbC/v6+lJeXlyXf3t6utiHw+fm51Pf394elpSXJ8TiE5j60r62tST3X5z7AZ+v1oxM0nSYLCwviFRMTE2FlZaXGcDpI/dXVVahUKmFra0sMBcRQQcC2cd7r66ucs76+LoIDOaJRd3p6KkJwHqLwWeq4Xy88s64YjML19bV0CKMZaToEGItQjCidbhWuQWL6xcFoRFPhEJ/PkRgMhNC2bpK4gCIIxiLKzs6O5HSIEW7HZRETj2Ok43A9PELhHgwC61W5XO7ZmpUoRr2b02E6ztymHYEstL+/v8uxnS6IqGIyHZpRKBSq6wwJL9R1qJsk7iYDAwNhZGREEospU2Z8fFw6xTShPm4YbRjNuVxDQUDOYYvGyHw+33Ck8UgEwJs09YKGQZcahAjWjdUrMCyXy4k76/qBi9POOXZK6TnUc9zKVNP7c59uYXeTL0egcTGyRlMxGNHHx0c5tuDe8RFl9KhrZaTTSNM4g8UP14wnuygq1GdViDh1xcDlNeABcg2wvjOJW2sj2EVYK0jsKrrFklPWtqyJ92kxWCP29vYkKCK8ZstUo9laiRHwIoIlwmwVKgu0JQYQexA3EGTd3NxIHTmJMBrBgMU4K3xaDI032E41XCYphM7UE8Kz1hBXZIVPi8H3C2DkWRcIzVWg+fl58Qy8ha2ZKZKlneb36upqdZUbHByMjv6BoWyfarCWn5+fw+HhodSNjY2J0bOzs1ImlL69vZW6tD9KfHp6io46EIFmnZaegf5EXAyDi2FwMQwuhsHFMLgYBhfD4GIYXAyDi2FwMQyp+qI2Ojra9RdGd3d38pRO6eh7k04yNzcnL5q7yfHxcc3DKP/WmoCLYXAxDC6GwcUwuBgGF8PgYhhcDIOLYXAxDC6GwcUwuBgGF8PgYhhcDIOLYXAxDKl6Bqo/lVL4SeXQ0FBUao+Xl5ewsbERlf5i/9GQ2megdNIm/evWV0CI+HWT8GlicDEMqf61Hz+dnJycjErtcXJy0nBqpPYl0v/AXyIlUOMZPx33DIOLUSWED5o5Ds00uflnAAAAAElFTkSuQmCC"},{"id":"sp","n":"Sq Pants","group":"Tees","icon":"Square Pants","vars":[],"dims":[{"id":"A","l":"A) Btm Width","v":24},{"id":"B","l":"B) Btm Depth","v":16},{"id":"C","l":"C) Left Width","v":12},{"id":"D","l":"D) Right Width","v":12},{"id":"E","l":"E) Top Depth","v":10},{"id":"F","l":"F) Height","v":28},{"id":"G","l":"G) Throat Width","v":6},{"id":"BS","l":"Btm Straight","v":0},{"id":"TS","l":"Top Straight","v":0},{"id":"H","l":"H) Left In","v":0,"sel":["Central","Flat Right","Flat Left"]},{"id":"I","l":"I) Top Down","v":0,"sel":["Central","Flat Top","Flat Bottom"]},{"id":"HV","l":"H) X Offset","v":0},{"id":"IV","l":"I) Z Offset","v":0},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN3","l":"Connector 3","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"ec","n":"End Cap","group":"Caps","icon":"End Cap - TDF Flat","vars":[],"dims":[{"id":"A","l":"A) Width","v":12},{"id":"B","l":"B) Depth","v":12},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"bc","n":"Base Can","group":"Caps","icon":"1 pc Can","vars":[],"dims":[{"id":"A","l":"A) Width","v":16},{"id":"B","l":"B) Depth","v":24},{"id":"C","l":"C) Height","v":24},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAASOSURBVHhe7ZrJSyNLHMe/eQfXiyCKoAd3ReegoCLxD3A9eJCnKPjEw8SLjCAjiiN4eKAQxeTgMgEFUcHtoAeTgwpeJoqKgoS4JKAiiuCCB/Xq66pXPVOOS9JOTHdm6gMx7a/Sif3Jr77dXahbXV19gIDyF3sWSAgZHI+mSX5+Ptv6c1hbW2NbojMeIWRwCBkcQgaHkMEhZHB4LcNm0EGnY48CM9ys/jvhhQw3zAU6lFj0MLke8PAgPb448Y/599PhWYZ7AdN2QG8axadkViv+im/0FxsMcrfwHeM2o0BXALPZ8GPMYCMjmsajDPfCNCQX+JAqm+Bwp+Az6RTysH4E7E0wfj9mO5qmM+CSxlwmPWD5F1pvpl8L0GQXjPI3X2JhxR/o/y4FUZic+kH6aYfTRcuaxaOM/w8EcBw8/VpthhJY8BFWuTMCHM+dUfwZpMvtTUYpIRgkE37KAPeBg20FLl5Mk2R8+uaShFhQIk+JFCe+fC2WPJmgl3qD1FOmpWnB9ghUxC28uIV/HiGDQ8jgEDI4hAwOIYNDyOAQMjiEDA4hg0PI4BAyOIQMDiGDQ8jgEDI4Ak5GVVUV2/I9ASGDrEZ1dHSgrKwMt7e39Lmzs5ON+g5Ny7i5uUFaWho98NjYWCpBfsTExCAsLAyTk5NUkC/Q5Bro3d0dampq6AFnZGQgKCiIjTzl8PAQFxcXuL6+xtzcHKt6j2bXQOXpQL6UoqIiZGVlvSqCkJCQgLy8PPr61NRUrKys4PLyko0qQzOdER8fT8MxKioK4eHhrKqcq6srLC4u0q4iU8gTfGeoKoP8IQsLC9je3qY54EuIFOnYkJOT82rYqj5NngtGXxMZGak4aP3eGV1dXTg+PvYYjL5GDtru7m5ER0ezqoqdQTpiYGAADocDR0dHrPr+HBwcYH19Hefn58jMzGTVp/h9mlRWVsJgMCAxMRHt7e2s+n6QzyBnnLq6OtTW1rLq86iSGWR6kLMG6ZLl5WXYbDYadr5ic3MTVqsVS0tL6O/vp58VHBzMRl9G9euMiooKVFdX005pbm7G/f09G1EO2Ze8BwlP8p7kvZWgugyZ9PR0jIyM4OzsDENDQzTwvEXe5/T0FMPDw8jOzmYjytCMDJnc3Fy0tbXB5XJhfHycht9LkLGpqSk6LVpbW+m+v4LmZMh4ClolwegtmpVBeC5o3xKM3qJpGTxy0LrdbsXB6C1+lzE/P8+2/M/JyQmMRiP77Sl+lREREUGDcXBwEFtbW/SK0B84nU7MzMzQsw3JmJdQZZqQNYfGxkZ6XdDS0sKq7wP5nPr6eoyNjcFkMrHq86iWGXFxcfQUur+/j93dXczOztIVLl9gt9tp2O7t7dGbM7JWQu5cPaF6gIaEhNBbedLG5JubmJh481UokdnQ0IDCwkKMjo4qXjRWXQbPzs4O+vr6EBoaip6eHlb1DAnG3t5eehlO7oxLS0vZiDI0JYOQlJREl/82NjY8Bi0fjOT15eXlbORtaE4Gz2tBqyQYvUXTMgg/By0RozQYvUX877jaC8Ja5VFn/OmIzuAQMr4D/Ae04/hQx9MCLwAAAABJRU5ErkJggg=="},{"id":"fc","n":"Flex Conn","group":"Caps","icon":"Flex Conn - Junior","vars":[],"dims":[{"id":"A","l":"A) Size","v":0,"sel":["3x3x3","4x4x4","Junior"]},{"id":"B","l":"B) Width","v":12},{"id":"C","l":"C) Depth","v":8},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]}],"iconData":"data:image/png;base64,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"},{"id":"stap","n":"Straight Tap","group":"Taps","icon":"Straight Tap","vars":[],"dims":[{"id":"A","l":"A) Width","v":16},{"id":"B","l":"B) Depth","v":16},{"id":"C","l":"C) Length","v":6},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["F1","TAP"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"s2r","n":"Sq to Round","group":"Misc","icon":"Square to Round - 2pc","vars":[],"dims":[{"id":"A","l":"A) Width","v":12},{"id":"B","l":"B) Depth","v":12},{"id":"C","l":"C) Diameter","v":10},{"id":"D","l":"D) Length","v":12},{"id":"G","l":"G) Collar","v":4},{"id":"CN1","l":"Connector 1","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"CN2","l":"Connector 2","v":0,"sel":["S+D","TDC","F1","F1.5","F2","RAW"]},{"id":"LN","l":"Liner","v":5,"sel":["1/2\"","1\"","1.5\"","2\"","Elastomeric","None"]}],"iconData":"data:image/png;base64,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"},{"id":"rd","n":"Rect Damper","group":"Misc","icon":"Rect Damper Loose","vars":[],"dims":[{"id":"A","l":"A) Width","v":24},{"id":"B","l":"B) Depth (12in max)","v":12},{"id":"C","l":"C) Liner","v":0}],"iconData":"data:image/png;base64,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"}];
 
 // ── WEBGL SETUP ────────────────────────────────────────────────────
 const cv=document.getElementById('cv3d');
@@ -1063,71 +1063,187 @@ function buildFitting(id,variant,dv){
     const xL=-(hA+lC), xR=hA+lD;
     const yTop=as+lG;  // branch top = A + branch height
 
-    // ── LEFT ARM (x=xL..-hA, height=lEH) ──
+    // ── LEFT ARM (x=xL..-hA, height=lEH) — open end at x=xL ──
     qd(v,[xL,0,hB],[-hA,0,hB],[-hA,lEH,hB],[xL,lEH,hB]);       // front
     qd(v,[-hA,0,-hB],[xL,0,-hB],[xL,lEH,-hB],[-hA,lEH,-hB]);   // back
-    qd(v,[xL,0,-hB],[xL,0,hB],[xL,lEH,hB],[xL,lEH,-hB]);        // left end OPEN
     qd(v,[xL,0,hB],[xL,0,-hB],[-hA,0,-hB],[-hA,0,hB]);          // bottom
-    qd(v,[xL,lEH,-hB],[xL,lEH,hB],[-hA,lEH,hB],[-hA,lEH,-hB]); // top CLOSED
+    qd(v,[-hA,lEH,-hB],[-hA,lEH,hB],[xL,lEH,hB],[xL,lEH,-hB]); // top (closed — flat duct top)
     // bridge if arm shorter than center body
     if(lEH<as){
       qd(v,[-hA,lEH,-hB],[-hA,lEH,hB],[-hA,as,hB],[-hA,as,-hB]);
     }
 
-    // ── CENTER BODY + BRANCH (x=-hA..+hA, full height) ──
+    // ── CENTER BODY + BRANCH (x=-hA..+hA) — open at top (y=yTop) ──
     qd(v,[-hA,0,hB],[hA,0,hB],[hA,yTop,hB],[-hA,yTop,hB]);       // front
     qd(v,[hA,0,-hB],[-hA,0,-hB],[-hA,yTop,-hB],[hA,yTop,-hB]);  // back
-    qd(v,[-hA,0,-hB],[-hA,0,hB],[-hA,yTop,hB],[-hA,yTop,-hB]);  // left wall
-    qd(v,[hA,0,hB],[hA,0,-hB],[hA,yTop,-hB],[hA,yTop,hB]);       // right wall
     qd(v,[-hA,0,-hB],[hA,0,-hB],[hA,0,hB],[-hA,0,hB]);           // bottom
+    // Left wall: only above the arm opening (from y=lEH to y=yTop) so air flows through
+    if(lEH<yTop){
+      qd(v,[-hA,lEH,-hB],[-hA,lEH,hB],[-hA,yTop,hB],[-hA,yTop,-hB]);
+    }
+    // Right wall: only above the arm opening (from y=lFH to y=yTop)
+    if(lFH<yTop){
+      qd(v,[hA,lFH,hB],[hA,lFH,-hB],[hA,yTop,-hB],[hA,yTop,hB]);
+    }
 
-    // ── RIGHT ARM (x=+hA..xR, height=lFH) ──
+    // ── RIGHT ARM (x=+hA..xR, height=lFH) — open end at x=xR ──
     qd(v,[hA,0,hB],[xR,0,hB],[xR,lFH,hB],[hA,lFH,hB]);          // front
     qd(v,[xR,0,-hB],[hA,0,-hB],[hA,lFH,-hB],[xR,lFH,-hB]);      // back
-    qd(v,[xR,0,-hB],[xR,0,hB],[xR,lFH,hB],[xR,lFH,-hB]);        // right end OPEN
     qd(v,[hA,0,-hB],[xR,0,-hB],[xR,0,hB],[hA,0,hB]);            // bottom
-    qd(v,[hA,lFH,-hB],[xR,lFH,-hB],[xR,lFH,hB],[hA,lFH,hB]);   // top CLOSED
+    qd(v,[hA,lFH,-hB],[xR,lFH,-hB],[xR,lFH,hB],[hA,lFH,hB]);   // top (closed)
     // bridge if arm shorter than center body
     if(lFH<as){
       qd(v,[hA,lFH,-hB],[hA,lFH,hB],[hA,as,hB],[hA,as,-hB]);
     }
   }
     else if(id==='sp'){
-    // A=Btm Width, B=Btm Depth, C=Left Leg Width, D=Right Leg Width, F=Height, G=Throat
-    const aS=A*S,bS=B*S,fS=F*S,gS=G*S,iS=3*S;
+    // Square Pants: 1 inlet (bottom, A×B) → 2 outlets (left leg C×E, right leg D×E)
+    // F = total height. G = throat gap between the two legs at the top.
+    // BS = bottom straight extension (carved from F), TS = top straight extension (carved from F).
+    // H/I/HV/IV control sideways alignment of top legs relative to bottom inlet.
+    const aS=A*S, bS=B*S, fS=F*S;
     const cS=(dv.C||12)*S, dS=(dv.D||12)*S;
-    const taper=2*S;
-    const xBL=-aS/2,xBR=aS/2;
-    const xTL=-aS/2+taper,xTR=aS/2-taper;
-    const xSL=xTL+cS, xSR=xTR-dS;
-    const xVL=-gS/2, xVR=gS/2;
-    const yB=0,yT=fS,yC=fS-taper,yV=fS-fS*0.38;
-    const zF=-bS/2,zBk=bS/2;
-    // 11-point profile
-    const profile=[[xBL,yB],[xBR,yB],[xTR,yC],[xTR,yT],[xSR,yT],[xVR,yT],[0,yV],[xVL,yT],[xSL,yT],[xTL,yT],[xTL,yC]];
-    // Open: bottom(0), flat top right of V(4), V right wall(5), V left wall(6), flat top left of V(7), left leg top(8)... 
-    // Actually: only open the two leg tops (3→4 and 8→9) and bottom (0)
-    // The V pocket walls (4→5→6→7→8) are CLOSED side walls
-    // The flat horizontal tops between leg and V (4 and 7) are OPEN (no top cap)
-    const openE=new Set([0,3,4,7,8]);
-    const n2=profile.length;
-    const P=(i)=>[profile[i][0],profile[i][1]];
-    const f=(a,b,c,z,fw)=> fw ? tri(v,[P(a)[0],P(a)[1],z],[P(b)[0],P(b)[1],z],[P(c)[0],P(c)[1],z])
-                               : tri(v,[P(a)[0],P(a)[1],z],[P(c)[0],P(c)[1],z],[P(b)[0],P(b)[1],z]);
-    const drawFace=(z,fw)=>{
-      // Right half: fan from pt 1 (bottom-right)
-      f(1,2,3,z,fw); f(1,3,4,z,fw); f(1,4,5,z,fw); f(1,5,6,z,fw);
-      // Left half: fan from pt 0 (bottom-left)
-      f(0,6,7,z,fw); f(0,7,8,z,fw); f(0,8,9,z,fw); f(0,9,10,z,fw);
-      // Centre bottom strip between pt0 and pt1 up to V-tip pt6
-      f(0,1,6,z,fw);
-    };
-    drawFace(zF,true); drawFace(zBk,false);
-    for(let i=0;i<n2;i++){
-      if(openE.has(i))continue;
-      const[ax,ay]=profile[i],[bx,by]=profile[(i+1)%n2];
-      qd(v,[ax,ay,zF],[bx,by,zF],[bx,by,zBk],[ax,ay,zBk]);
+    const eS=(dv.E||10)*S;
+    const gS=(dv.G||6)*S;
+    let lBS=(dv.BS||0)*S;  // Btm straight
+    let lTS=(dv.TS||0)*S;  // Top straight
+    const minTaper = 2*S;
+    if(lBS + lTS > fS - minTaper){
+      const scl = (fS - minTaper)/(lBS + lTS);
+      lBS *= scl; lTS *= scl;
     }
+    const yBStop = lBS;           // top of bottom-straight (where taper starts)
+    const yTSbot = fS - lTS;      // bottom of top-straight  (where taper ends)
+    const yV = (yBStop + yTSbot) / 2;  // V-divider tip Y (middle of taper)
+
+    // ── Horizontal X offset for top legs (H mode + HV override) ──
+    // H mode: 0=Central (centered on inlet), 1=Flat Right (right wall vertical),
+    //         2=Flat Left (left wall vertical)
+    // HV explicit value overrides H mode when non-zero
+    const hMode = Math.round(dv.H||0);
+    const ivX = (dv.HV||0) * S;
+    // Full top extent (in X) = C + G + D
+    const topX_w = cS + gS + dS;
+    let xCenterTop = 0;  // center X of the top legs block
+    if(Math.abs(ivX) > 0.0001){
+      xCenterTop = ivX;
+    } else if(hMode === 1){
+      // Flat Right: align right edge of top with right edge of bottom (aS/2)
+      xCenterTop = aS/2 - topX_w/2;
+    } else if(hMode === 2){
+      // Flat Left: align left edge of top with left edge of bottom (-aS/2)
+      xCenterTop = -aS/2 + topX_w/2;
+    }
+
+    // ── Depth Z offset for top legs (I mode + IV override) ──
+    const iMode = Math.round(dv.I||0);
+    const ivZ = (dv.IV||0) * S;
+    let zCenterTop = 0;
+    if(Math.abs(ivZ) > 0.0001){
+      zCenterTop = ivZ;
+    } else if(iMode === 1){
+      // Flat Top: align +Z edge of top with +Z edge of bottom
+      zCenterTop = bS/2 - eS/2;
+    } else if(iMode === 2){
+      // Flat Bottom: align -Z edge of top with -Z edge of bottom
+      zCenterTop = -bS/2 + eS/2;
+    }
+
+    // Bottom inlet face corners (at y=0)
+    const bBL=[-aS/2, 0, -bS/2], bBR=[ aS/2, 0, -bS/2];
+    const bTL=[-aS/2, 0,  bS/2], bTR=[ aS/2, 0,  bS/2];
+    // Top of bottom-straight (same A×B at y=yBStop)
+    const sBL=[-aS/2, yBStop, -bS/2], sBR=[ aS/2, yBStop, -bS/2];
+    const sTL=[-aS/2, yBStop,  bS/2], sTR=[ aS/2, yBStop,  bS/2];
+
+    // Leg X ranges at top (with offset)
+    const lxL = xCenterTop - topX_w/2;
+    const lxR = lxL + cS;
+    const rxL = xCenterTop + topX_w/2 - dS;
+    const rxR = xCenterTop + topX_w/2;
+    // Top Z range
+    const zT_front = zCenterTop - eS/2;
+    const zT_back  = zCenterTop + eS/2;
+
+    // Bottom of top-straight (legs at y=yTSbot, same shape as final leg tops)
+    const lBL_s=[lxL, yTSbot, zT_front], lBR_s=[lxR, yTSbot, zT_front];
+    const lTL_s=[lxL, yTSbot, zT_back],  lTR_s=[lxR, yTSbot, zT_back];
+    const rBL_s=[rxL, yTSbot, zT_front], rBR_s=[rxR, yTSbot, zT_front];
+    const rTL_s=[rxL, yTSbot, zT_back],  rTR_s=[rxR, yTSbot, zT_back];
+
+    // Top of top-straight (final outlets at y=fS)
+    const lBL=[lxL, fS, zT_front], lBR=[lxR, fS, zT_front];
+    const lTL=[lxL, fS, zT_back],  lTR=[lxR, fS, zT_back];
+    const rBL=[rxL, fS, zT_front], rBR=[rxR, fS, zT_front];
+    const rTL=[rxL, fS, zT_back],  rTR=[rxR, fS, zT_back];
+
+    // V-divider tip vertices (front and back)
+    const vTipF=[xCenterTop, yV, zT_front];
+    const vTipB=[xCenterTop, yV, zT_back];
+
+    // Bottom edge midpoints (used for tapered front/back faces)
+    const mbF=[0, yBStop, -bS/2];
+    const mbB=[0, yBStop,  bS/2];
+
+    function pushTri(p,q,r){ tri(v, p, q, r); }
+
+    // ── BOTTOM STRAIGHT WALLS (vertical, A×B from y=0 to y=yBStop) ──
+    if(lBS > 0.0001){
+      // Front wall (z=-bS/2)
+      qd(v, bBL, bBR, sBR, sBL);
+      // Back wall (z=+bS/2)
+      qd(v, bTR, bTL, sTL, sTR);
+      // Left wall (x=-aS/2)
+      qd(v, bTL, bBL, sBL, sTL);
+      // Right wall (x=+aS/2)
+      qd(v, bBR, bTR, sTR, sBR);
+    }
+
+    // ── TAPERED BODY (from sBL/sBR/sTL/sTR at y=yBStop to legs at y=yTSbot) ──
+    // FRONT face (left half): sBL → mbF (at yBStop) → vTipF → lBR_s → lBL_s
+    // But mbF is at z=-bS/2 (bottom front), vTipF at z=zT_front (top front) — interpolate? skip mid for simplicity
+    pushTri(sBL, [0, yBStop, -bS/2], vTipF);
+    pushTri(sBL, vTipF, lBR_s);
+    pushTri(sBL, lBR_s, lBL_s);
+
+    pushTri([0, yBStop, -bS/2], sBR, rBR_s);
+    pushTri([0, yBStop, -bS/2], rBR_s, rBL_s);
+    pushTri([0, yBStop, -bS/2], rBL_s, vTipF);
+
+    // BACK face (reversed winding)
+    pushTri(sTL, lTL_s, lTR_s);
+    pushTri(sTL, lTR_s, vTipB);
+    pushTri(sTL, vTipB, [0, yBStop, bS/2]);
+
+    pushTri(sTR, [0, yBStop, bS/2], vTipB);
+    pushTri(sTR, vTipB, rTL_s);
+    pushTri(sTR, rTL_s, rTR_s);
+
+    // LEFT OUTER WALL of taper (x = -aS/2 at bottom, lxL at top)
+    qd(v, sBL, sTL, lTL_s, lBL_s);
+    // RIGHT OUTER WALL of taper (x = +aS/2 at bottom, rxR at top)
+    qd(v, sTR, sBR, rBR_s, rTR_s);
+
+    // V WEDGE inner walls (the throat divider)
+    qd(v, lBR_s, vTipF, vTipB, lTR_s);
+    qd(v, vTipF, rBL_s, rTL_s, vTipB);
+
+    // ── TOP STRAIGHT (vertical legs from y=yTSbot to y=fS) ──
+    if(lTS > 0.0001){
+      // LEFT LEG walls
+      qd(v, lBL_s, lBR_s, lBR, lBL);    // front
+      qd(v, lTR_s, lTL_s, lTL, lTR);    // back
+      qd(v, lTL_s, lBL_s, lBL, lTL);    // left
+      qd(v, lBR_s, lTR_s, lTR, lBR);    // right
+      // RIGHT LEG walls
+      qd(v, rBL_s, rBR_s, rBR, rBL);    // front
+      qd(v, rTR_s, rTL_s, rTL, rTR);    // back
+      qd(v, rTL_s, rBL_s, rBL, rTL);    // left
+      qd(v, rBR_s, rTR_s, rTR, rBR);    // right
+    }
+    // Bottom face = open (inlet)
+    // Both leg tops = open (outlets)
+    // Throat top between legs = open
   }
   
   else if(id==='ec'){
@@ -1520,29 +1636,33 @@ function getFittingLabels(id,variant,dv){
   if(id==='sqe'||id==='me'){
     const dt=(dv.D||6)*S, de=(dv.E||6)*S, cw=(dv.C||A)*S, hb=bs/2;
     const xInlet=-(dt), yOutlet=-(de);
+    // For mitered elbow, the inlet face is angled — top of inlet is at xInletTop, bottom at xInlet
+    const mAngle = (id==='me') ? (dv.F||0) : 0;
+    const mRad = mAngle * Math.PI/180;
+    const xInletTop = xInlet + (-(as*Math.tan(mRad)));  // matches geometry's mOff
+    // Inlet midpoint for label placement (follows the slant)
+    const inMidX = (xInlet + xInletTop) / 2;
     return [
-      // ── INLET face (left, x=xInlet, y∈[0,as]): A=height in Y, B=depth in Z ──
-      // A on +Z edge of inlet face
-      DL('A: '+A+'"', xInlet,0,hb, xInlet,as,hb,
-         xInlet, as/2, hb+pad*1.5, RED),
-      // B on +Y edge of inlet face (top)
-      DL('B: '+B+'"', xInlet,as,-hb, xInlet,as,hb,
-         xInlet-pad*1.5, as, 0, GRN),
+      // ── INLET face — A dim follows the slanted edge (bottom→top of inlet) ──
+      DL('A: '+A+'"', xInlet,0,hb, xInletTop,as,hb,
+         inMidX, as/2, hb+pad*1.5, RED),
+      // B on top edge of inlet (at xInletTop, y=as)
+      DL('B: '+B+'"', xInletTop,as,-hb, xInletTop,as,hb,
+         xInletTop-pad*1.5, as, 0, GRN),
       // ── OUTLET face (bottom, y=yOutlet, x∈[0,cw]): C=width in X, B=depth in Z ──
-      // C on +Z edge of outlet face
       DL('C: '+(dv.C||A)+'"', 0,yOutlet,hb, cw,yOutlet,hb,
          cw/2, yOutlet, hb+pad*1.5, RED),
-      // B on +X edge of outlet face (right)
+      // B on right edge of outlet (at cw)
       DL('B: '+B+'"', cw,yOutlet,-hb, cw,yOutlet,hb,
          cw+pad*1.5, yOutlet, 0, GRN),
-      // ── D throat (top): inner horizontal segment at y=0, from xInlet to 0 ──
+      // ── D throat (top): inner horizontal segment at y=0, from xInlet to corner ──
       DL('D: '+(dv.D||6)+'"', xInlet,0,hb, 0,0,hb,
          xInlet/2, -pad*1.5, hb, YEL),
-      // ── E throat (btm): inner vertical segment at x=0, from 0 to yOutlet ──
+      // ── E throat (btm): inner vertical segment at x=0, from corner to yOutlet ──
       DL('E: '+(dv.E||6)+'"', 0,0,hb, 0,yOutlet,hb,
          -pad*1.5, yOutlet/2, hb, YEL),
       // Connector tags
-      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), xInlet-pad*3, as/2, 0, WHT),
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), inMidX-pad*3, as/2, 0, WHT),
       PT('C2: '+connTag(cn2Label,dv.C||A,B,cn2Flip), cw/2, yOutlet-pad*3, 0, WHT),
     ];
   }
@@ -1634,20 +1754,35 @@ function getFittingLabels(id,variant,dv){
 
   // ── RECT OFFSET ──────────────────────────────────────────────────────
   if(id==='reo'){
-    // Geometry: inlet centered at (0,0,0), outlet at (lC, 0, lF) — offset along Z (width)
+    // Geometry: inlet at x=0 centered (z=0), outlet at x=lC offset by lF in Z
     // Y = ±hB (depth = B), Z = ±hA (width = A)
     const lC=(dv.C||40)*S, lF=(dv.F||0)*S, hA=as/2, hB=bs/2;
     return [
-      // INLET (x=0): A=width spans z, B=depth spans y
-      DL('A: '+A+'"',  0,0,-hA, 0,0,hA,  -pad*2, hB+pad, 0, RED),  // width across Z
-      DL('B: '+B+'"',  0,-hB,0, 0,hB,0,  -pad*3, 0, hA+pad, GRN),  // depth across Y
-      // OUTLET (x=lC, offset by lF in Z): same A and B
-      DL('A: '+A+'"',  lC,0,-hA+lF, lC,0,hA+lF,  lC+pad*2, hB+pad, lF, RED),
-      DL('B: '+B+'"',  lC,-hB,lF, lC,hB,lF,  lC+pad*3, 0, hA+lF+pad, GRN),
-      // C: total face-to-face length along X
-      DL('C: '+(dv.C||40)+'"',  0,0,hA, lC,0,hA+lF,  lC/2, hB+pad*2, hA+lF/2, YEL),
-      // F: sideways offset between inlet and outlet centers (in Z direction)
-      DL('F: '+(dv.F||0)+'"',  lC,0,0, lC,0,lF,  lC+pad*3, -hB-pad, lF/2, BLU),
+      // ── INLET face (x=0) — A spans ±Z (width), B spans ±Y (depth) ──
+      // A dim on +Y edge of inlet face
+      DL('A: '+A+'"',  0,hB,-hA,  0,hB,hA,
+         0, hB+pad*1.5, 0, RED),
+      // B dim on +Z edge of inlet face
+      DL('B: '+B+'"',  0,-hB,hA,  0,hB,hA,
+         0, 0, hA+pad*1.5, GRN),
+      // ── OUTLET face (x=lC, shifted by lF in Z) — same A/B ──
+      // A dim on +Y edge of outlet face
+      DL('A: '+A+'"',  lC,hB,-hA+lF,  lC,hB,hA+lF,
+         lC, hB+pad*1.5, lF, RED),
+      // B dim on +Z edge of outlet face
+      DL('B: '+B+'"',  lC,-hB,hA+lF,  lC,hB,hA+lF,
+         lC, 0, hA+lF+pad*1.5, GRN),
+      // ── C: total length — top edge along flow direction ──
+      DL('C: '+(dv.C||40)+'"', 0,hB,hA, lC,hB,hA+lF,
+         lC/2, hB+pad*2.5, hA+lF/2, YEL),
+      // ── F: sideways offset — line at outlet showing centerline Z shift ──
+      // Matches transition HV style: spans the offset distance at outlet face, perpendicular to flow
+      // Drawn on the -A (-Z) edge of the outlet face (opposite from where A dim sits if it were on +Z)
+      // Y at vertical center of outlet
+      DL('F: '+(dv.F||0)+'"',
+        lC, 0, -hA,        // unshifted -Z corner (where -Z edge would be without offset)
+        lC, 0, -hA+lF,     // actual -Z corner after offset
+        lC, -hB-pad*1.5, -hA+lF/2, BLU),
       // Connector tags
       PT('C1: '+connTag(cn1Label,A,B,cn1Flip), -pad*3, 0, 0, WHT),
       PT('C2: '+connTag(cn2Label,A,B,cn2Flip), lC+pad*3, 0, lF, WHT),
@@ -1660,23 +1795,44 @@ function getFittingLabels(id,variant,dv){
     const lC=(dv.C||12)*S, lD=(dv.D||12)*S;
     const Gv=dv.G||20; const lG=Gv*S;
     const xL=-(hA+lC), xR=hA+lD;
-    const yArm=as;       // top of left/right arms
-    const yTop=as+lG;    // top of branch stem
+    const yArm=as;
+    const yTop=as+lG;
+    // Per-arm heights (E/F modes: 0=Equal to A, 1=Value)
+    const eMode=Math.round(dv.E||0);
+    const lEH=eMode===0?as:(dv.EV||12)*S;
+    const fMode=Math.round(dv.F||0);
+    const lFH=fMode===0?as:(dv.FV||12)*S;
+    const lEH_in = eMode===0 ? A : (dv.EV||12);
+    const lFH_in = fMode===0 ? A : (dv.FV||12);
     return [
-      // LEFT arm open end (x=xL): red=height(A), green=depth(B)
-      // Label pulled left and slightly down to avoid overlap
-      DL('A: '+A+'"',  xL,0,0,   xL,yArm,0,  xL-pad*3, yArm*0.7,0, RED),
-      DL('B: '+B+'"',  xL,yArm/2,-hB, xL,yArm/2,hB, xL-pad*3,yArm*0.3,0, GRN),
-      // RIGHT arm open end (x=xR): label pulled right and mid-height
-      DL('A: '+A+'"',  xR,0,0,   xR,yArm,0,  xR+pad*3, yArm*0.7,0, RED),
-      DL('B: '+B+'"',  xR,yArm/2,-hB, xR,yArm/2,hB, xR+pad*3,yArm*0.3,0, GRN),
-      // BRANCH top open end: label above, offset slightly right for A, left for B
-      DL('A: '+A+'"',  -hA,yTop,0, hA,yTop,0,  -hA*0.5,yTop+pad*3,0, RED),
-      DL('B: '+B+'"',  0,yTop,-hB, 0,yTop,hB,  hA+pad*3,yTop+pad,0, GRN),
-      // G: branch stem height
-      DL('G: '+Gv+'"',  hA+pad*0.5,yArm,0, hA+pad*0.5,yTop,0,  hA+pad*3,yArm+lG/2,0, YEL),
-      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), xL-pad*3, yArm/2, 0, WHT),
-      PT('C2: '+connTag(cn2Label,A,B,cn2Flip), xR+pad*3, yArm/2, 0, WHT),
+      // ── LEFT arm open end (x=xL) — A spans Y (height of LEFT arm), B spans Z ──
+      // A dim on +Z edge of left face
+      DL('A: '+lEH_in+'"', xL,0,hB, xL,lEH,hB,
+         xL, lEH/2, hB+pad*1.5, RED),
+      // B dim on +Y edge of left face (top of arm)
+      DL('B: '+B+'"', xL,lEH,-hB, xL,lEH,hB,
+         xL-pad*1.5, lEH, 0, GRN),
+      // ── RIGHT arm open end (x=xR) ──
+      DL('A: '+lFH_in+'"', xR,0,hB, xR,lFH,hB,
+         xR, lFH/2, hB+pad*1.5, RED),
+      DL('B: '+B+'"', xR,lFH,-hB, xR,lFH,hB,
+         xR+pad*1.5, lFH, 0, GRN),
+      // ── BRANCH top open end (y=yTop, x∈[-hA,+hA]) — A spans X, B spans Z ──
+      DL('A: '+A+'"', -hA,yTop,hB, hA,yTop,hB,
+         0, yTop+pad*1.5, hB, RED),
+      DL('B: '+B+'"', hA,yTop,-hB, hA,yTop,hB,
+         hA+pad*1.5, yTop, 0, GRN),
+      // ── C: left arm length (throat-side) — INNER top edge of left arm, y=lEH ──
+      DL('C: '+(dv.C||12)+'"', xL,lEH,0, -hA,lEH,0,
+         (xL-hA)/2, lEH+pad*0.5, 0, YEL),
+      // ── D: right arm length (throat-side) — INNER top edge of right arm, y=lFH ──
+      DL('D: '+(dv.D||12)+'"', hA,lFH,0, xR,lFH,0,
+         (hA+xR)/2, lFH+pad*0.5, 0, YEL),
+      // ── G: branch height — vertical line on +X side of branch stem from yArm to yTop ──
+      DL('G: '+Gv+'"', hA,yArm,hB, hA,yTop,hB,
+         hA+pad*1.5, yArm+lG/2, hB+pad, YEL),
+      PT('C1: '+connTag(cn1Label,lEH_in,B,cn1Flip), xL-pad*3, lEH/2, 0, WHT),
+      PT('C2: '+connTag(cn2Label,lFH_in,B,cn2Flip), xR+pad*3, lFH/2, 0, WHT),
       PT('C3: '+connTag(cn3Label,A,B,cn3Flip), 0, yTop+pad*3, 0, WHT),
     ];
   }
@@ -1685,27 +1841,90 @@ function getFittingLabels(id,variant,dv){
   if(id==='sp'){
     const aS=A*S, bS=B*S, fS=(dv.F||28)*S;
     const cS=(dv.C||12)*S, dS=(dv.D||12)*S, gS=(dv.G||6)*S;
-    const taper=2*S;
-    const xBL=-aS/2, xBR=aS/2;
-    const xTL=-aS/2+taper, xTR=aS/2-taper;
-    const xSL=xTL+cS, xSR=xTR-dS;
-    const zF=-bS/2, zBk=bS/2;
-    return [
-      // BOTTOM inlet: red=width(A), green=depth(B)
-      DL('A: '+A+'"', xBL,0,0, xBR,0,0, 0,-pad*2,0, RED),
-      DL('B: '+B+'"', 0,0,zF, 0,0,zBk, -aS/2-pad*2,0,0, GRN),
-      // LEFT leg top: red=leg width(C)
-      DL('C: '+(dv.C||12)+'"', xTL,fS,0, xSL,fS,0, xTL+cS/2,fS+pad*2,0, RED),
-      // RIGHT leg top: red=leg width(D)
-      DL('D: '+(dv.D||12)+'"', xSR,fS,0, xTR,fS,0, xSR+(xTR-xSR)/2,fS+pad*2,0, RED),
-      // F: total height
-      DL('F: '+(dv.F||28)+'"', xBR,0,0, xBR,fS,0, xBR+pad*2,fS/2,0, YEL),
-      // G: throat gap
-      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), xBL-pad*3, fS/2, 0, WHT),
-      PT('C2: '+connTag(cn2Label,A,B,cn2Flip), xBR+pad*3, fS/2, 0, WHT),
-      PT('C3: '+connTag(cn3Label,A,B,cn3Flip), 0, fS+pad*3, 0, WHT),
-      DL('G: '+(dv.G||6)+'"', -gS/2,fS*0.6,0, gS/2,fS*0.6,0, 0,fS*0.6+pad*2,0, BLU),
+    const eS=(dv.E||10)*S;
+    let lBS=(dv.BS||0)*S, lTS=(dv.TS||0)*S;
+    const minTaper = 2*S;
+    if(lBS + lTS > fS - minTaper){
+      const scl = (fS - minTaper)/(lBS + lTS);
+      lBS *= scl; lTS *= scl;
+    }
+    const yBStop = lBS;
+    const yTSbot = fS - lTS;
+    // Top offsets
+    const hMode = Math.round(dv.H||0);
+    const ivX = (dv.HV||0) * S;
+    const topX_w = cS + gS + dS;
+    let xCenterTop = 0;
+    if(Math.abs(ivX) > 0.0001){ xCenterTop = ivX; }
+    else if(hMode === 1){ xCenterTop = aS/2 - topX_w/2; }
+    else if(hMode === 2){ xCenterTop = -aS/2 + topX_w/2; }
+    const iMode = Math.round(dv.I||0);
+    const ivZ = (dv.IV||0) * S;
+    let zCenterTop = 0;
+    if(Math.abs(ivZ) > 0.0001){ zCenterTop = ivZ; }
+    else if(iMode === 1){ zCenterTop = bS/2 - eS/2; }
+    else if(iMode === 2){ zCenterTop = -bS/2 + eS/2; }
+    // Leg X ranges at top
+    const lxL = xCenterTop - topX_w/2;
+    const lxR = lxL + cS;
+    const rxL = xCenterTop + topX_w/2 - dS;
+    const rxR = xCenterTop + topX_w/2;
+    const heS = eS/2;
+    const zT_front = zCenterTop - heS;
+    const zT_back  = zCenterTop + heS;
+    const hbS = bS/2;
+    const labels = [
+      // ── BOTTOM inlet (A wide × B deep, at y=0) ──
+      DL('A: '+A+'"',   -aS/2, 0, hbS,   aS/2, 0, hbS,
+         0, -pad*1.5, hbS, RED),
+      DL('B: '+B+'"',    aS/2, 0, -hbS,  aS/2, 0, hbS,
+         aS/2+pad*1.5, 0, 0, GRN),
+      // ── LEFT leg top (C wide × E deep, at y=fS) ──
+      DL('C: '+(dv.C||12)+'"', lxL, fS, zT_back,  lxR, fS, zT_back,
+         (lxL+lxR)/2, fS+pad*1.5, zT_back, RED),
+      DL('E: '+(dv.E||10)+'"', lxL, fS, zT_front, lxL, fS, zT_back,
+         lxL-pad*1.5, fS, zCenterTop, GRN),
+      // ── RIGHT leg top (D wide × E deep, at y=fS) ──
+      DL('D: '+(dv.D||12)+'"', rxL, fS, zT_back,  rxR, fS, zT_back,
+         (rxL+rxR)/2, fS+pad*1.5, zT_back, RED),
+      DL('E: '+(dv.E||10)+'"', rxR, fS, zT_front, rxR, fS, zT_back,
+         rxR+pad*1.5, fS, zCenterTop, GRN),
+      // ── F: total height — vertical line on +X side ──
+      DL('F: '+(dv.F||28)+'"', aS/2, 0, hbS, rxR, fS, zT_back,
+         aS/2+pad*2, fS/2, hbS, YEL),
+      // ── G: throat gap — horizontal line between the two legs at y=fS ──
+      DL('G: '+(dv.G||6)+'"', lxR, fS, zCenterTop,  rxL, fS, zCenterTop,
+         xCenterTop, fS+pad*2.5, zCenterTop, BLU),
+      // Connectors
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), 0, -pad*3, 0, WHT),
+      PT('C2: '+connTag(cn2Label,dv.D||12,dv.E||10,cn2Flip), (rxL+rxR)/2, fS+pad*3, zCenterTop, WHT),
+      PT('C3: '+connTag(cn3Label,dv.C||12,dv.E||10,cn3Flip), (lxL+lxR)/2, fS+pad*3, zCenterTop, WHT),
     ];
+    // BS: bottom-straight dim along outer left wall when present
+    if(lBS > 0.0001){
+      labels.push(DL('BS: '+(dv.BS||0)+'"',
+        -aS/2, 0, hbS,  -aS/2, yBStop, hbS,
+        -aS/2-pad*1.5, lBS/2, hbS, BLU));
+    }
+    // TS: top-straight dim along left leg outer wall
+    if(lTS > 0.0001){
+      labels.push(DL('TS: '+(dv.TS||0)+'"',
+        lxL, yTSbot, zT_back,  lxL, fS, zT_back,
+        lxL-pad*1.5, yTSbot + lTS/2, zT_back, BLU));
+    }
+    // HV X offset dim (if non-zero) — bottom of taper showing X shift
+    if(Math.abs(xCenterTop) > 0.0001){
+      labels.push(DL('HV: '+Math.abs(dv.HV||0).toFixed(1)+'"',
+        0, fS, zT_front,  xCenterTop, fS, zT_front,
+        xCenterTop/2, fS+pad*2, zT_front-pad, BLU));
+    }
+    // IV Z offset dim (if non-zero)
+    if(Math.abs(zCenterTop) > 0.0001){
+      labels.push(DL('IV: '+Math.abs(dv.IV||0).toFixed(1)+'"',
+        xCenterTop, fS, 0,  xCenterTop, fS, zCenterTop,
+        xCenterTop, fS+pad*2, zCenterTop/2, BLU));
+    }
+    return labels;
   }
 
   // ── END CAP ──────────────────────────────────────────────────────────
@@ -1823,22 +2042,49 @@ function getFittingLabels(id,variant,dv){
   // cross-section: ±hA in X, ±hB in Y
   // Inlet at t=0: x=0, z=0. Outlet at t=1: x=H2*S, z=EL*S
   if(id==='ro'){
-    const EL=(dv.E||32)*S, H2=(dv.H||8)*S, hA=as/2, hB=bs/2;
-    const hC2=(dv.C||A)*S/2, hD2=(dv.Dp||B)*S/2;
-    return [
-      // INLET (x=0, z=0): red=A width (x axis), green=B depth (y axis)
-      DL('A: '+A+'"',  -hA,0,0,  hA,0,0,   0, -pad*2.5, 0, RED),
-      DL('B: '+B+'"',  0,-hB,0,  0,hB,0,   -hA-pad*2.5, 0, 0, GRN),
-      // OUTLET (x=H2, z=EL): red=C top width, green=D top depth
-      DL('C: '+(dv.C||A)+'"',  H2-hC2,0,EL, H2+hC2,0,EL,  H2,-pad*2.5,EL, RED),
-      DL('D: '+(dv.Dp||B)+'"', H2,-hD2,EL,  H2,hD2,EL,    H2+hC2+pad*2.5,0,EL, GRN),
-      // E: length — diagonal from inlet to outlet along the curve path
-      DL('E: '+(dv.E||32)+'"',  hA,0,0,  H2+hA,0,EL,  H2+hA+pad*2, 0, EL/2, YEL),
-      // H: horizontal offset — horizontal line at mid-height
-      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), -hA-pad*3, 0, 0, WHT),
-      PT('C2: '+connTag(cn2Label,dv.C||A,dv.Dp||B,cn2Flip), H2+hC2+pad*3, 0, EL, WHT),
-      DL('H: '+(dv.H||8)+'"',   -hA,0,EL,  H2-hC2,0,EL,  (-hA+H2-hC2)/2, pad*2, EL, BLU),
+    // Geometry: inlet at x=0 centered (z=0), outlet at x=lE offset by lH in Z
+    // Y = ±hB (depth = B), Z = ±hA (width = A)
+    // Inlet straight = F, Outlet straight = G, body S-curve = E - F - G
+    const lE=(dv.E||32)*S, lH=(dv.H||8)*S;
+    const lF_in=(dv.F||0)*S, lG_in=(dv.G||0)*S;
+    const hA=as/2, hB=bs/2;
+    const labels = [
+      // ── INLET face (x=0) ──
+      DL('A: '+A+'"',  0,hB,-hA,  0,hB,hA,
+         0, hB+pad*1.5, 0, RED),
+      DL('B: '+B+'"',  0,-hB,hA,  0,hB,hA,
+         0, 0, hA+pad*1.5, GRN),
+      // ── OUTLET face (x=lE, shifted by lH in Z) ──
+      DL('A: '+A+'"',  lE,hB,-hA+lH,  lE,hB,hA+lH,
+         lE, hB+pad*1.5, lH, RED),
+      DL('B: '+B+'"',  lE,-hB,hA+lH,  lE,hB,hA+lH,
+         lE, 0, hA+lH+pad*1.5, GRN),
+      // ── E: total length — top edge from inlet to outlet ──
+      DL('E: '+(dv.E||32)+'"', 0,hB,hA, lE,hB,hA+lH,
+         lE/2, hB+pad*2.5, hA+lH/2, YEL),
+      // ── H: sideways offset — line at outlet showing centerline Z shift ──
+      // Matches transition HV style: spans the offset distance at outlet face, perpendicular to flow
+      DL('H: '+(dv.H||8)+'"',
+        lE, 0, -hA,        // unshifted -Z corner
+        lE, 0, -hA+lH,     // shifted -Z corner
+        lE, -hB-pad*1.5, -hA+lH/2, BLU),
+      // Connector tags
+      PT('C1: '+connTag(cn1Label,A,B,cn1Flip), -pad*3, 0, 0, WHT),
+      PT('C2: '+connTag(cn2Label,A,B,cn2Flip), lE+pad*3, 0, lH, WHT),
     ];
+    // F (inlet straight) and G (outlet straight) dims when present
+    if(lF_in > 0.0001){
+      labels.push(DL('F: '+(dv.F||0)+'"',
+        0,-hB,hA,  lF_in,-hB,hA,
+        lF_in/2, -hB-pad*1.5, hA, BLU));
+    }
+    if(lG_in > 0.0001){
+      const xS = lE - lG_in;
+      labels.push(DL('G: '+(dv.G||0)+'"',
+        xS,-hB,hA+lH,  lE,-hB,hA+lH,
+        (xS+lE)/2, -hB-pad*1.5, hA+lH, BLU));
+    }
+    return labels;
   }
 
   return [];
@@ -2617,6 +2863,9 @@ function closeRunDimSheet(){
   if(dp) dp.style.display='none';
   const ab = document.getElementById('runAddBtn');
   if(ab){ ab.style.display=''; }
+  // Clear any edit-mode state (so the picker doesn't think we're still editing)
+  runState.pendingElbow = null;
+  runState.editingElbow = null;
   syncRunAddBtn();
   // Deselect fitting highlight
   document.querySelectorAll('#runPalletGrid .pi').forEach(el=>{
@@ -2806,6 +3055,13 @@ function getRunPickerDims(){
 }
 
 function liveUpdateRunPiece(){
+  // If the direction picker is open for a pending fitting, refresh button states
+  // since dim changes may affect which orientations fit.
+  if(runState.pendingElbow){
+    const dv = getRunPickerDims();
+    Object.assign(runState.pendingElbow.d, dv);
+    refreshDirPickerButtons();
+  }
   // Only live-update when editing an existing piece
   if(runEditingPiece < 0 || !runState.pieces[runEditingPiece]) return;
   if(!runPickerFit) return;
@@ -2858,19 +3114,33 @@ function confirmRunAdd(){
     return;
   }
 
-  // Dim check
-  if(runState.pieces.length>0){
-    const prev=runState.pieces[runState.pieces.length-1];
-    const prevOut=getFittingOutlet(prev.item);
-    const prevW = prevOut.outW||prevOut.w;
-    const prevD = prevOut.outD||prevOut.d;
-    const A=dv.A||24, B=dv.B||12;
-    if(Math.abs(prevW-A)>0.5||Math.abs(prevD-B)>0.5){
-      const ok=confirm(`Dim mismatch!
-Previous outlet: ${prevW}"×${prevD}"
-This fitting: ${A}"×${B}"
-Add anyway?`);
-      if(!ok) return;
+  // Dim check (for non-direction fittings; direction fittings get checked via picker)
+  if(runState.pieces.length>0 && !needsDir){
+    const tail = (function(){
+      const idx = getActiveBranchTail();
+      return idx >= 0 ? runState.pieces[idx] : null;
+    })();
+    if(tail){
+      const prevOut=getFittingOutlet(tail.item);
+      const prevW = prevOut.outW||prevOut.w;
+      const prevD = prevOut.outD||prevOut.d;
+      const A=dv.A||24, B=dv.B||12;
+      const tol = 0;
+      const exactFit = Math.abs(prevW-A)<=tol && Math.abs(prevD-B)<=tol;
+      const flipFit  = Math.abs(prevW-B)<=tol && Math.abs(prevD-A)<=tol;
+      if(!exactFit){
+        if(flipFit){
+          // Stage C: auto-swap A and B
+          dv.A = B; dv.B = A;
+          const aIn = document.querySelector('#runDimSheet input[data-id="A"]');
+          const bIn = document.querySelector('#runDimSheet input[data-id="B"]');
+          if(aIn) aIn.value = dv.A;
+          if(bIn) bIn.value = dv.B;
+        } else {
+          alert(`Dims don't align.\nPrevious outlet: ${prevW}"×${prevD}"\nThis fitting: ${A}"×${B}"`);
+          return;
+        }
+      }
     }
   }
 
@@ -2883,6 +3153,8 @@ Add anyway?`);
     if(dirTitle) dirTitle.textContent = (runPickerFit==='reo'||runPickerFit==='ro') ? 'Which way does it offset?' : 'Which way does it turn?';
     document.getElementById('runDirPicker').style.display='block';
     document.getElementById('runAddBtn').style.display='none';
+    // Stage B: update button states based on dim fit
+    setTimeout(refreshDirPickerButtons, 0);
     return;
   }
 
@@ -3130,12 +3402,31 @@ function getFittingOutlet(item){
   }
 
   // ── GOOSENECK ──────────────────────────────────────────────────────
+  // Geometry: inlet face at (0, -lI, 0) facing -Y (flow goes +Y into arc).
+  // Arc sweeps CCW from 0° to D. Outlet at arc end + lO tangent extension.
+  // We use rotate90 so local +Y flow becomes world +X.
   if(id==='rgn'){
-    // Gooseneck is two elbows, net outlet direction same as inlet (+X)
-    // Approximate: flows +X, rises then falls, net displacement in Y
-    const Ri=(dv.G||A*0.5)*S, Ro=Ri+as, Rmid=(Ri+Ro)/2;
-    const lH=(dv.D||12)*S; // height of goose
-    return {inlet:[-Rmid,0,0], pos:[Rmid,0,0], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
+    const Gv=dv.G||12;
+    const Ri=Gv*S, A_S=A*S;
+    const Rmid=Ri + A_S/2;
+    const Dang=(dv.D||135)*Math.PI/180;
+    const ca=Math.cos(Dang), sa=Math.sin(Dang);
+    const tx=-sa, ty=ca;  // tangent at arc end (flow direction)
+    const lI=(dv.E||0)*S, lO=(dv.F||0)*S;
+    const acx=-Rmid;  // arc center X
+    // Arc end face center (local geometry coords, pre-rotate90):
+    const arcEndX = acx + Rmid*ca;
+    const arcEndY = Rmid*sa;
+    const outX = arcEndX + tx*lO;
+    const outY = arcEndY + ty*lO;
+    return {
+      inlet:[0, -lI, 0],
+      pos:[outX, outY, 0],
+      fwd:[tx, ty, 0],   // local fwd at outlet (pre-rotate90)
+      up:[0, 0, 1],
+      w:A, d:B,
+      rotate90:true,
+    };
   }
 
   // ── SQUARE / MITERED ELBOW ─────────────────────────────────────────
@@ -3156,25 +3447,40 @@ function getFittingOutlet(item){
   // ── TRANSITION ─────────────────────────────────────────────────────
   // Geometry flows natively along +X — no rotation needed.
   // inlet at x=-lE/2, outlet at x=+lE/2, width A in ±Y, depth B in ±Z.
+  // HV/IV explicit offsets shift the OUTLET center in Y/Z (matches tr geometry).
   if(id==='tr'){
     const lE=(dv.E||16)*S;
-    return {inlet:[-lE/2,0,0], pos:[lE/2,0,0], fwd:[1,0,0], up:[0,1,0],
+    // Compute outlet Y and Z shifts from H/I modes and HV/IV override values.
+    // Match the geometry's outY/outZ computation.
+    const hpA = (dv.A||24)*S/2, hpB = (dv.B||12)*S/2;
+    const outAhalf = (dv.C||20)*S/2, outBhalf = (dv.Dp||10)*S/2;
+    const hMode = Math.round(dv.H||0);
+    const iMode = Math.round(dv.I||0);
+    const hvX = (dv.HV||0)*S;
+    const ivZ = (dv.IV||0)*S;
+    let outY = 0, outZ = 0;  // shift of outlet CENTER relative to inlet center
+    // H controls Z direction (width); I controls Y (depth) -- matches tr geometry
+    if(Math.abs(hvX) > 0.0001){ outZ = hvX; }
+    else if(hMode === 1){ outZ =  (hpA - outAhalf); }  // Flat Right
+    else if(hMode === 2){ outZ = -(hpA - outAhalf); }  // Flat Left
+    if(Math.abs(ivZ) > 0.0001){ outY = ivZ; }
+    else if(iMode === 1){ outY =  (hpB - outBhalf); }  // Flat Top
+    else if(iMode === 2){ outY = -(hpB - outBhalf); }  // Flat Bottom
+    return {inlet:[-lE/2,0,0], pos:[lE/2, outY, outZ], fwd:[1,0,0], up:[0,1,0],
             w:A, d:B, outW:dv.C||20, outD:dv.Dp||10};
   }
 
   // ── RECT OFFSET (reo) ──────────────────────────────────────────────
-  // Parallelogram: flows +X. Inlet face at x=0, centered at (0, as/2, 0).
-  // Outlet face at x=lC, centered at (lC, as/2-lF, 0).
+  // Parallelogram: flows +X. Inlet face at x=0 centered. Outlet at x=lC, shifted by lF in Z.
   if(id==='reo'){
-    // Inlet centered at (0,0,0). Outlet offset sideways by lF in Z (width direction).
-    const lC=(dv.C||40)*S, lF=(dv.F||8)*S;
+    const lC=(dv.C||40)*S, lF=(dv.F||12)*S;  // default F=12 to match DB
     return {inlet:[0,0,0], pos:[lC,0,lF], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
   }
 
   // ── RADIUS OFFSET (ro) ─────────────────────────────────────────────
   // S-curve flows natively along +X. Offset in Z (width direction).
   if(id==='ro'){
-    const lE2=(dv.E||32)*S, lH=(dv.H||8)*S;
+    const lE2=(dv.E||32)*S, lH=(dv.H||16)*S;  // default H=16 to match DB
     return {inlet:[0,0,0], pos:[lE2,0,lH], fwd:[1,0,0], up:[0,1,0], w:A, d:B};
   }
 
@@ -3508,6 +3814,24 @@ function buildRunGeometry(){
     piece.worldFwd   = [worldMat[0], worldMat[1], worldMat[2]];
     piece.worldUp    = [worldMat[4], worldMat[5], worldMat[6]];
     piece.worldRight = [worldMat[8], worldMat[9], worldMat[10]];
+    // Store OUTLET-face frame separately (for cap drawing — differs from local +X
+    // on elbows, gooseneck, anything that turns).
+    const outFwdLocal = outlet.fwd || [1,0,0];
+    const outUpLocal  = outlet.up  || [0,1,0];
+    const outFwdW = m4mulV(worldMat, outFwdLocal);
+    const outUpW  = m4mulV(worldMat, outUpLocal);
+    const fwLen = Math.sqrt(outFwdW[0]*outFwdW[0]+outFwdW[1]*outFwdW[1]+outFwdW[2]*outFwdW[2])||1;
+    const outFwdN = [outFwdW[0]/fwLen, outFwdW[1]/fwLen, outFwdW[2]/fwLen];
+    const upDot = outFwdN[0]*outUpW[0]+outFwdN[1]*outUpW[1]+outFwdN[2]*outUpW[2];
+    const outUpO = [outUpW[0]-upDot*outFwdN[0], outUpW[1]-upDot*outFwdN[1], outUpW[2]-upDot*outFwdN[2]];
+    const upLen = Math.sqrt(outUpO[0]*outUpO[0]+outUpO[1]*outUpO[1]+outUpO[2]*outUpO[2])||1;
+    const outUpN = [outUpO[0]/upLen, outUpO[1]/upLen, outUpO[2]/upLen];
+    const outRtN = [outFwdN[1]*outUpN[2]-outFwdN[2]*outUpN[1],
+                    outFwdN[2]*outUpN[0]-outFwdN[0]*outUpN[2],
+                    outFwdN[0]*outUpN[1]-outFwdN[1]*outUpN[0]];
+    piece.worldOutFwd   = outFwdN;
+    piece.worldOutUp    = outUpN;
+    piece.worldOutRight = outRtN;
   });
 
   // ── ACTIVE BRANCH TAIL CAP ────────────────────────────────────────
@@ -3530,13 +3854,14 @@ function buildRunGeometry(){
       capW = (tailPiece.item.d.A||12)/12;
       capD = (tailPiece.item.d.B||12)/12;
     } else {
-      // Regular tail (main run, or a branch piece): outlet is worldPos with worldFwd/Up/Right
+      // Regular tail (main run, or a branch piece): outlet is worldPos with worldOutFwd/Up/Right
       capCx = tailPiece.worldPos[0];
       capCy = tailPiece.worldPos[1];
       capCz = tailPiece.worldPos[2];
-      capFwd  = tailPiece.worldFwd;
-      capUp   = tailPiece.worldUp;
-      capRight= tailPiece.worldRight;
+      // Use OUTLET-specific frame (handles elbows and any turning fittings correctly)
+      capFwd  = tailPiece.worldOutFwd  || tailPiece.worldFwd;
+      capUp   = tailPiece.worldOutUp   || tailPiece.worldUp;
+      capRight= tailPiece.worldOutRight|| tailPiece.worldRight;
       // For regular pieces, outlet face dims = item A/B (or transition's outW/outD)
       const item = tailPiece.item;
       const tailOutlet = getFittingOutlet(item);
@@ -3921,10 +4246,177 @@ function addToRun(item){
   renderRunPieces();
 }
 
+// ── DIM COMPATIBILITY CHECK ─────────────────────────────────────────
+// Given the previous piece's outlet face dims (in world coords: width along outRight,
+// depth along outUp) and a candidate new piece + direction, determine whether the
+// inlet face dims would align with the previous outlet.
+// Returns { match, needsFlip, expected: {w, d} }.
+function checkInletFit(newItem, userDir){
+  // First piece in active branch — always fits.
+  const tail = (function(){
+    const idx = getActiveBranchTail();
+    return idx >= 0 ? runState.pieces[idx] : null;
+  })();
+  if(!tail) return { match:true, needsFlip:false, expected:null };
+
+  // Previous outlet face dims (already in inches via tail piece's stored dims)
+  const prevOut = getFittingOutlet(tail.item);
+  const prevW = prevOut.outW || prevOut.w;
+  const prevD = prevOut.outD || prevOut.d;
+
+  // For a candidate direction, the new piece's INLET face dim orientation:
+  //   A is width axis, B is depth axis (universal convention)
+  //   The userDir rotates the WHOLE fitting around its inlet flow axis (cursor's X).
+  //   So a 90° rotation around X swaps which dim aligns with "width" vs "depth"
+  //   of the previous outlet face.
+  // userDir options for elbows/offsets: 'right' / 'left' / 'up' / 'down'
+  //   right (0°): inlet face — A across world-width-axis, B across world-depth-axis  (no swap)
+  //   left  (180°): same orientation (rotated 180° around flow, but A still spans width)  (no swap)
+  //   up    (90°): A↔B swap (rotated 90° → original width axis now aligns with depth)
+  //   down  (-90°): A↔B swap
+  const dv = newItem.d;
+  const A = dv.A || 24, B = dv.B || 12;
+  let inW, inD;
+  if(userDir === 'up' || userDir === 'down'){
+    // Rotated 90° around flow axis — A and B effectively swap
+    inW = B; inD = A;
+  } else {
+    inW = A; inD = B;
+  }
+
+  const tol = 0;
+  const match = Math.abs(prevW - inW) <= tol && Math.abs(prevD - inD) <= tol;
+  if(match) return { match:true, needsFlip:false, expected:{w:prevW, d:prevD} };
+  // Try the flip: if swapping A and B would make this orientation fit
+  const flipW = inD, flipD = inW;
+  const needsFlip = Math.abs(prevW - flipW) <= tol && Math.abs(prevD - flipD) <= tol;
+  return { match:false, needsFlip, expected:{w:prevW, d:prevD} };
+}
+
+// Update the visual state of the direction picker buttons based on which
+// directions actually fit the previous outlet's dims.
+function refreshDirPickerButtons(){
+  if(!runState.pendingElbow) return;
+  const dp = document.getElementById('runDirPicker');
+  if(!dp || dp.style.display === 'none') return;
+  const item = runState.pendingElbow;
+  const isOffset = (item.id === 'reo' || item.id === 'ro');
+  const dirs = ['right','left','up','down'];
+  const btns = dp.querySelectorAll('button.run-dir-btn');
+  dirs.forEach((d, i) => {
+    if(!btns[i]) return;
+    // Offsets rotated up/down would swap the world width/depth axes — that's only
+    // valid when A === B (square cross-section). For non-square ducts, the rotation
+    // produces a face that physically can't connect to the previous outlet.
+    if(isOffset && (d === 'up' || d === 'down')){
+      const dvI = item.d;
+      const aE = dvI.A || 24, bE = dvI.B || 12;
+      if(Math.abs(aE - bE) > 0.01){
+        btns[i].dataset.dirFit = 'no';
+        btns[i].style.opacity = '0.4';
+        btns[i].style.cursor = 'not-allowed';
+        btns[i].title = 'Offsets can only shift up/down when the duct is square (A = B). Use rotate button to roll the duct, then shift left/right.';
+        btns[i].disabled = true;
+        return;
+      }
+    }
+    const fit = (runState.editingElbow && runState.editingElbow.pieceIdx >= 0)
+      ? checkInletFitForEdit(item, d, runState.editingElbow.pieceIdx)
+      : checkInletFit(item, d);
+    btns[i].dataset.dirFit = fit.match ? 'ok' : (fit.needsFlip ? 'flip' : 'no');
+    if(fit.match){
+      btns[i].style.opacity = '';
+      btns[i].style.cursor = 'pointer';
+      btns[i].title = '';
+      btns[i].disabled = false;
+    } else if(fit.needsFlip){
+      btns[i].style.opacity = '0.85';
+      btns[i].style.cursor = 'pointer';
+      btns[i].title = `Click to swap A↔B and fit (needs ${fit.expected.w}"×${fit.expected.d}")`;
+      btns[i].disabled = false;
+    } else {
+      btns[i].style.opacity = '0.4';
+      btns[i].style.cursor = 'not-allowed';
+      btns[i].title = fit.expected
+        ? `Dims don't match. Needs A=${fit.expected.w}", B=${fit.expected.d}"`
+        : `Dims don't match`;
+      btns[i].disabled = true;
+    }
+  });
+}
+
 function setElbowDir(dir){
   if(!runState.pendingElbow) return;
-  runState.pieces.push({item:runState.pendingElbow, dir});
-  listItems.push({id:runState.pendingElbow.id, var:null, n:runState.pendingElbow.n, d:runState.pendingElbow.d, qty:1, notes:'', thumb:null});
+  const item = runState.pendingElbow;
+  const isEdit = (runState.editingElbow && runState.editingElbow.pieceIdx >= 0);
+
+  // For edit mode, the "previous piece" check needs to use the piece BEFORE this one
+  // in the run, not the tail. Temporarily walk to find it.
+  let fit;
+  if(isEdit){
+    fit = checkInletFitForEdit(item, dir, runState.editingElbow.pieceIdx);
+  } else {
+    fit = checkInletFit(item, dir);
+  }
+  if(!fit.match){
+    if(fit.needsFlip){
+      const dv = item.d;
+      const oldA = dv.A, oldB = dv.B;
+      dv.A = oldB; dv.B = oldA;
+      const aIn = document.querySelector('#runDimSheet input[data-id="A"]');
+      const bIn = document.querySelector('#runDimSheet input[data-id="B"]');
+      if(aIn) aIn.value = dv.A;
+      if(bIn) bIn.value = dv.B;
+    } else {
+      alert(`Dims don't align.\nPrevious outlet: ${fit.expected.w}"×${fit.expected.d}"\nThis fitting: A=${item.d.A}" B=${item.d.B}"`);
+      return;
+    }
+  }
+  const resolved = resolveUserDirIntent(dir, item);
+
+  if(isEdit){
+    // Mutate the existing piece's dir; then check if downstream still connects.
+    const ctx = runState.editingElbow;
+    const piece = runState.pieces[ctx.pieceIdx];
+    piece.dir = resolved;
+    // Run geometry to refresh worldOutFwd etc.
+    runUpload();
+    // Check if next piece (in same branch) still connects to this piece's NEW outlet.
+    const downstreamOk = checkDownstreamFit(ctx.pieceIdx);
+    if(!downstreamOk){
+      const proceed = confirm("This change affects downstream ductwork.\n\nResize/flip downstream pieces to match?\n\nYes = cascade fixes downstream pieces.\nNo = revert this edit.");
+      if(proceed){
+        cascadeDownstreamFix(ctx.pieceIdx);
+      } else {
+        // Revert
+        piece.dir = ctx.originalDir;
+        piece.item.d.A = ctx.originalDims.A;
+        piece.item.d.B = ctx.originalDims.B;
+        const aIn = document.querySelector('#runDimSheet input[data-id="A"]');
+        const bIn = document.querySelector('#runDimSheet input[data-id="B"]');
+        if(aIn) aIn.value = ctx.originalDims.A;
+        if(bIn) bIn.value = ctx.originalDims.B;
+        runUpload();
+        renderRunPieces();
+        runState.pendingElbow = null;
+        runState.editingElbow = null;
+        return;
+      }
+    }
+    // Done editing this piece
+    runState.pendingElbow = null;
+    runState.editingElbow = null;
+    renderRunPieces();
+    const dp = document.getElementById('runDirPicker');
+    // Update the picker buttons to reflect the new state (don't hide — let user pick again if needed)
+    setTimeout(refreshDirPickerButtons, 0);
+    return;
+  }
+
+  // Normal ADD mode (not edit) — push a new piece.
+  const ab_parent = (runState.activeBranch != null) ? runState.activeBranch : null;
+  runState.pieces.push({item, dir:resolved, parent:ab_parent});
+  listItems.push({id:item.id, var:null, n:item.n, d:item.d, qty:1, notes:'', thumb:null});
   renderList();
   runState.pendingElbow = null;
   document.getElementById('runDirPicker').style.display='none';
@@ -3936,6 +4428,205 @@ function setElbowDir(dir){
   setTimeout(()=>{ab2.textContent='Add to Run'; ab2.style.background='var(--teal)';},1000);
 }
 
+// In edit mode, check fit against the piece BEFORE the one being edited (not the tail).
+function checkInletFitForEdit(newItem, userDir, pieceIdx){
+  // Find the piece preceding pieceIdx in the same branch
+  const myBranch = (function(){
+    const p = runState.pieces[pieceIdx];
+    return p.parent != null ? p.parent : 'main';
+  })();
+  let prevPiece = null;
+  for(let i = pieceIdx - 1; i >= 0; i--){
+    const p = runState.pieces[i];
+    const pBranch = p.parent != null ? p.parent : 'main';
+    // For taps in the main run, they don't count as a predecessor for the main flow
+    if(pBranch === myBranch && !p.tapPos){
+      prevPiece = p;
+      break;
+    }
+  }
+  if(!prevPiece) return { match: true, needsFlip: false, expected: null };
+
+  const prevOut = getFittingOutlet(prevPiece.item);
+  const prevW = prevOut.outW || prevOut.w;
+  const prevD = prevOut.outD || prevOut.d;
+  const dv = newItem.d;
+  const A = dv.A || 24, B = dv.B || 12;
+  let inW, inD;
+  if(userDir === 'up' || userDir === 'down'){
+    inW = B; inD = A;
+  } else {
+    inW = A; inD = B;
+  }
+  const tol = 0;
+  const match = Math.abs(prevW - inW) <= tol && Math.abs(prevD - inD) <= tol;
+  if(match) return { match:true, needsFlip:false, expected:{w:prevW, d:prevD} };
+  const flipW = inD, flipD = inW;
+  const needsFlip = Math.abs(prevW - flipW) <= tol && Math.abs(prevD - flipD) <= tol;
+  return { match:false, needsFlip, expected:{w:prevW, d:prevD} };
+}
+
+// Check whether the piece AFTER pieceIdx (in same branch) still fits this piece's outlet.
+function checkDownstreamFit(pieceIdx){
+  const myBranch = (function(){
+    const p = runState.pieces[pieceIdx];
+    return p.parent != null ? p.parent : 'main';
+  })();
+  const me = runState.pieces[pieceIdx];
+  const meOut = getFittingOutlet(me.item);
+  const myW = meOut.outW || meOut.w;
+  const myD = meOut.outD || meOut.d;
+  for(let i = pieceIdx + 1; i < runState.pieces.length; i++){
+    const p = runState.pieces[i];
+    const pBranch = p.parent != null ? p.parent : 'main';
+    if(pBranch !== myBranch || p.tapPos) continue;
+    // First piece downstream in same branch
+    const nextA = p.item.d.A || 24, nextB = p.item.d.B || 12;
+    // Account for the next piece's dir rotation (if it has one)
+    let inW = nextA, inD = nextB;
+    if(p.dir === 'up' || p.dir === 'down'){ inW = nextB; inD = nextA; }
+    return Math.abs(myW - inW) <= 0.01 && Math.abs(myD - inD) <= 0.01;
+  }
+  return true;  // no downstream piece — nothing to break
+}
+
+// Cascade-fix downstream pieces in the same branch by swapping their A/B
+// when the swap would make them fit. If a piece can't be fixed by swap, stop.
+function cascadeDownstreamFix(pieceIdx){
+  const myBranch = (function(){
+    const p = runState.pieces[pieceIdx];
+    return p.parent != null ? p.parent : 'main';
+  })();
+  // Walk forward in same branch, fixing each piece's dims as needed.
+  let prevW, prevD;
+  {
+    const me = runState.pieces[pieceIdx];
+    const meOut = getFittingOutlet(me.item);
+    prevW = meOut.outW || meOut.w;
+    prevD = meOut.outD || meOut.d;
+  }
+  for(let i = pieceIdx + 1; i < runState.pieces.length; i++){
+    const p = runState.pieces[i];
+    const pBranch = p.parent != null ? p.parent : 'main';
+    if(pBranch !== myBranch || p.tapPos) continue;
+    const dv = p.item.d;
+    let A = dv.A || 24, B = dv.B || 12;
+    // Determine current inlet dims in world (account for this piece's dir)
+    let inW = A, inD = B;
+    if(p.dir === 'up' || p.dir === 'down'){ inW = B; inD = A; }
+    if(Math.abs(prevW - inW) <= 0.01 && Math.abs(prevD - inD) <= 0.01){
+      // already fits — skip
+    } else {
+      // Try swapping A and B
+      const swapInW = inD, swapInD = inW;
+      if(Math.abs(prevW - swapInW) <= 0.01 && Math.abs(prevD - swapInD) <= 0.01){
+        dv.A = B; dv.B = A;
+      } else {
+        // Can't fix this piece — bail
+        break;
+      }
+    }
+    // Compute this piece's outlet for the next iteration
+    const out = getFittingOutlet(p.item);
+    prevW = out.outW || out.w;
+    prevD = out.outD || out.d;
+  }
+  runUpload();
+  renderRunPieces();
+}
+
+// Resolve user's directional intent (up/down/left/right from picker) to the
+// `dir` value (right/left/up/down) that, given the current cursor orientation,
+// produces an outlet pointing closest to the intended WORLD direction.
+//
+// Intent vectors:
+//   Up    → world +Y (true up, gravity-relative)
+//   Down  → world -Y
+//   Left  → perpendicular to current flow in horizontal plane, viewer's left
+//   Right → perpendicular to current flow in horizontal plane, viewer's right
+function resolveUserDirIntent(userDir, pendingItem){
+  // World intent vector for each clicked direction
+  // Up/Down are always world ±Y. Left/Right depend on cursor.
+  const cursor = getCurrentBranchCursor();
+  if(!cursor) return userDir;  // fallback: no cursor yet, use as-is
+  const fwdWorld = [cursor.mat[0], cursor.mat[1], cursor.mat[2]];
+  // Horizontal flow direction (project onto XZ plane)
+  const hLen = Math.sqrt(fwdWorld[0]*fwdWorld[0] + fwdWorld[2]*fwdWorld[2]) || 1;
+  const fwdH = [fwdWorld[0]/hLen, 0, fwdWorld[2]/hLen];
+  // Viewer's RIGHT = cross(worldUp, fwdH) — perpendicular to flow in horizontal plane
+  // worldUp = (0,1,0), so cross(worldUp, fwdH) = (fwdH[2], 0, -fwdH[0])
+  const rightV = [fwdH[2], 0, -fwdH[0]];
+  let intent;
+  if(userDir === 'up')    intent = [0, 1, 0];
+  else if(userDir === 'down')  intent = [0, -1, 0];
+  else if(userDir === 'right') intent = rightV;
+  else if(userDir === 'left')  intent = [-rightV[0], -rightV[1], -rightV[2]];
+  else return userDir;
+
+  // For each candidate dir, compute what world direction the elbow OUTLET would go,
+  // OR for offsets, the SHIFT direction (since offsets don't turn, but they shift).
+  // Per the elbow geometry: inlet at 180° (-X), default outlet at 270° (-Y).
+  // elbowDirMatrix rotates around X axis:
+  //   right (no rot):  outlet -Y
+  //   left  (180°):    outlet +Y
+  //   up    (90°):     outlet -Z
+  //   down  (-90°):    outlet +Z
+  // For offsets (reo/ro): the SHIFT direction in LOCAL frame after each dir's rotation.
+  // Natural offset shift is +Z. elbowDirMatrix rotations around X:
+  //   right (no rot): shift +Z → then we re-label: viewer's right = world -Z, so flip sign
+  //   left  (180°):   shift -Z → maps to viewer's left
+  //   up    (90°):    +Z → -Y (m4rx(90) on (0,0,1) = (0,-1,0))
+  //   down  (-90°):   +Z → +Y
+  // So dir='up' actually shifts DOWN, dir='down' shifts UP. The resolver picks the dir
+  // whose actual shift direction is closest to the user's intent.
+  const isOffset = pendingItem && (pendingItem.id === 'reo' || pendingItem.id === 'ro');
+  const localOutDirs = isOffset ? {
+    right: [0, 0, -1],   // shift toward viewer's right (world -Z with default cam)
+    left:  [0, 0,  1],   // shift toward viewer's left
+    up:    [0, -1, 0],   // dir='up' rotates offset so shift goes -Y (DOWN)
+    down:  [0,  1, 0],   // dir='down' rotates so shift goes +Y (UP)
+  } : {
+    right: [0, -1, 0],
+    left:  [0,  1, 0],
+    up:    [0,  0, -1],
+    down:  [0,  0,  1],
+  };
+  let bestDir = userDir, bestDot = -2;
+  for(const candidate of ['right','left','up','down']){
+    const lo = localOutDirs[candidate];
+    // worldOut = cursor.mat * lo  (column-major: col0=X, col1=Y, col2=Z)
+    const wx = cursor.mat[0]*lo[0] + cursor.mat[4]*lo[1] + cursor.mat[8]*lo[2];
+    const wy = cursor.mat[1]*lo[0] + cursor.mat[5]*lo[1] + cursor.mat[9]*lo[2];
+    const wz = cursor.mat[2]*lo[0] + cursor.mat[6]*lo[1] + cursor.mat[10]*lo[2];
+    const dot = wx*intent[0] + wy*intent[1] + wz*intent[2];
+    if(dot > bestDot){ bestDot = dot; bestDir = candidate; }
+  }
+  return bestDir;
+}
+
+// Get the cursor state for the currently active branch (or main).
+// Walks the geometry build to find where the next piece would attach.
+function getCurrentBranchCursor(){
+  if(runState.pieces.length === 0){
+    return { pos:[0,0,0], mat:m4id() };
+  }
+  const tailIdx = (typeof getActiveBranchTail==='function') ? getActiveBranchTail() : runState.pieces.length-1;
+  if(tailIdx < 0) return { pos:[0,0,0], mat:m4id() };
+  const tail = runState.pieces[tailIdx];
+  // Prefer outlet frame (correct for elbows/turning fittings); fall back to local frame
+  const fw = tail.worldOutFwd   || tail.worldFwd;
+  const up = tail.worldOutUp    || tail.worldUp;
+  const rt = tail.worldOutRight || tail.worldRight;
+  if(!fw || !up || !rt) return null;
+  const mat = new Float32Array([
+    fw[0], fw[1], fw[2], 0,
+    up[0], up[1], up[2], 0,
+    rt[0], rt[1], rt[2], 0,
+    0, 0, 0, 1,
+  ]);
+  return { pos: tail.worldPos || [0,0,0], mat };
+}
+
 function selectRunPiece(i){
   if(runSelectedPiece === i){
     // Deselect — go back to new-piece mode
@@ -3944,6 +4635,9 @@ function selectRunPiece(i){
     syncRunAddBtn();
     renderRunPieces();
     runUpload();
+    // Hide the dir picker when leaving edit mode
+    const dp0 = document.getElementById('runDirPicker');
+    if(dp0) dp0.style.display = 'none';
     return;
   }
   runSelectedPiece = i;
@@ -3969,6 +4663,23 @@ function selectRunPiece(i){
   // Open the dim sheet for editing
   const f = DB.find(x=>x.id===p.item.id);
   openRunDimSheet((f ? f.n : p.item.n) + ' — Edit');
+  // Stage D: show direction picker if this piece has a `dir` field (elbow / offset)
+  const dp = document.getElementById('runDirPicker');
+  if(dp){
+    if(p.dir){
+      // Stash the editing context: pendingElbow points at the piece's item so
+      // refreshDirPickerButtons / setElbowDir know what to validate against.
+      // We set a separate flag for edit mode so we don't push a NEW piece.
+      runState.editingElbow = { pieceIdx: i, originalDir: p.dir, originalDims: {A: dv.A, B: dv.B} };
+      runState.pendingElbow = p.item;
+      const dirTitle = document.querySelector('#runDirPicker p');
+      if(dirTitle) dirTitle.textContent = (p.item.id==='reo'||p.item.id==='ro') ? 'Edit offset direction' : 'Edit elbow direction';
+      dp.style.display = 'block';
+      setTimeout(refreshDirPickerButtons, 0);
+    } else {
+      dp.style.display = 'none';
+    }
+  }
 }
 
 function syncRunAddBtn(){

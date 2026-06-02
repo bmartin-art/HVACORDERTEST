@@ -142,7 +142,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 .send-actions .send-btn{background:var(--teal);color:#fff;border-color:var(--teal)}
 .send-actions .send-btn:active{background:var(--teal-dk)}
 /* ── RUN BUILDER ── */
-#runScreen{background:#1a2630;transform:translateX(100%)}
+#runScreen{background:#56708a;transform:translateX(100%)}
 .run-toolbar{background:#1a2d3e;display:flex;align-items:center;gap:6px;padding:6px 10px;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .run-tool-btn{background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .run-tool-btn.active{background:var(--teal)}
@@ -194,7 +194,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 <div class="screen" id="palletScreen">
   <div class="hdr">
     <div class="hdr-row1">
-      <h1 style="font-size:15px;font-weight:700;flex:1;letter-spacing:-.02em">Brookstone <span style="color:#8badd6">Industries</span> <span style="font-size:9px;font-weight:500;opacity:.5;letter-spacing:0">R1</span></h1>
+      <h1 style="font-size:15px;font-weight:700;flex:1;letter-spacing:-.02em">Brookstone <span style="color:#8badd6">Industries</span> <span style="font-size:9px;font-weight:500;opacity:.5;letter-spacing:0">R1.5</span></h1>
       <button class="list-btn" onclick="openAI()">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><circle cx="8" cy="8" r="6"/><path d="M5.5 9.5c.5 1 3.5 1 4.5 0M6 6.5h.01M10 6.5h.01"/></svg>AI
       </button>
@@ -505,7 +505,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
   });
 </script>
 <script>
-console.log("HVAC Takeoff R1 (Release 1)");
+console.log("HVAC Takeoff R1.5 (Release 1)");
   console.log("\u00A9 2026 Brookstone Industries \u2014 proprietary. All rights reserved.");
   // Register service worker (enables Install + offline use). Relative path works under any repo folder.
   if('serviceWorker' in navigator){
@@ -4375,14 +4375,14 @@ function initRunGL(){
   if(!rgl){ console.error('No WebGL'); return; }
 
   rgl.enable(rgl.DEPTH_TEST); rgl.disable(rgl.CULL_FACE);
-  rgl.clearColor(0.18,0.26,0.35,1);
+  rgl.clearColor(0.34,0.43,0.53,1);
   rgl.viewport(0,0,W,H);
   runState.gl = rgl;
 
   if(runState.prog) return; // shader already compiled
 
   var VS='attribute vec3 pos;attribute vec3 nrm;attribute float hi;uniform mat4 mvp;varying vec3 vN;varying float vH;void main(){vN=nrm;vH=hi;gl_Position=mvp*vec4(pos,1.);}';
-  var FS='precision mediump float;varying vec3 vN;varying float vH;void main(){vec3 L=normalize(vec3(.6,.8,.4));float d=max(dot(normalize(vN),L),.18)+0.1;vec3 base=vec3(0.17,0.66,0.5);if(vH>0.9){base=vec3(0.9,0.75,0.1);}else if(vH>0.5){base=vec3(1.0,0.92,0.25);}else if(vH<-0.5){base=vec3(0.5,0.54,0.58);}if(!gl_FrontFacing){base*=0.4;}gl_FragColor=vec4(base*d,1.);}';
+  var FS='precision mediump float;varying vec3 vN;varying float vH;void main(){vec3 L=normalize(vec3(.6,.8,.4));float d=max(dot(normalize(vN),L),.45)+0.22;vec3 base=vec3(0.22,0.74,0.58);if(vH>0.9){base=vec3(0.95,0.8,0.18);}else if(vH>0.5){base=vec3(1.0,0.93,0.3);}else if(vH<-0.5){base=vec3(0.58,0.62,0.66);}gl_FragColor=vec4(base*d,1.);}';
   function rsh(t,s){var x=rgl.createShader(t);rgl.shaderSource(x,s);rgl.compileShader(x);if(!rgl.getShaderParameter(x,rgl.COMPILE_STATUS))console.error(rgl.getShaderInfoLog(x));return x;}
   var p=rgl.createProgram();
   rgl.attachShader(p,rsh(rgl.VERTEX_SHADER,VS));
@@ -4556,11 +4556,12 @@ function getFittingOutlet(item){
   // Arc sweeps in XY plane. Inlet at (-Rmid, 0, 0). Z = depth axis.
   if(id==='e90'||id==='e45'||id==='ev'){
     const Dang=(dv.D||90)*Math.PI/180;
-    const Ri=(dv.G||A*0.5)*S, Ro=Ri+as, Rmid=(Ri+Ro)/2;
+    // Match the builder's radius: G override, else long-radius (1.5A) vs short (0.5A)
+    const Ri=((dv.G>0)?dv.G:(item.var==='lr'?A*1.5:A*0.5))*S, Ro=Ri+as, Rmid=(Ri+Ro)/2;
     const a1r=Math.PI+Dang;
     const ox=Rmid*Math.cos(a1r), oy=Rmid*Math.sin(a1r);
     const fx=-Math.sin(a1r), fy=Math.cos(a1r);
-    return {inlet:[-Rmid,0,0], pos:[ox,oy,0], fwd:[fx,fy,0], up:[0,0,1], w:A, d:B};
+    return {inlet:[-Rmid,0,0], pos:[ox,oy,0], fwd:[fx,fy,0], up:[0,0,1], w:A, d:B, radElbow:true};
   }
 
   // ── GOOSENECK ──────────────────────────────────────────────────────
@@ -4910,6 +4911,10 @@ function buildRunGeometry(){
     // whole elbow attaches mis-rotated by (90-D)°.
     let baseMat = rollMat;
     if(outlet.inletRotZ) baseMat = m4mul2(rollMat, m4rz(outlet.inletRotZ));
+    // Radius elbows (e90/e45/ev) are built from an arc whose inlet flows along Y,
+    // not +X like the rectangular elbows. Rotate the raw geometry so its inlet
+    // flows +X, matching the convention the run chain expects.
+    if(outlet.radElbow) baseMat = m4mul2(baseMat, m4rz(Math.PI/2));
 
     // Apply elbow direction rotation
     let localMat = baseMat;
@@ -5879,6 +5884,11 @@ function resolveUserDirIntent(userDir, pendingItem){
       const cz = Math.cos(ol.inletRotZ), sz = Math.sin(ol.inletRotZ);
       baseFwd = [cz*baseFwd[0]-sz*baseFwd[1], sz*baseFwd[0]+cz*baseFwd[1], baseFwd[2]];
     }
+    if(ol.radElbow){
+      // Placement realigns radius elbows with rz(+90); model that here so the
+      // resolver's predicted outlet matches the actual placement (rz(90): x,y → -y,x).
+      baseFwd = [-baseFwd[1], baseFwd[0], baseFwd[2]];
+    }
     // elbowDirMatrix is a rotation about X: angles right=0,left=π,up=π/2,down=-π/2.
     // m4rx maps (x,y,z)→(x, c·y−s·z, s·y+c·z).
     const dirAngle = { right:0, left:Math.PI, up:Math.PI/2, down:-Math.PI/2 };
@@ -6219,20 +6229,33 @@ window.addEventListener('load', () => {
 <script>
 var AI_MODEL="claude-haiku-4-5-20251001";
 var AI_SYS="You are an HVAC duct design assistant for Brookstone Industries."
+  +" SCOPE: You ONLY assist with HVAC ductwork — duct sizing, fittings, layouts, fabrication, SMACNA, airflow (CFM/FPM/static pressure), and building runs in this app. If asked anything NOT related to HVAC ductwork, politely decline in one short sentence and redirect (e.g. 'I can only help with HVAC ductwork — what would you like to design or build?'). Do not answer off-topic questions, write unrelated code, or discuss other subjects."
   +" CRITICAL: The ONLY correct ID for straight rectangular duct is: st — never sd, never duct, never straight."
   +" Complete fitting ID list (use ONLY these exact strings):"
-  +" st=Straight, e90=90Elbow, e45=45Elbow, ev=VarElbow, rgn=Gooseneck,"
-  +" sqe=RectangularSquareElbow(rec elbow/square elbow), me=MiteredElbow, tr=Transition, ro=RadiusOffset, reo=RectangularOffset(NOT an elbow - this offsets parallel),"
-  +" sqt=SqTee, sp=SqPants, ec=EndCap, bc=BaseCan, fc=FlexConn, stap=StraightTap, s2r=SqToRound, rd=RectDamper."
+  +" st=Straight, e90=90Elbow, e45=45Elbow, ev=VarElbow, rgn=Gooseneck, rhe=RadiusHeel,"
+  +" sqe=RectSquareElbow, me=MiteredElbow, ae=AngledElbow, tr=Transition, ro=RadiusOffset, reo=RectOffset(NOT an elbow - offsets parallel),"
+  +" sqt=SqTee, sp=SqPants, ec=EndCap, bc=BaseCan, dp=DrainPan, cbox=CeilingBox, fc=FlexConn, stap=StraightTap, shtap=ShoeTap, s2r=SqToRound, rd=RectDamper."
   +" SMACNA low-pressure: trunk 800-1200 FPM, branch 500-800 FPM. Area(sq-in)=CFM/FPM*144. Round to 2in."
-  +" STANDARD DUCT LENGTH: 5ft (60in). For a 30ft run, break into 6× 5ft straights using qty:6."
-  +" DIM KEYS BY FITTING TYPE:"
-  +" st(straight): A=width B=depth C=length(inches). Standard length C=60 (5ft). For longer runs use qty to repeat."
-  +" tr(transition): A=bigWidth B=bigDepth C=smallWidth Dp=smallDepth E=length(typ 12). Use Dp NOT D for small depth."
-  +" e90/e45/sqe/me(elbows): A=width B=depth only."
-  +" sqt(tee): A=width B=depth C=leftArmLen D=rightArmLen."
-  +" stap(straight tap): A=tap width B=tap depth C=collar height (typ 6). Default 12x12x6 unless sized."
-  +" All fittings: CN1=CN2=0 for S+D connectors."
+  +" STANDARD DUCT LENGTH: 5ft (60in). For a 30ft run break into 6x 5ft straights using qty:6."
+  +" ── COMPLETE FITTING DIMENSION REFERENCE (all dims in INCHES unless noted; omit a dim to use its default) ──"
+  +" st(straight): A=width B=depth C=length(std 60). Use qty to repeat for long runs."
+  +" e90(90 radius elbow) / e45(45 radius elbow): A=width B=depth, G=inner radius(default 12), E=bottom-leg extension F=top-leg extension(straight legs, default 0). D=angle is preset (90/45) - leave it. Optional var:'lr'=long radius(1.5x width) or 'sr'=short radius(0.5x width); omit var for default."
+  +" ev(variable radius elbow): same dims as e90 PLUS D=turn angle in degrees (any value)."
+  +" rgn(gooseneck): A=width B=depth, D=total turn angle(default 135), G=inner radius(12), E/F=leg extensions."
+  +" sqe(rectangular/square elbow): A=top width B=depth, C=bottom width (ONLY set C if it differs from A - omit for equal), D=top throat E=bottom throat(default 6). Optional var:'vanes' to add turning vanes."
+  +" me(mitered elbow): A=width B=depth C=bottom width, D=top throat E=bottom throat, F=miter angle(deg, default 20)."
+  +" ae(angled elbow): A=top width B=depth C=bottom width, D=angle(deg), E=top throat F=bottom throat."
+  +" rhe(radius heel): A=top width B=depth C=bottom width, D=angle, E=top throat F=bottom throat."
+  +" tr(transition): A=inlet width B=inlet depth, C=outlet width Dp=outlet depth (use Dp NOT D), E=total length(typ 12-16), F=inlet straight G=outlet straight(carved from E, default 0). OFFSET the outlet end: HV=left/right(NEG=left POS=right facing flow), IV=up/down(POS=up NEG=down); both 0 = concentric."
+  +" ro(radius offset): A=inlet width B=inlet depth, C=outlet width Dp=outlet depth, E=total length(typ 32), F/G=straights, H=offset distance."
+  +" reo(rectangular offset - parallel shift, not a turn): A=width B=depth, C=total length, D=left extension E=right extension(default 4), F=offset width(the parallel shift, default 12)."
+  +" sqt(square tee): A=width B=depth, C=left throat D=right throat, G=bottom throat. Arm heights: leave default for equal arms, or set EV(left value) / FV(right value) for unequal arm heights. Has CN3 for the third opening."
+  +" sp(square pants): A=bottom width B=bottom depth, C=left width D=right width, E=top depth F=height G=throat width, BS=bottom straight TS=top straight. OFFSET like tr: HV=left/right IV=up/down. Has CN3."
+  +" stap(straight tap): A=width B=depth C=collar height(typ 6). shtap(shoe tap): A=top width B=depth C=height. (Both mount on a parent straight - see TAPS section.)"
+  +" ec(end cap): A=width B=depth. bc(base can): A=width B=depth C=height. dp(drain pan): A=width B=depth C=wall height(typ 2), DN=nipple diameter; optional var:'nipple'. cbox(ceiling box): A=width B=depth C=height, D=hole diameter F=collar height."
+  +" fc(flex connector): A=size(0=3x3x3,1=4x4x4,2=Junior) B=width C=depth. s2r(square to round): A=width B=depth C=round diameter D=length G=collar. rd(rect damper, 12in depth max): A=width B=depth."
+  +" CONNECTORS — every fitting takes CN1/CN2 (and CN3 on sqt/sp) as a TYPE INDEX: 0=S+D(default) 1=TDC 2=F1 3=F1.5 4=F2 5=RAW 6=F1in. Taps (stap/shtap) CN2 instead: 0=F1 1=TAP. Use 0 unless the user specifies a connector type."
+  +" LINER — LN is a TYPE INDEX: 0=1/2in 1=1in 2=1.5in 3=2in 4=Elastomeric 5=None(default). Use 5 unless the user asks for liner."
   +" ── TAPS AND BRANCHES ──"
   +" Taps mount on a parent straight piece. To place a tap, add these fields to the ADD block:"
   +" parent=<index of the parent straight piece (0-based)>, tapPos=left|center|right, tapSide=top|bottom|front|back."
@@ -6243,6 +6266,7 @@ var AI_SYS="You are an HVAC duct design assistant for Brookstone Industries."
   +" qty FIELD: any ADD can include qty:N to push N copies in sequence."
   +" ── EXAMPLES ──"
   +' Single straight: ##ADD## {"id":"st","A":24,"B":12,"C":60,"CN1":0,"CN2":0} ##END##'
+  +' Offset transition 24x12 to 20x12, small end 2in left + 4in up: ##ADD## {"id":"tr","A":24,"B":12,"C":20,"Dp":12,"E":16,"HV":-2,"IV":4,"CN1":0,"CN2":0} ##END##'
   +' 30ft of straight via qty: ##ADD## {"id":"st","A":16,"B":16,"C":60,"qty":6,"CN1":0,"CN2":0} ##END##'
   +' Tap on the front side, center of piece 2: ##ADD## {"id":"stap","A":12,"B":12,"C":6,"parent":2,"tapPos":"center","tapSide":"front","CN1":0,"CN2":0} ##END##'
   +' Build out from last tap: ##BRANCH## last_tap ##END## then ##ADD## {"id":"st",...} blocks'
@@ -6334,7 +6358,8 @@ function executeAITools(text){
       var isTap = (dims.id === "stap") && (dims.parent !== undefined);
 
       for(var k=0; k<qty; k++){
-        var item = {id:dims.id, "var":null, n:f.n, d:{...d}, qty:1, notes:""};
+        var variant = (dims["var"] && f.vars && f.vars.some(function(v){return v.id===dims["var"];})) ? dims["var"] : null;
+        var item = {id:dims.id, "var":variant, n:f.n, d:{...d}, qty:1, notes:""};
         var __uid = (typeof makeUid==="function") ? makeUid() : null;
         var piece = {item:item, dir:null, rot:0, uid:__uid};
         if(isTap){
@@ -6349,7 +6374,7 @@ function executeAITools(text){
         runState.pieces.push(piece);
         var newIdx = runState.pieces.length - 1;
         if(typeof listItems!=="undefined"){
-          listItems.push({id:item.id, "var":null, n:item.n, d:item.d, qty:1, notes:"", thumb:null, uid:__uid, trunkLabel:currentTrunkLabel()});
+          listItems.push({id:item.id, "var":item["var"], n:item.n, d:item.d, qty:1, notes:"", thumb:null, uid:__uid, trunkLabel:currentTrunkLabel()});
         }
         if(isTap){
           lastTapIdx = newIdx;

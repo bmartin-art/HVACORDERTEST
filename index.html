@@ -194,7 +194,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
 <div class="screen" id="palletScreen">
   <div class="hdr">
     <div class="hdr-row1">
-      <h1 style="font-size:15px;font-weight:700;flex:1;letter-spacing:-.02em">Brookstone <span style="color:#8badd6">Industries</span> <span style="font-size:9px;font-weight:500;opacity:.5;letter-spacing:0">R1.5</span></h1>
+      <h1 style="font-size:15px;font-weight:700;flex:1;letter-spacing:-.02em">Brookstone <span style="color:#8badd6">Industries</span> <span style="font-size:9px;font-weight:500;opacity:.5;letter-spacing:0">R1.7</span></h1>
       <button class="list-btn" onclick="openAI()">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><circle cx="8" cy="8" r="6"/><path d="M5.5 9.5c.5 1 3.5 1 4.5 0M6 6.5h.01M10 6.5h.01"/></svg>AI
       </button>
@@ -505,7 +505,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFo
   });
 </script>
 <script>
-console.log("HVAC Takeoff R1.5 (Release 1)");
+console.log("HVAC Takeoff R1.7 (Release 1)");
   console.log("\u00A9 2026 Brookstone Industries \u2014 proprietary. All rights reserved.");
   // Register service worker (enables Install + offline use). Relative path works under any repo folder.
   if('serviceWorker' in navigator){
@@ -3937,6 +3937,7 @@ function clearRun(){
 }
 
 // ── Run Picker Sheet ──────────────────────────────────────────────
+var rdsHistoryActive=false;
 function openRunDimSheet(fitName){
   const overlay = document.getElementById('runDimOverlay');
   const sheet   = document.getElementById('runDimSheet');
@@ -3951,9 +3952,11 @@ function openRunDimSheet(fitName){
   overlay.onclick = function(e){ if(e.target===overlay) closeRunDimSheet(); };
   // Swipe-down to close
   initRunSheetSwipe(sheet);
+  // Android/system back closes the sheet instead of exiting the app
+  if(!rdsHistoryActive){ rdsHistoryActive=true; try{ history.pushState({rds:1},''); }catch(e){} }
 }
 
-function closeRunDimSheet(){
+function closeRunDimSheet(fromPop){
   const overlay = document.getElementById('runDimOverlay');
   const sheet   = document.getElementById('runDimSheet');
   overlay.style.background = 'rgba(0,0,0,0)';
@@ -3972,9 +3975,62 @@ function closeRunDimSheet(){
   document.querySelectorAll('#runPalletGrid .pi').forEach(el=>{
     el.style.borderColor=''; el.style.background='';
   });
+  // Keep the system-back history entry in sync
+  var wasActive = rdsHistoryActive;
+  rdsHistoryActive = false;
+  if(wasActive && !fromPop){ try{ history.back(); }catch(e){} }
 }
 
+window.addEventListener('popstate', function(){
+  if(rdsHistoryActive){ closeRunDimSheet(true); }
+});
+
+// ── Job auto-save / restore ──────────────────────────────────────────
+// Protects against accidental Home press / app close / tab kill. We save the
+// takeoff list + the run on a timer and (critically) the instant the app is
+// backgrounded, then offer to restore it next launch.
+var JOB_SAVE_KEY = 'brookstone_job_autosave';
+function saveJobSnapshot(){
+  try{
+    var hasList = (typeof listItems!=='undefined' && listItems.length);
+    var hasRun  = (typeof runState!=='undefined' && runState.trunks && runState.trunks.some(function(t){return t.pieces && t.pieces.length;}));
+    if(!hasList && !hasRun){ localStorage.removeItem(JOB_SAVE_KEY); return; }
+    // Strip heavy thumbnail data URLs so we stay well under the storage quota.
+    var liteList = (typeof listItems!=='undefined') ? listItems.map(function(it){ var c=Object.assign({}, it); c.thumb=null; return c; }) : [];
+    var snap = { v:1, savedAt:Date.now(), listItems:liteList, trunks:runState.trunks, currentTrunkIdx:runState.currentTrunkIdx };
+    localStorage.setItem(JOB_SAVE_KEY, JSON.stringify(snap));
+  }catch(e){ /* storage full or unavailable — fail quietly */ }
+}
+function restoreJobSnapshot(){
+  var raw; try{ raw = localStorage.getItem(JOB_SAVE_KEY); }catch(e){ return; }
+  if(!raw) return;
+  var snap; try{ snap = JSON.parse(raw); }catch(e){ try{localStorage.removeItem(JOB_SAVE_KEY);}catch(_){} return; }
+  var count = (snap.listItems && snap.listItems.length) || 0;
+  var runCount = (snap.trunks ? snap.trunks.reduce(function(a,t){return a+((t.pieces&&t.pieces.length)||0);},0) : 0);
+  if(!count && !runCount){ try{localStorage.removeItem(JOB_SAVE_KEY);}catch(_){} return; }
+  var when = snap.savedAt ? new Date(snap.savedAt).toLocaleString() : 'earlier';
+  var summary = count ? (count+' item'+(count===1?'':'s')) : (runCount+' run piece'+(runCount===1?'':'s'));
+  if(confirm('Restore your previous job?\n\n'+summary+', last edited '+when+'.\n\nOK = restore   Cancel = start fresh')){
+    try{
+      if(snap.listItems){ listItems.length=0; snap.listItems.forEach(function(x){ listItems.push(x); }); }
+      if(snap.trunks && snap.trunks.length){ runState.trunks = snap.trunks; runState.currentTrunkIdx = Math.min(snap.currentTrunkIdx||0, snap.trunks.length-1); }
+      if(typeof renderList==='function') renderList();
+      if(typeof renderTrunkTabs==='function') renderTrunkTabs();
+      try{ if(typeof runUpload==='function') runUpload(); }catch(_){}
+      try{ if(typeof renderRunPieces==='function') renderRunPieces(); }catch(_){}
+      try{ if(typeof renderRunStats==='function') renderRunStats(); }catch(_){}
+    }catch(e){ console.warn('Job restore failed', e); }
+  } else {
+    try{ localStorage.removeItem(JOB_SAVE_KEY); }catch(_){}
+  }
+}
+document.addEventListener('visibilitychange', function(){ if(document.hidden) saveJobSnapshot(); });
+window.addEventListener('pagehide', saveJobSnapshot);
+setInterval(saveJobSnapshot, 8000);
+window.addEventListener('load', function(){ setTimeout(restoreJobSnapshot, 600); });
+
 function initRunSheetSwipe(sheet){
+  if(sheet._swipeInit) return; sheet._swipeInit=true;
   let startY=0, startT=0, dragging=false;
   sheet.addEventListener('touchstart', function(e){
     startY = e.touches[0].clientY;
@@ -4106,7 +4162,7 @@ function selectRunFit(id){
     if(isValueField(f.id, d.id)) return;
     const val=prefill[d.id]!==undefined?prefill[d.id]:d.v;
     const cell=document.createElement('div');
-    cell.style.cssText='display:flex;flex-direction:column;gap:4px';
+    cell.style.cssText='display:flex;flex-direction:column;gap:4px;min-width:0';
     const lbl=document.createElement('label');
     lbl.textContent=d.l;
     lbl.style.cssText='font-size:10px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.04em';
@@ -4122,7 +4178,7 @@ function selectRunFit(id){
       sel.id='rp_'+d.id;
       sel.dataset.paired = pairedId || '';
       sel.dataset.modecount = String(d.sel.length);
-      sel.style.cssText='padding:11px 8px;border:1.5px solid #ddd;border-radius:10px;font-size:16px;min-height:44px';
+      sel.style.cssText='padding:11px 8px;border:1.5px solid #ddd;border-radius:10px;font-size:16px;min-height:44px;width:100%';
       sel.onchange = function(){ handleRunModeSelChange(d.id); liveUpdateRunPiece(); };
       sels.forEach(function(o,i){
         const opt=document.createElement('option');
@@ -4138,7 +4194,7 @@ function selectRunFit(id){
         inp.value=pairedInit; inp.min=0; inp.step=0.5;
         inp.placeholder='Enter offset';
         const showVal = (initMode === sels.length - 1);
-        inp.style.cssText='padding:11px 8px;border:1.5px solid #ddd;border-radius:10px;font-size:16px;min-height:44px;margin-top:3px;display:'+(showVal?'block':'none');
+        inp.style.cssText='padding:11px 8px;border:1.5px solid #ddd;border-radius:10px;font-size:16px;min-height:44px;width:100%;margin-top:3px;display:'+(showVal?'block':'none');
         inp.oninput = liveUpdateRunPiece;
         cell.appendChild(inp);
       }
@@ -4157,7 +4213,7 @@ function selectRunFit(id){
       const inp=document.createElement('input');
       inp.type='number'; inp.id='rp_'+d.id;
       inp.value=val; inp.min=0; inp.step=0.5;
-      inp.style.cssText='padding:11px 8px;border:1.5px solid #ddd;border-radius:10px;font-size:16px;min-height:44px';
+      inp.style.cssText='padding:11px 8px;border:1.5px solid #ddd;border-radius:10px;font-size:16px;min-height:44px;width:100%';
       // Btm Width (C) tracks Top Width (A) on elbows so "16x16" stays 16x16.
       // Editing C directly afterward still lets you build a transition elbow.
       if(d.id==='A' && ['ae','me','rhe'].includes(f.id)){

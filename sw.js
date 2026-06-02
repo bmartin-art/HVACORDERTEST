@@ -1,6 +1,6 @@
 /* Brookstone HVAC Takeoff — service worker (offline app shell).
    Bump CACHE on each release so installed copies refresh to the new build. */
-const CACHE = 'bk-takeoff-r1';
+const CACHE = 'bk-takeoff-r1-5';
 const ASSETS = ['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
